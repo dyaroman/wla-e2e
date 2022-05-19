@@ -38,18 +38,25 @@ Scenario("filters", async ({ I }) => {
   for (const key in filters) {
     if (key === "tags") {
       for (const tag of filters.tags) {
-        I.seeAttributesOnElements(`.filters [data-qa='${tag}']`, {
+        I.seeAttributesOnElements(`.filters [data-qa="${tag}"]`, {
           "data-tag-active": "",
         });
       }
     } else {
-      I.seeInField(`[data-qa='${key}']`, filters[key]);
+      I.seeInField(`[data-qa="${key}"]`, filters[key]);
     }
   }
 
-  const rows = await I.grabNumberOfVisibleElements("tbody tr");
-  if (rows !== 1) {
-    throw new Error("fail expected only one website");
+  I.seeNumberOfVisibleElements("tbody tr", 1);
+  I.click(`[data-qa="clearAll"]`);
+  I.seeInCurrentUrl(origin);
+
+  for (const key in filters) {
+    if (key === "tags") {
+      I.dontSeeElement(`[data-tag-active]`);
+    } else {
+      I.seeInField(`[data-qa="${key}"]`, "");
+    }
   }
 });
 
@@ -68,6 +75,6 @@ Scenario("sorts", ({ I }) => {
   I.waitForElement("table", 60);
   I.seeTextEquals(
     "YourLendAssistance.com",
-    'tbody tr:first-child [data-qa="website"]'
+    `tbody tr:first-child [data-qa="website"]`
   );
 });

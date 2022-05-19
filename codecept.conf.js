@@ -17,6 +17,7 @@ exports.config = {
       browser: "chromium",
       windowSize: "1280x720",
       waitForNavigation: "networkidle0",
+      uniqueScreenshotNames: true,
     },
   },
   include: {

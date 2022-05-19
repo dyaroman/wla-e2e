@@ -7,9 +7,6 @@ Scenario("website", async ({ I }) => {
   I.amOnPage(origin);
   I.waitForElement("table", 60);
   I.fillField(`[data-qa='website']`, website);
-  const rows = await I.grabNumberOfVisibleElements("tbody tr");
-  if (rows !== 1) {
-    throw new Error("fail expected only one website");
-  }
+  I.seeNumberOfVisibleElements("tbody tr", 1);
   I.seeCurrentUrlEquals(`${origin}/?website=${website}`);
 });
