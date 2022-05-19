@@ -15,7 +15,8 @@ exports.config = {
       url: 'http://localhost',
       show: true,
       browser: 'chromium',
-      windowSize: '1280x720'
+      windowSize: '1280x720',
+      waitForNavigation: "networkidle0",
     }
   },
   include: {
