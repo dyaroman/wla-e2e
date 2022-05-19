@@ -1,18 +1,31 @@
 {
-    "private": true,
-    "scripts": {
-        "codeceptjs": "codeceptjs run --steps",
-        "codeceptjs:headless": "cross-env HEADLESS=true codeceptjs run --steps",
-        "codeceptjs:ui": "codecept-ui --app"
-    },
-    "dependencies": {
-        "@codeceptjs/configure": "^0.8.0",
-        "codeceptjs": "^3.3.3",
-        "cross-env": "^7.0.3",
-        "playwright": "^1.22.0"
-    },
-    "devDependencies": {
-        "@codeceptjs/examples": "^1.2.1",
-        "@codeceptjs/ui": "^0.4.6"
+  "private": true,
+  "scripts": {
+    "codeceptjs": "codeceptjs run --steps",
+    "codeceptjs:headless": "cross-env HEADLESS=true codeceptjs run --steps",
+    "codeceptjs:ui": "codecept-ui --app",
+    "lint": "prettier --check .",
+    "lint:fix": "prettier --write --ignore-unknown ."
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
     }
+  },
+  "lint-staged": {
+    "**/*": "prettier --write --ignore-unknown"
+  },
+  "dependencies": {
+    "@codeceptjs/configure": "^0.8.0",
+    "codeceptjs": "^3.3.3",
+    "cross-env": "^7.0.3",
+    "playwright": "^1.22.0"
+  },
+  "devDependencies": {
+    "@codeceptjs/examples": "^1.2.1",
+    "@codeceptjs/ui": "^0.4.6",
+    "husky": "^4.3.8",
+    "lint-staged": "^12.4.1",
+    "prettier": "^2.6.2"
+  }
 }
