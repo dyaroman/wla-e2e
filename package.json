@@ -3,10 +3,7 @@
     "scripts": {
         "codeceptjs": "codeceptjs run --steps",
         "codeceptjs:headless": "cross-env HEADLESS=true codeceptjs run --steps",
-        "codeceptjs:ui": "codecept-ui --app",
-        "codeceptjs:demo": "codeceptjs run --steps -c node_modules/@codeceptjs/examples",
-        "codeceptjs:demo:headless": "cross-env HEADLESS=true codeceptjs run --steps -c node_modules/@codeceptjs/examples",
-        "codeceptjs:demo:ui": "codecept-ui --app -c node_modules/@codeceptjs/examples"
+        "codeceptjs:ui": "codecept-ui --app"
     },
     "dependencies": {
         "@codeceptjs/configure": "^0.8.0",
