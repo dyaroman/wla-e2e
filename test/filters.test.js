@@ -1,4 +1,4 @@
-const { randomNumber, fromCamelCaseToWords } = require("../functions");
+const { getRandomNumber, fromCamelCaseToWords } = require("../functions");
 
 // const origin = "https://dev.example-app.com";
 const origin = "http://localhost:3000";
@@ -14,7 +14,9 @@ Scenario("random website", async ({ I }) => {
   const { ENV, columns, commit, repoPath, timestamp, websites } =
     await response.json();
   const numberOfWebsites = websites.length;
-  const websiteData = websites[randomNumber(0, numberOfWebsites - 1)];
+  const randomNumber = getRandomNumber(0, numberOfWebsites - 1);
+  const websiteData = websites[randomNumber];
+  I.say(`Run test for website #${randomNumber} ${websiteData["website"]}`);
   I.amOnPage(origin);
   I.waitForElement("table", 60);
   if (ENV === undefined) {
