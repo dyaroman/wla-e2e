@@ -1,7 +1,5 @@
 const { getRandomNumber, fromCamelCaseToWords } = require("../functions");
-
-// const origin = "https://dev.example-app.com";
-const origin = "http://localhost:3000";
+const { URL } = require("../config");
 
 Feature("main");
 
@@ -16,8 +14,10 @@ Scenario("random website", async ({ I }) => {
   const numberOfWebsites = websites.length;
   const randomNumber = getRandomNumber(0, numberOfWebsites - 1);
   const websiteData = websites[randomNumber];
-  I.say(`Run test for website #${randomNumber} ${websiteData["website"]}`);
-  I.amOnPage(origin);
+  await I.say(
+    `Run test for website #${randomNumber} ${websiteData["website"]}`
+  );
+  I.amOnPage(URL);
   I.waitForElement("table", 60);
   if (ENV === undefined) {
     I.seeInTitle("Websites List App");
@@ -79,7 +79,7 @@ Scenario("random website", async ({ I }) => {
         I.fillField(`[data-qa="${key}"]`, websiteData[key]);
     }
   }
-  I.seeCurrentUrlEquals(`${origin}/?${search}`);
+  I.seeCurrentUrlEquals(`${URL}/?${search}`);
   I.seeNumberOfVisibleElements("tbody tr", 1);
   I.seeTextEquals(`1`, `[data-qa="#"]`);
   I.seeAttributesOnElements(`[data-qa="#"]`, {
@@ -116,7 +116,7 @@ Scenario("random website", async ({ I }) => {
     }
   }
   I.click(`[data-qa="clearAll"]`);
-  I.seeInCurrentUrl(origin);
+  I.seeInCurrentUrl(URL);
   for (const key in websiteData) {
     switch (key) {
       case "tags":

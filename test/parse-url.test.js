@@ -1,6 +1,6 @@
-const origin = "https://dev.example-app.com";
+const { URL } = require("../config");
 
-Feature("parse-url");
+Feature("parse url");
 
 Scenario("filters", async ({ I }) => {
   const search = new URLSearchParams();
@@ -32,7 +32,7 @@ Scenario("filters", async ({ I }) => {
     }
   }
 
-  I.amOnPage(`${origin}/?${search}`);
+  I.amOnPage(`${URL}/?${search}`);
   I.waitForElement("table", 60);
 
   for (const key in filters) {
@@ -49,7 +49,7 @@ Scenario("filters", async ({ I }) => {
 
   I.seeNumberOfVisibleElements("tbody tr", 1);
   I.click(`[data-qa="clearAll"]`);
-  I.seeInCurrentUrl(origin);
+  I.seeInCurrentUrl(URL);
 
   for (const key in filters) {
     if (key === "tags") {
@@ -71,7 +71,7 @@ Scenario("sorts", ({ I }) => {
     search.set(key, sorts[key]);
   }
 
-  I.amOnPage(`${origin}/?${search}`);
+  I.amOnPage(`${URL}/?${search}`);
   I.waitForElement("table", 60);
   I.seeTextEquals(
     "YourLendAssistance.com",
