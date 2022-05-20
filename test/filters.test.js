@@ -61,7 +61,9 @@ Scenario("random website", async ({ I }) => {
   for (const key in websiteData) {
     switch (key) {
       case "tags":
-        search.set(key, websiteData[key].join());
+        if (websiteData[key].length > 0) {
+          search.set(key, websiteData[key].join());
+        }
         for (const tag of websiteData[key]) {
           I.click(`.filters [data-qa="${tag}"]`);
         }
