@@ -14,6 +14,12 @@ workspace:
   clean: all
 
 steps:
+  - task: NodeTool@0
+    displayName: 'Install Node.js'
+    inputs:
+      versionSpec: 14.x
+      checkLatest: true
+
   - task: Npm@1
     displayName: 'npm ci'
     inputs:
