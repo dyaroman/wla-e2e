@@ -1,0 +1,29 @@
+# Node.js
+# Build a general Node.js project with npm.
+# Add steps that analyze code, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
+
+trigger:
+  branches:
+    include:
+      - master
+
+pool:
+  name: CI-POOL-0
+workspace:
+  clean: all
+
+steps:
+  - task: Npm@1
+    displayName: 'npm ci'
+    inputs:
+      command: custom
+      verbose: false
+      customCommand: 'ci --production --registry http://localhost:4873/'
+
+  - task: Npm@1
+    displayName: 'run tests'
+    inputs:
+      command: custom
+      verbose: false
+      customCommand: 'run codeceptjs:dev:headless'
