@@ -28,9 +28,12 @@ steps:
       verbose: false
       customCommand: "ci --production --registry http://localhost:4873/"
 
+  - powershell: Start-Sleep -Seconds 60
+    displayName: "wait for 1m"
+
   - task: Npm@1
     displayName: "run dev tests"
     inputs:
       command: custom
-      verbose: true
+      verbose: false
       customCommand: "run codeceptjs:dev:headless"
