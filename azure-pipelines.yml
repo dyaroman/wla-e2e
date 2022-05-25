@@ -21,6 +21,9 @@ steps:
       versionSpec: 14.x
       checkLatest: true
 
+  - checkout: self
+    displayName: "checkout"
+
   - task: Npm@1
     displayName: "npm ci"
     inputs:
