@@ -23,7 +23,7 @@ Scenario("random website", async ({ I }) => {
     I.seeInTitle("Websites List App");
     I.dontSeeElement(`[data-qa="env"]`);
   } else {
-    I.seeInTitle(`[${ENV[0].toUpperCase()}]: Websites List App`);
+    I.seeInTitle(`[${ENV}]: Websites List App`);
     I.seeTextEquals(`ENV: ${ENV}`, `[data-qa="env"]`);
   }
   if (timestamp === undefined) {
