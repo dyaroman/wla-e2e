@@ -31,6 +31,9 @@ steps:
       verbose: false
       customCommand: "ci --only=prod --registry http://localhost:4873/"
 
+  - script: echo $(Build.Reason)
+    displayName: "build reason"
+
   - powershell: Start-Sleep -Seconds 60
     displayName: "wait for 1m"
 
