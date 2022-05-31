@@ -75,8 +75,10 @@ Scenario("random website", async ({ I }) => {
         );
         break;
       default:
-        search.set(key, websiteData[key]);
-        I.fillField(`[data-qa="${key}"]`, websiteData[key]);
+        if (websiteData[key] !== "") {
+          search.set(key, websiteData[key]);
+          I.fillField(`[data-qa="${key}"]`, websiteData[key]);
+        }
     }
   }
   I.seeCurrentUrlEquals(`${URL}/?${search}`);
