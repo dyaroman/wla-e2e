@@ -1,67 +1,103 @@
 const { URL } = require("../config");
+const { getRandomNumber, fromCamelCaseToWords } = require("../functions");
 
 Feature("parse url");
 
 Scenario("filters", async ({ I }) => {
   const search = new URLSearchParams();
-  const filters = {
-    website: "bad-credit-loans.co",
-    template: "BCL",
-    campaignId: "251583",
-    mainForm: "1q_pd_im",
-    mainLeadType: "19",
-    altForm: "1q_36",
-    altLeadType: "57",
-    owner: "Christian",
-    gtmKey: "GTM-TNP7LR",
-    secretKey: "RECAPTCHA_PLACEHOLDER",
-    companyName: "Nesmetaju LLC",
-    email: "support@bad-credit-loans.co",
-    emailLegal: "legal@bad-credit-loans.co",
-    effectiveDate: "July 1, 2020",
-    address1: "Springates Building, Lower Government Road, Charlestown, Nevis,",
-    address2: "Saint Kitts and Nevis",
-    tags: ["freshmarketer", "index btn"],
-  };
+  const response = await I.makeApiRequest(
+    "GET",
+    `https://dev.example-app.com/websites.data.json`
+  );
+  const { websites } = await response.json();
+  const numberOfWebsites = websites.length;
+  const randomNumber = getRandomNumber(0, numberOfWebsites - 1);
+  const websiteData = websites[randomNumber];
+  await I.say(
+    `Run test for website #${randomNumber} ${websiteData["website"]}`
+  );
 
-  for (const key in filters) {
-    if (key === "tags") {
-      search.set(key, filters[key].join());
-    } else {
-      search.set(key, filters[key]);
+  for (const key in websiteData) {
+    switch (key) {
+      case "tags":
+        if (websiteData[key].length > 0) {
+          search.set(key, websiteData[key].join());
+        }
+        break;
+      case "host":
+        break;
+      default:
+        search.set(key, websiteData[key]);
     }
   }
 
   I.amOnPage(`${URL}/?${search}`);
   I.waitForElement("table", 60);
 
-  for (const key in filters) {
-    if (key === "tags") {
-      for (const tag of filters.tags) {
-        I.seeAttributesOnElements(`.filters [data-qa="${tag}"]`, {
-          "data-tag-active": "",
+  for (const key in websiteData) {
+    switch (key) {
+      case "website":
+        I.seeAttributesOnElements(`tbody [data-qa="${key}"]`, {
+          "data-title": fromCamelCaseToWords(key),
         });
-      }
-    } else {
-      I.seeInField(`[data-qa="${key}"]`, filters[key]);
+        I.seeAttributesOnElements(`tbody [data-qa="${key}"] a`, {
+          href: `https://${websiteData["host"]}/`,
+          target: "_blank",
+          rel: "noreferrer",
+        });
+        I.seeTextEquals(websiteData[key], `tbody [data-qa="${key}"] a`);
+        break;
+      case "tags":
+        I.seeAttributesOnElements(`tbody [data-qa="${key}"]`, {
+          "data-title": fromCamelCaseToWords(key),
+        });
+        break;
+      case "host":
+        break;
+      default:
+        I.seeAttributesOnElements(`tbody [data-qa="${key}"]`, {
+          "data-title": fromCamelCaseToWords(key),
+        });
+        I.seeTextEquals(
+          String(websiteData[key]).trim(),
+          `tbody [data-qa="${key}"]`
+        );
     }
   }
 
   I.seeNumberOfVisibleElements("tbody tr", 1);
+  I.seeTextEquals(`1`, `[data-qa="#"]`);
+  I.seeAttributesOnElements(`[data-qa="#"]`, {
+    "data-title": "#",
+  });
   I.click(`[data-qa="clearAll"]`);
   I.seeInCurrentUrl(URL);
 
-  for (const key in filters) {
-    if (key === "tags") {
-      I.dontSeeElement(`[data-tag-active]`);
-    } else {
-      I.seeInField(`[data-qa="${key}"]`, "");
+  for (const key in websiteData) {
+    switch (key) {
+      case "tags":
+        I.dontSeeElement(`[data-tag-active]`);
+        break;
+      case "host":
+        I.seeNumberOfVisibleElements(
+          `a[href="https://${websiteData[key]}"]`,
+          1
+        );
+        break;
+      default:
+        I.seeInField(`[data-qa="${key}"]`, "");
     }
   }
 });
 
-Scenario("sorts", ({ I }) => {
+Scenario("sorts", async ({ I }) => {
   const search = new URLSearchParams();
+  const response = await I.makeApiRequest(
+    "GET",
+    `https://dev.example-app.com/websites.data.json`
+  );
+  const { websites } = await response.json();
+  const websiteData = websites[websites.length - 1];
   const sorts = {
     column: "website",
     direction: "desc",
@@ -74,7 +110,7 @@ Scenario("sorts", ({ I }) => {
   I.amOnPage(`${URL}/?${search}`);
   I.waitForElement("table", 60);
   I.seeTextEquals(
-    "YourLendAssistance.com",
+    websiteData["website"],
     `tbody tr:first-child [data-qa="website"]`
   );
 });

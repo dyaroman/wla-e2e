@@ -23,7 +23,7 @@ Scenario("random website", async ({ I }) => {
     I.seeInTitle("Websites List App");
     I.dontSeeElement(`[data-qa="env"]`);
   } else {
-    I.seeInTitle(`[${ENV[0].toUpperCase()}]: Websites List App`);
+    I.seeInTitle(`[${ENV}]: Websites List App`);
     I.seeTextEquals(`ENV: ${ENV}`, `[data-qa="env"]`);
   }
   if (timestamp === undefined) {
@@ -81,8 +81,10 @@ Scenario("random website", async ({ I }) => {
         );
         break;
       default:
-        search.set(key, websiteData[key]);
-        I.fillField(`[data-qa="${key}"]`, websiteData[key]);
+        if (websiteData[key] !== "") {
+          search.set(key, websiteData[key]);
+          I.fillField(`[data-qa="${key}"]`, websiteData[key]);
+        }
     }
   }
   I.seeCurrentUrlEquals(`${URL}/?${search}`);
