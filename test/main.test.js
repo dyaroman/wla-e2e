@@ -40,9 +40,15 @@ Scenario("random website", async ({ I }) => {
     I.seeTextEquals(commit.slice(0, 10), `[data-qa="commit"]`);
   }
   if (numberOfWebsites === 1) {
-    I.seeTextEquals(`Result: ${numberOfWebsites}`, `[data-qa="results"]`);
+    I.seeTextEquals(
+      `Website: ${numberOfWebsites}`,
+      `[data-qa="websitesNumber"]`
+    );
   } else {
-    I.seeTextEquals(`Results: ${numberOfWebsites}`, `[data-qa="results"]`);
+    I.seeTextEquals(
+      `Websites: ${numberOfWebsites}`,
+      `[data-qa="websitesNumber"]`
+    );
   }
   I.seeNumberOfVisibleElements(`.field-title`, columns.length);
   for (const column of columns) {
