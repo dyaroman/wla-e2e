@@ -1,14 +1,11 @@
 const { getRandomNumber, fromCamelCaseToWords } = require("../functions");
-const { URL } = require("../config");
+const { URL, WEBSITES_DATA } = require("../config");
 
 Feature("main");
 
 Scenario("random website", async ({ I }) => {
   const search = new URLSearchParams();
-  const response = await I.makeApiRequest(
-    "GET",
-    `https://dev.example-app.com/websites.data.json`
-  );
+  const response = await I.makeApiRequest("GET", WEBSITES_DATA);
   const { ENV, columns, commit, repoPath, timestamp, websites } =
     await response.json();
   const numberOfWebsites = websites.length;

@@ -1,14 +1,11 @@
-const { URL } = require("../config");
+const { URL, WEBSITES_DATA } = require("../config");
 const { getRandomNumber, fromCamelCaseToWords } = require("../functions");
 
 Feature("parse url");
 
 Scenario("filters", async ({ I }) => {
   const search = new URLSearchParams();
-  const response = await I.makeApiRequest(
-    "GET",
-    `https://dev.example-app.com/websites.data.json`
-  );
+  const response = await I.makeApiRequest("GET", WEBSITES_DATA);
   const { websites } = await response.json();
   const numberOfWebsites = websites.length;
   const randomNumber = getRandomNumber(0, numberOfWebsites - 1);
@@ -92,10 +89,7 @@ Scenario("filters", async ({ I }) => {
 
 Scenario("sorts", async ({ I }) => {
   const search = new URLSearchParams();
-  const response = await I.makeApiRequest(
-    "GET",
-    `https://dev.example-app.com/websites.data.json`
-  );
+  const response = await I.makeApiRequest("GET", WEBSITES_DATA);
   const { websites } = await response.json();
   const websiteData = websites[websites.length - 1];
   const sorts = {
