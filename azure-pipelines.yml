@@ -1,7 +1,3 @@
-variables:
-  - name: isResourceTrigger
-    value: ${{ eq(variables['Build.Reason'], 'ResourceTrigger') }}
-
 trigger:
   branches:
     include:
@@ -13,10 +9,20 @@ pool:
 
 resources:
   pipelines:
-    - pipeline: websites-list-app
+    - pipeline: app
       source: websites-list-app
-      branch: master
-      trigger: true
+      trigger:
+        branches:
+          include:
+            - master
+
+    - pipeline: data
+      source: StaticWebsites-Data
+      trigger:
+        branches:
+          include:
+            - master
+            - development
 
 steps:
   - task: NodeTool@0
@@ -37,11 +43,42 @@ steps:
 
   - powershell: Start-Sleep -Seconds 60
     displayName: "wait for 1m"
-    condition: eq(variables.isResourceTrigger, 'true')
+    condition: and(succeeded(), eq(variables['Build.Reason'], 'ResourceTrigger'))
 
   - task: Npm@1
-    displayName: "run dev tests"
+    displayName: "run dev env tests"
+    condition: |
+      and(
+        succeeded(),
+        or(
+          ne(variables['Build.Reason'], 'ResourceTrigger'),
+          eq(variables['Resources.TriggeringAlias'], 'app'),
+          and(
+            eq(variables['Resources.TriggeringAlias'], 'data'),
+            eq(variables['resources.pipeline.data.sourceBranch'], 'refs/heads/development')
+          )
+        )
+      )
     inputs:
       command: custom
       verbose: false
       customCommand: "run codeceptjs:dev:headless"
+
+  - task: Npm@1
+    displayName: "run prod env tests"
+    condition: |
+      and(
+        succeeded(),
+        or(
+          ne(variables['Build.Reason'], 'ResourceTrigger'),
+          eq(variables['Resources.TriggeringAlias'], 'app'),
+          and(
+            eq(variables['Resources.TriggeringAlias'], 'data'),
+            eq(variables['resources.pipeline.data.sourceBranch'], 'refs/heads/master')
+          )
+        )
+      )
+    inputs:
+      command: custom
+      verbose: false
+      customCommand: "run codeceptjs:prod:headless"
