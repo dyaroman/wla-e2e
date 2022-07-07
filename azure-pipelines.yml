@@ -4,8 +4,7 @@ trigger:
       - master
 
 pool:
-  name: CI-POOL-0
-  demands: npm
+  vmImage: 'windows-2022'
 
 resources:
   pipelines:
