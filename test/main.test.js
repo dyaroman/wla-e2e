@@ -6,7 +6,7 @@ Feature("main");
 Scenario("random website", async ({ I }) => {
   const search = new URLSearchParams();
   const response = await I.makeApiRequest("GET", WEBSITES_DATA);
-  const { ENV, columns, commit, repoPath, timestamp, websites } =
+  const { env, columns, commit, repoPath, timestamp, websites } =
     await response.json();
   const numberOfWebsites = websites.length;
   const randomNumber = getRandomNumber(0, numberOfWebsites - 1);
@@ -16,12 +16,12 @@ Scenario("random website", async ({ I }) => {
   );
   I.amOnPage(URL);
   I.waitForElement("table", 60);
-  if (ENV === undefined) {
+  if (env === undefined) {
     I.seeInTitle("Websites List App");
     I.dontSeeElement(`[data-qa="env"]`);
   } else {
-    I.seeInTitle(`[${ENV}]: Websites List App`);
-    I.seeTextEquals(`ENV: ${ENV}`, `[data-qa="env"]`);
+    I.seeInTitle(`[${env}]: Websites List App`);
+    I.seeTextEquals(`env: ${env}`, `[data-qa="env"]`);
   }
   if (timestamp === undefined) {
     I.dontSeeElement(`[data-qa="timestamp"]`);
