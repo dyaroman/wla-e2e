@@ -4,7 +4,7 @@ trigger:
       - master
 
 pool:
-  vmImage: 'windows-2022'
+  vmImage: "windows-2022"
 
 resources:
   pipelines:
@@ -39,7 +39,6 @@ steps:
       command: custom
       verbose: false
       customCommand: "ci --only=prod"
-      #customCommand: "ci --only=prod --registry http://localhost:4873/"
 
   - powershell: Start-Sleep -Seconds 60
     displayName: "wait for 1m"
