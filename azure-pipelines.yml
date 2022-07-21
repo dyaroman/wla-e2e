@@ -46,6 +46,7 @@ steps:
 
   - task: Npm@1
     displayName: "run dev env tests"
+    continueOnError: true
     condition: |
       and(
         succeeded(),
@@ -65,6 +66,7 @@ steps:
 
   - task: Npm@1
     displayName: "run prod env tests"
+    continueOnError: true
     condition: |
       and(
         succeeded(),
@@ -81,3 +83,12 @@ steps:
       command: custom
       verbose: false
       customCommand: "run codeceptjs:prod:headless"
+
+  - task: CopyFiles@2
+    displayName: "copy files"
+    inputs:
+      contents: "output"
+      targetFolder: " $(Build.ArtifactStagingDirectory)"
+
+  - task: PublishPipelineArtifact@1
+    displayName: "publish data"
