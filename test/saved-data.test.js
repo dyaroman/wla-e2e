@@ -1,5 +1,7 @@
 const { URL } = require("../config");
 
+const isProd = process.env.NODE_ENV === "prod";
+
 Feature("saved data");
 
 const websites = {
@@ -13,7 +15,9 @@ const websites = {
     altLeadType: 57,
     owner: "Christian",
     gtmKey: "GTM-TNP7LR",
-    secretKey: "RECAPTCHA_PLACEHOLDER",
+    secretKey: isProd
+      ? "RECAPTCHA_PLACEHOLDER"
+      : "RECAPTCHA_PLACEHOLDER",
     companyName: "Customer Acquisition LLC",
     email: "support@bad-credit-loans.co",
     emailLegal: "legal@bad-credit-loans.co",
@@ -33,7 +37,9 @@ const websites = {
     altLeadType: 57,
     owner: "Brian",
     gtmKey: "GTM-TNP7LR",
-    secretKey: "RECAPTCHA_PLACEHOLDER",
+    secretKey: isProd
+      ? "RECAPTCHA_PLACEHOLDER"
+      : "RECAPTCHA_PLACEHOLDER",
     companyName: "Customer Acquisition LLC",
     email: "support@WhiteRockLoans.com",
     emailLegal: "legal@WhiteRockLoans.com",
