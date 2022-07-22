@@ -84,11 +84,7 @@ steps:
       verbose: false
       customCommand: "run codeceptjs:prod:headless"
 
-  - task: CopyFiles@2
-    displayName: "copy files"
-    inputs:
-      contents: "output"
-      targetFolder: " $(Build.ArtifactStagingDirectory)"
-
   - task: PublishPipelineArtifact@1
     displayName: "publish data"
+    inputs:
+      targetPath: $(System.DefaultWorkingDirectory)/output
