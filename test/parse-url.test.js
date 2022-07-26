@@ -1,27 +1,27 @@
-const { URL, WEBSITES_DATA } = require("../config");
-const { getRandomNumber, fromCamelCaseToWords } = require("../functions");
+const { URL, WEBSITES_DATA } = require('../config');
+const { getRandomNumber, fromCamelCaseToWords } = require('../functions');
 
-Feature("parse url");
+Feature('parse url @common');
 
-Scenario("filters", async ({ I }) => {
+Scenario('filters', async ({ I }) => {
   const search = new URLSearchParams();
-  const response = await I.makeApiRequest("GET", WEBSITES_DATA);
+  const response = await I.makeApiRequest('GET', WEBSITES_DATA);
   const { websites } = await response.json();
   const numberOfWebsites = websites.length;
   const randomNumber = getRandomNumber(0, numberOfWebsites - 1);
   const websiteData = websites[randomNumber];
   await I.say(
-    `Run test for website #${randomNumber} ${websiteData["website"]}`
+    `Run test for website #${randomNumber} ${websiteData['website']}`
   );
 
   for (const key in websiteData) {
     switch (key) {
-      case "tags":
+      case 'tags':
         if (websiteData[key].length > 0) {
           search.set(key, websiteData[key].join());
         }
         break;
-      case "host":
+      case 'host':
         break;
       default:
         search.set(key, websiteData[key]);
@@ -29,31 +29,31 @@ Scenario("filters", async ({ I }) => {
   }
 
   I.amOnPage(`${URL}/?${search}`);
-  I.waitForElement("table", 60);
+  I.waitForElement('table', 60);
 
   for (const key in websiteData) {
     switch (key) {
-      case "website":
+      case 'website':
         I.seeAttributesOnElements(`tbody [data-qa="${key}"]`, {
-          "data-title": fromCamelCaseToWords(key),
+          'data-title': fromCamelCaseToWords(key),
         });
         I.seeAttributesOnElements(`tbody [data-qa="${key}"] a`, {
-          href: `https://${websiteData["host"]}/`,
-          target: "_blank",
-          rel: "noreferrer",
+          href: `https://${websiteData['host']}/`,
+          target: '_blank',
+          rel: 'noreferrer',
         });
         I.seeTextEquals(websiteData[key], `tbody [data-qa="${key}"] a`);
         break;
-      case "tags":
+      case 'tags':
         I.seeAttributesOnElements(`tbody [data-qa="${key}"]`, {
-          "data-title": fromCamelCaseToWords(key),
+          'data-title': fromCamelCaseToWords(key),
         });
         break;
-      case "host":
+      case 'host':
         break;
       default:
         I.seeAttributesOnElements(`tbody [data-qa="${key}"]`, {
-          "data-title": fromCamelCaseToWords(key),
+          'data-title': fromCamelCaseToWords(key),
         });
         I.seeTextEquals(
           String(websiteData[key]).trim(),
@@ -62,39 +62,39 @@ Scenario("filters", async ({ I }) => {
     }
   }
 
-  I.seeNumberOfVisibleElements("tbody tr", 1);
+  I.seeNumberOfVisibleElements('tbody tr', 1);
   I.seeTextEquals(`1`, `[data-qa="#"]`);
   I.seeAttributesOnElements(`[data-qa="#"]`, {
-    "data-title": "#",
+    'data-title': '#',
   });
   I.click(`[data-qa="clearAll"]`);
   I.seeInCurrentUrl(URL);
 
   for (const key in websiteData) {
     switch (key) {
-      case "tags":
+      case 'tags':
         I.dontSeeElement(`[data-tag-active]`);
         break;
-      case "host":
+      case 'host':
         I.seeNumberOfVisibleElements(
           `a[href="https://${websiteData[key]}"]`,
           1
         );
         break;
       default:
-        I.seeInField(`[data-qa="${key}"]`, "");
+        I.seeInField(`[data-qa="${key}"]`, '');
     }
   }
 });
 
-Scenario("sorts", async ({ I }) => {
+Scenario('sorts', async ({ I }) => {
   const search = new URLSearchParams();
-  const response = await I.makeApiRequest("GET", WEBSITES_DATA);
+  const response = await I.makeApiRequest('GET', WEBSITES_DATA);
   const { websites } = await response.json();
   const websiteData = websites[websites.length - 1];
   const sorts = {
-    column: "website",
-    direction: "desc",
+    column: 'website',
+    direction: 'desc',
   };
 
   for (const key in sorts) {
@@ -102,9 +102,9 @@ Scenario("sorts", async ({ I }) => {
   }
 
   I.amOnPage(`${URL}/?${search}`);
-  I.waitForElement("table", 60);
+  I.waitForElement('table', 60);
   I.seeTextEquals(
-    websiteData["website"],
+    websiteData['website'],
     `tbody tr:first-child [data-qa="website"]`
   );
 });

@@ -1,23 +1,23 @@
-const { getRandomNumber, fromCamelCaseToWords } = require("../functions");
-const { URL, WEBSITES_DATA } = require("../config");
+const { getRandomNumber, fromCamelCaseToWords } = require('../functions');
+const { URL, WEBSITES_DATA } = require('../config');
 
-Feature("main");
+Feature('main @common');
 
-Scenario("random website", async ({ I }) => {
+Scenario('random website', async ({ I }) => {
   const search = new URLSearchParams();
-  const response = await I.makeApiRequest("GET", WEBSITES_DATA);
+  const response = await I.makeApiRequest('GET', WEBSITES_DATA);
   const { env, columns, commit, repoPath, timestamp, websites } =
     await response.json();
   const numberOfWebsites = websites.length;
   const randomNumber = getRandomNumber(0, numberOfWebsites - 1);
   const websiteData = websites[randomNumber];
   await I.say(
-    `Run test for website #${randomNumber} ${websiteData["website"]}`
+    `Run test for website #${randomNumber} ${websiteData['website']}`
   );
   I.amOnPage(URL);
-  I.waitForElement("table", 60);
+  I.waitForElement('table', 60);
   if (env === undefined) {
-    I.seeInTitle("Websites List App");
+    I.seeInTitle('Websites List App');
     I.dontSeeElement(`[data-qa="env"]`);
   } else {
     I.seeInTitle(`[${env}]: Websites List App`);
@@ -50,20 +50,20 @@ Scenario("random website", async ({ I }) => {
   I.seeNumberOfVisibleElements(`.field-title`, columns.length);
   for (const column of columns) {
     switch (column) {
-      case "tags":
+      case 'tags':
         I.seeElement(`.field-title .tags`);
         break;
       default:
         I.seeElement(`input[data-qa="${column}"]`);
         I.seeAttributesOnElements(`input[data-qa="${column}"]`, {
-          type: "text",
+          type: 'text',
           placeholder: fromCamelCaseToWords(column),
         });
     }
   }
   for (const key in websiteData) {
     switch (key) {
-      case "tags":
+      case 'tags':
         if (websiteData[key].length > 0) {
           search.set(key, websiteData[key].join());
         }
@@ -71,48 +71,48 @@ Scenario("random website", async ({ I }) => {
           I.click(`.filters [data-qa="${tag}"]`);
         }
         break;
-      case "host":
+      case 'host':
         I.seeNumberOfVisibleElements(
           `a[href="https://${websiteData[key]}"]`,
           1
         );
         break;
       default:
-        if (websiteData[key] !== "") {
+        if (websiteData[key] !== '') {
           search.set(key, websiteData[key]);
           I.fillField(`[data-qa="${key}"]`, websiteData[key]);
         }
     }
   }
   I.seeCurrentUrlEquals(`${URL}/?${search}`);
-  I.seeNumberOfVisibleElements("tbody tr", 1);
+  I.seeNumberOfVisibleElements('tbody tr', 1);
   I.seeTextEquals(`1`, `[data-qa="#"]`);
   I.seeAttributesOnElements(`[data-qa="#"]`, {
-    "data-title": "#",
+    'data-title': '#',
   });
   for (const key in websiteData) {
     switch (key) {
-      case "website":
+      case 'website':
         I.seeAttributesOnElements(`tbody [data-qa="${key}"]`, {
-          "data-title": fromCamelCaseToWords(key),
+          'data-title': fromCamelCaseToWords(key),
         });
         I.seeAttributesOnElements(`tbody [data-qa="${key}"] a`, {
-          href: `https://${websiteData["host"]}/`,
-          target: "_blank",
-          rel: "noreferrer",
+          href: `https://${websiteData['host']}/`,
+          target: '_blank',
+          rel: 'noreferrer',
         });
         I.seeTextEquals(websiteData[key], `tbody [data-qa="${key}"] a`);
         break;
-      case "tags":
+      case 'tags':
         I.seeAttributesOnElements(`tbody [data-qa="${key}"]`, {
-          "data-title": fromCamelCaseToWords(key),
+          'data-title': fromCamelCaseToWords(key),
         });
         break;
-      case "host":
+      case 'host':
         break;
       default:
         I.seeAttributesOnElements(`tbody [data-qa="${key}"]`, {
-          "data-title": fromCamelCaseToWords(key),
+          'data-title': fromCamelCaseToWords(key),
         });
         I.seeTextEquals(
           String(websiteData[key]).trim(),
@@ -124,17 +124,17 @@ Scenario("random website", async ({ I }) => {
   I.seeInCurrentUrl(URL);
   for (const key in websiteData) {
     switch (key) {
-      case "tags":
+      case 'tags':
         I.dontSeeElement(`[data-tag-active]`);
         break;
-      case "host":
+      case 'host':
         I.seeNumberOfVisibleElements(
           `a[href="https://${websiteData[key]}"]`,
           1
         );
         break;
       default:
-        I.seeInField(`[data-qa="${key}"]`, "");
+        I.seeInField(`[data-qa="${key}"]`, '');
     }
   }
 });
