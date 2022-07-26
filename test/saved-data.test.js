@@ -1,6 +1,6 @@
 const { URL } = require('../config');
 
-const isProd = process.env.NODE_ENV === 'prod';
+const isProd = process.env.ENV === 'prod';
 
 Feature('saved data @static');
 
