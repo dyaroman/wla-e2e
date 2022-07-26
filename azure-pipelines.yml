@@ -92,7 +92,8 @@ steps:
       verbose: false
       customCommand: 'run codeceptjs:prod:headless'
 
-  - task: Npm@1
+  - script: |
+      npx cross-env url=sms-app.example.com codeceptjs run --grep "\@common|\@sms"
     displayName: 'run sms tests'
     continueOnError: true
     condition: |
@@ -100,10 +101,6 @@ steps:
         succeeded(),
         eq(variables['Resources.TriggeringAlias'], 'sms')
       )
-    inputs:
-      command: custom
-      verbose: false
-      customCommand: 'cross-env url=sms-app.example.com codeceptjs run --grep "\@common|\@sms"'
 
   - task: PublishPipelineArtifact@1
     displayName: 'publish data'
