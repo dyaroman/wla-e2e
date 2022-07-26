@@ -1,17 +1,12 @@
 {
   "private": true,
   "scripts": {
-    "codeceptjs:local": "cross-env NODE_ENV=local codeceptjs run --steps",
-    "codeceptjs:local:headless": "cross-env NODE_ENV=local HEADLESS=true codeceptjs run --steps",
-    "codeceptjs:local:ui": "cross-env NODE_ENV=local codecept-ui --app",
-    "codeceptjs:dev": "cross-env NODE_ENV=dev codeceptjs run --steps",
-    "codeceptjs:dev:headless": "cross-env NODE_ENV=dev HEADLESS=true codeceptjs run --steps",
-    "codeceptjs:dev:ui": "cross-env NODE_ENV=dev codecept-ui --app",
-    "codeceptjs:prod": "cross-env NODE_ENV=prod codeceptjs run --steps",
-    "codeceptjs:prod:headless": "cross-env NODE_ENV=prod HEADLESS=true codeceptjs run --steps",
-    "codeceptjs:prod:ui": "cross-env NODE_ENV=prod codecept-ui --app",
-    "lint": "prettier --check .",
-    "lint:fix": "prettier --write --ignore-unknown ."
+    "codeceptjs:local": "cross-env ENV=local codeceptjs run --steps",
+    "codeceptjs:local:headless": "cross-env ENV=local HEADLESS=true codeceptjs run --steps",
+    "codeceptjs:dev": "cross-env ENV=dev codeceptjs run --steps",
+    "codeceptjs:dev:headless": "cross-env ENV=dev HEADLESS=true codeceptjs run --steps",
+    "codeceptjs:prod": "cross-env ENV=prod codeceptjs run --steps",
+    "codeceptjs:prod:headless": "cross-env ENV=prod HEADLESS=true codeceptjs run --steps"
   },
   "husky": {
     "hooks": {
