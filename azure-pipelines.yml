@@ -23,14 +23,6 @@ resources:
             - master
             - development
 
-    - pipeline: sms
-      project: SMS Publisher
-      source: SMSApp
-      trigger:
-        branches:
-          include:
-            - develop
-
 steps:
   - task: NodeTool@0
     displayName: 'use node 14'
@@ -50,7 +42,11 @@ steps:
 
   - powershell: Start-Sleep -Seconds 60
     displayName: 'wait for 1m'
-    condition: and(succeeded(), eq(variables['Build.Reason'], 'ResourceTrigger'))
+    condition: |
+      and(
+        succeeded(),
+        eq(variables['Build.Reason'], 'ResourceTrigger')
+      )
 
   - task: Npm@1
     displayName: 'run dev env tests'
@@ -91,19 +87,6 @@ steps:
       command: custom
       verbose: false
       customCommand: 'run codeceptjs:prod:headless'
-
-  - task: Npm@1
-    displayName: 'run sms tests'
-    continueOnError: true
-    condition: |
-      and(
-        succeeded(),
-        eq(variables['Resources.TriggeringAlias'], 'sms')
-      )
-    inputs:
-      command: custom
-      verbose: false
-      customCommand: 'cross-env url=sms-app.example.com codeceptjs run --grep "\@common|\@sms"'
 
   - task: PublishPipelineArtifact@1
     displayName: 'publish data'
