@@ -23,29 +23,37 @@ resources:
             - master
             - development
 
+    - pipeline: sms
+      project: SMS Publisher
+      source: SMSApp
+      trigger:
+        branches:
+          include:
+            - develop
+
 steps:
   - task: NodeTool@0
-    displayName: "use node 14"
+    displayName: 'use node 14'
     inputs:
       versionSpec: 14.x
       checkLatest: true
 
   - checkout: self
-    displayName: "checkout"
+    displayName: 'checkout'
 
   - task: Npm@1
-    displayName: "npm ci"
+    displayName: 'npm ci'
     inputs:
       command: custom
       verbose: false
-      customCommand: "ci --only=prod"
+      customCommand: 'ci --only=prod'
 
   - powershell: Start-Sleep -Seconds 60
-    displayName: "wait for 1m"
+    displayName: 'wait for 1m'
     condition: and(succeeded(), eq(variables['Build.Reason'], 'ResourceTrigger'))
 
   - task: Npm@1
-    displayName: "run dev env tests"
+    displayName: 'run dev env tests'
     continueOnError: true
     condition: |
       and(
@@ -62,10 +70,10 @@ steps:
     inputs:
       command: custom
       verbose: false
-      customCommand: "run codeceptjs:dev:headless"
+      customCommand: 'run codeceptjs:dev:headless'
 
   - task: Npm@1
-    displayName: "run prod env tests"
+    displayName: 'run prod env tests'
     continueOnError: true
     condition: |
       and(
@@ -82,9 +90,22 @@ steps:
     inputs:
       command: custom
       verbose: false
-      customCommand: "run codeceptjs:prod:headless"
+      customCommand: 'run codeceptjs:prod:headless'
+
+  - task: Npm@1
+    displayName: 'run sms tests'
+    continueOnError: true
+    condition: |
+      and(
+        succeeded(),
+        eq(variables['Resources.TriggeringAlias'], 'sms')
+      )
+    inputs:
+      command: custom
+      verbose: false
+      customCommand: 'cross-env url=sms-app.example.com codeceptjs run --grep "\@common|\@sms"'
 
   - task: PublishPipelineArtifact@1
-    displayName: "publish data"
+    displayName: 'publish data'
     inputs:
       targetPath: $(System.DefaultWorkingDirectory)/output
