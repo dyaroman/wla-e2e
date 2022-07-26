@@ -5,7 +5,7 @@ Feature('main @common');
 
 Scenario('random website', async ({ I }) => {
   const search = new URLSearchParams();
-  const response = await I.makeApiRequest('GET', WEBSITES_DATA);
+  const response = await I.makeApiRequest('GET', `${URL}/${WEBSITES_DATA}`);
   const { env, columns, commit, repoPath, timestamp, websites } =
     await response.json();
   const numberOfWebsites = websites.length;

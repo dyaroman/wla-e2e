@@ -1,30 +1,29 @@
-let URL;
+let URL = process.env.url;
+if (URL !== undefined) {
+  // add protocol if it wasn't passed
+  if (/^https?:\/\//.test(URL) === false) {
+    URL = `https://${URL}`;
+  }
+  // remove trailing slash if it was passed
+  if (/\/$/.test(URL)) {
+    URL = URL.slice(0, -1);
+  }
+}
 
-switch (process.env.NODE_ENV) {
-  case "local":
-    URL = "http://localhost:3000";
-    break;
-  case "prod":
-    URL = "https://prod.example-app.com";
-    break;
-  case "dev":
-  default:
-    URL = "https://dev.example-app.com";
+if (URL === undefined) {
+  switch (process.env.ENV) {
+    case 'local':
+      URL = 'http://localhost:3000';
+      break;
+    case 'prod':
+      URL = 'https://prod.example-app.com';
+      break;
+    case 'dev':
+    default:
+      URL = 'https://dev.example-app.com';
+  }
 }
 
 exports.URL = URL;
 
-let WEBSITES_DATA;
-
-switch (process.env.NODE_ENV) {
-  case "prod":
-    WEBSITES_DATA = "https://prod.example-app.com/websites.data.json";
-    break;
-  case "local":
-  case "dev":
-  default:
-    WEBSITES_DATA = "https://dev.example-app.com/websites.data.json";
-    break;
-}
-
-exports.WEBSITES_DATA = WEBSITES_DATA;
+exports.WEBSITES_DATA = 'websites.data.json';
