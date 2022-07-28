@@ -23,13 +23,13 @@ resources:
             - master
             - development
 
-    - pipeline: sms
-      project: SMS Publisher
-      source: SMSApp
-      trigger:
-        branches:
-          include:
-            - develop
+#    - pipeline: sms
+#      project: SMS Publisher
+#      source: SMSApp
+#      trigger:
+#        branches:
+#          include:
+#            - develop
 
 steps:
   - task: NodeTool@0
