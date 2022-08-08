@@ -1,6 +1,6 @@
 const { URL } = require('../config');
 
-Feature('no data to show @common');
+Feature('no data to show #common');
 
 Scenario('not existing website', ({ I }) => {
   I.amOnPage(URL);

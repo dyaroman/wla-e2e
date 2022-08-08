@@ -1,7 +1,7 @@
 const { URL, WEBSITES_DATA } = require('../config');
 const { getRandomNumber, fromCamelCaseToWords } = require('../functions');
 
-Feature('parse url @common');
+Feature('parse url #common');
 
 Scenario('filters', async ({ I }) => {
   const search = new URLSearchParams();

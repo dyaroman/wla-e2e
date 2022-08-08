@@ -1,6 +1,6 @@
 const { URL, WEBSITES_DATA } = require('../config');
 
-Feature('project info @sms');
+Feature('project info #sms');
 
 Scenario('check title', async ({ I }) => {
   const response = await I.makeApiRequest('GET', `${URL}/${WEBSITES_DATA}`);

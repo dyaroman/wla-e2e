@@ -2,6 +2,7 @@ trigger:
   branches:
     include:
       - master
+      - feature/*
 
 pool:
   name: CI-POOL-0
@@ -23,13 +24,13 @@ resources:
             - master
             - development
 
-#    - pipeline: sms
-#      project: SMS Publisher
-#      source: SMSApp
-#      trigger:
-#        branches:
-#          include:
-#            - develop
+    - pipeline: sms
+      project: SMS Publisher
+      source: SMSApp
+      trigger:
+        branches:
+          include:
+            - develop
 
 steps:
   - task: NodeTool@0
@@ -48,65 +49,69 @@ steps:
       verbose: false
       customCommand: 'ci --only=prod'
 
-  - powershell: Start-Sleep -Seconds 60
-    displayName: 'wait for 1m'
-    condition: |
-      and(
-        succeeded(),
-        and(
-          eq(variables['Build.Reason'], 'ResourceTrigger'),
-          ne(variables['Resources.TriggeringAlias'], 'sms')
-        )
-      )
+  #  - powershell: Start-Sleep -Seconds 60
+  #    displayName: 'wait for 1m'
+  #    condition: |
+  #      and(
+  #        succeeded(),
+  #        and(
+  #          eq(variables['Build.Reason'], 'ResourceTrigger'),
+  #          ne(variables['Resources.TriggeringAlias'], 'sms')
+  #        )
+  #      )
 
-  - task: Npm@1
-    displayName: 'run dev env tests'
-    continueOnError: true
-    condition: |
-      and(
-        succeeded(),
-        or(
-          ne(variables['Build.Reason'], 'ResourceTrigger'),
-          eq(variables['Resources.TriggeringAlias'], 'app'),
-          and(
-            eq(variables['Resources.TriggeringAlias'], 'data'),
-            eq(variables['resources.pipeline.data.sourceBranch'], 'refs/heads/development')
-          )
-        )
-      )
-    inputs:
-      command: custom
-      verbose: false
-      customCommand: 'run codeceptjs:dev:headless'
-
-  - task: Npm@1
-    displayName: 'run prod env tests'
-    continueOnError: true
-    condition: |
-      and(
-        succeeded(),
-        or(
-          ne(variables['Build.Reason'], 'ResourceTrigger'),
-          eq(variables['Resources.TriggeringAlias'], 'app'),
-          and(
-            eq(variables['Resources.TriggeringAlias'], 'data'),
-            eq(variables['resources.pipeline.data.sourceBranch'], 'refs/heads/master')
-          )
-        )
-      )
-    inputs:
-      command: custom
-      verbose: false
-      customCommand: 'run codeceptjs:prod:headless'
-
-  #  - powershell: npx cross-env url=sms-app.example.com codeceptjs run --grep --% "@common|@sms"
-  #    displayName: 'run sms tests'
+  #  - task: Npm@1
+  #    displayName: 'run dev env tests'
   #    continueOnError: true
   #    condition: |
   #      and(
   #        succeeded(),
-  #        eq(variables['Resources.TriggeringAlias'], 'sms')
+  #        or(
+  #          ne(variables['Build.Reason'], 'ResourceTrigger'),
+  #          eq(variables['Resources.TriggeringAlias'], 'app'),
+  #          and(
+  #            eq(variables['Resources.TriggeringAlias'], 'data'),
+  #            eq(variables['resources.pipeline.data.sourceBranch'], 'refs/heads/development')
+  #          )
+  #        )
   #      )
+  #    inputs:
+  #      command: custom
+  #      verbose: false
+  #      customCommand: 'run codeceptjs:dev:headless'
+
+  #  - task: Npm@1
+  #    displayName: 'run prod env tests'
+  #    continueOnError: true
+  #    condition: |
+  #      and(
+  #        succeeded(),
+  #        or(
+  #          ne(variables['Build.Reason'], 'ResourceTrigger'),
+  #          eq(variables['Resources.TriggeringAlias'], 'app'),
+  #          and(
+  #            eq(variables['Resources.TriggeringAlias'], 'data'),
+  #            eq(variables['resources.pipeline.data.sourceBranch'], 'refs/heads/master')
+  #          )
+  #        )
+  #      )
+  #    inputs:
+  #      command: custom
+  #      verbose: false
+  #      customCommand: 'run codeceptjs:prod:headless'
+
+  - task: Npm@1
+    displayName: 'run sms tests'
+    continueOnError: true
+    #    condition: |
+    #      and(
+    #        succeeded(),
+    #        eq(variables['Resources.TriggeringAlias'], 'sms')
+    #      )
+    inputs:
+      command: custom
+      verbose: false
+      customCommand: 'run codeceptjs:sms:headless'
 
   - task: PublishPipelineArtifact@1
     displayName: 'publish data'
