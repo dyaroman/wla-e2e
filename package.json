@@ -1,12 +1,12 @@
 {
   "private": true,
   "scripts": {
-    "codeceptjs:local": "cross-env ENV=local codeceptjs run --steps",
-    "codeceptjs:local:headless": "cross-env ENV=local HEADLESS=true codeceptjs run --steps",
-    "codeceptjs:dev": "cross-env ENV=dev codeceptjs run --steps",
-    "codeceptjs:dev:headless": "cross-env ENV=dev HEADLESS=true codeceptjs run --steps",
-    "codeceptjs:prod": "cross-env ENV=prod codeceptjs run --steps",
-    "codeceptjs:prod:headless": "cross-env ENV=prod HEADLESS=true codeceptjs run --steps"
+    "codeceptjs:local": "cross-env ENV=local codeceptjs run",
+    "codeceptjs:local:headless": "cross-env ENV=local HEADLESS=true codeceptjs run",
+    "codeceptjs:dev": "cross-env ENV=dev codeceptjs run",
+    "codeceptjs:dev:headless": "cross-env ENV=dev HEADLESS=true codeceptjs run",
+    "codeceptjs:prod": "cross-env ENV=prod codeceptjs run",
+    "codeceptjs:prod:headless": "cross-env ENV=prod HEADLESS=true codeceptjs run"
   },
   "husky": {
     "hooks": {
