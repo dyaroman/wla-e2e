@@ -1,6 +1,6 @@
 const { URL } = require('../config');
 
-Feature('equal @static');
+Feature('equal #static');
 
 Scenario('campaignId: 1', async ({ I }) => {
   I.amOnPage(URL);

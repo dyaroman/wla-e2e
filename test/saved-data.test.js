@@ -2,7 +2,7 @@ const { URL } = require('../config');
 
 const isProd = process.env.ENV === 'prod';
 
-Feature('saved data @static');
+Feature('saved data #static');
 
 const websites = {
   'bad-credit-loans.co': {
