@@ -34,7 +34,7 @@ Scenario('random website', async ({ I }) => {
     I.seeAttributesOnElements(`[data-qa="commit"]`, {
       href: `https://dev.azure.com/example-org/${repoPath}/commit/${commit}`,
     });
-    I.seeTextEquals(commit.slice(0, 10), `[data-qa="commit"]`);
+    I.seeTextEquals(commit.slice(0, 8), `[data-qa="commit"]`);
   }
   if (numberOfWebsites === 1) {
     I.seeTextEquals(
