@@ -3,8 +3,6 @@
   "scripts": {
     "codeceptjs:local": "cross-env ENV=local codeceptjs run --steps",
     "codeceptjs:local:headless": "cross-env ENV=local HEADLESS=true codeceptjs run --steps",
-    "codeceptjs:sms": "cross-env url=sms-app.example.com codeceptjs run --steps --grep '#common|#sms'",
-    "codeceptjs:sms:headless": "cross-env HEADLESS=true url=sms-app.example.com codeceptjs run --steps --grep '#common|#sms'",
     "codeceptjs:dev": "cross-env ENV=dev codeceptjs run --steps",
     "codeceptjs:dev:headless": "cross-env ENV=dev HEADLESS=true codeceptjs run --steps",
     "codeceptjs:prod": "cross-env ENV=prod codeceptjs run --steps",
