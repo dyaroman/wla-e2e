@@ -30,7 +30,7 @@ resources:
             - develop
 
 jobs:
-  - job: static websites
+  - job: static_websites
     condition: |
       ne(variables['Resources.TriggeringAlias'], 'sms')
     pool:
@@ -105,7 +105,7 @@ jobs:
         inputs:
           targetPath: $(System.DefaultWorkingDirectory)/output
 
-  - job: sms static websites
+  - job: sms_static_websites
     condition: |
       eq(variables['Resources.TriggeringAlias'], 'sms')
     pool:
