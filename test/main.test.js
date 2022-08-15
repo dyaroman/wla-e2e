@@ -114,10 +114,7 @@ Scenario('random website', async ({ I }) => {
         I.seeAttributesOnElements(`tbody [data-qa="${key}"]`, {
           'data-title': fromCamelCaseToWords(key),
         });
-        I.seeTextEquals(
-          String(websiteData[key]).trim(),
-          `tbody [data-qa="${key}"]`
-        );
+        I.seeTextEquals(String(websiteData[key]), `tbody [data-qa="${key}"]`);
     }
   }
   I.click(`[data-qa="clearAll"]`);
