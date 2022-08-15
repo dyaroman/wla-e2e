@@ -10,23 +10,23 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged"
+      "pre-commit": "./node_modules/.bin/nano-staged"
     }
   },
-  "lint-staged": {
+  "nano-staged": {
     "**/*": "prettier --write --ignore-unknown"
   },
   "dependencies": {
     "@codeceptjs/configure": "^0.8.0",
-    "@codeceptjs/ui": "^0.4.6",
+    "@codeceptjs/ui": "^0.4.7",
     "codeceptjs": "^3.3.4",
     "cross-env": "^7.0.3",
-    "playwright": "^1.23.4"
+    "playwright": "^1.25.0"
   },
   "devDependencies": {
     "@codeceptjs/examples": "^1.2.1",
     "husky": "^4.3.8",
-    "lint-staged": "^12.5.0",
+    "nano-staged": "^0.8.0",
     "prettier": "^2.7.1"
   }
 }
