@@ -1,8 +1,8 @@
 const { URL } = require('../config');
 
-Feature('equal #static');
+Feature('strict not equal search');
 
-Scenario('campaignId: 1', async ({ I }) => {
+Scenario('campaignId: 1 #static', async ({ I }) => {
   I.amOnPage(URL);
   I.waitForElement('table', 60);
 
@@ -13,7 +13,7 @@ Scenario('campaignId: 1', async ({ I }) => {
     throw new Error('Error due to filter websites by "campaignId": "1"');
   }
 
-  I.fillField('[data-qa="campaignId"]', '=1');
+  I.fillField('[data-qa="campaignId"]', '!=1');
   const numberOfEqual = await I.grabNumberOfVisibleElements('tbody tr');
   console.log({
     numberOfAll,
@@ -21,11 +21,11 @@ Scenario('campaignId: 1', async ({ I }) => {
     numberOfEqual,
   });
   if (numberOfEqual === 0 || numberOfEqual === numberOfInclude) {
-    throw new Error('Error due to filter websites by "campaignId": "=1"');
+    throw new Error('Error due to filter websites by "campaignId": "!=1"');
   }
 });
 
-Scenario('mainForm: 1q_pd_im', async ({ I }) => {
+Scenario('mainForm: 1q_pd_im #static', async ({ I }) => {
   I.amOnPage(URL);
   I.waitForElement('table', 60);
 
@@ -36,7 +36,7 @@ Scenario('mainForm: 1q_pd_im', async ({ I }) => {
     throw new Error('Error due to filter websites by "mainForm": "1q_pd_im"');
   }
 
-  I.fillField('[data-qa="mainForm"]', '=1q_pd_im');
+  I.fillField('[data-qa="mainForm"]', '!=1q_pd_im');
   const numberOfEqual = await I.grabNumberOfVisibleElements('tbody tr');
   console.log({
     numberOfAll,
@@ -44,6 +44,31 @@ Scenario('mainForm: 1q_pd_im', async ({ I }) => {
     numberOfEqual,
   });
   if (numberOfEqual === 0 || numberOfEqual === numberOfInclude) {
-    throw new Error('Error due to filter websites by "mainForm": "=1q_pd_im"');
+    throw new Error('Error due to filter websites by "mainForm": "!=1q_pd_im"');
+  }
+});
+
+Scenario('mainForm: 1q #sms', async ({ I }) => {
+  I.amOnPage(URL);
+  I.waitForElement('table', 60);
+
+  const numberOfAll = await I.grabNumberOfVisibleElements('tbody tr');
+  I.fillField('[data-qa="mainForm"]', '1q_tcpa_v2');
+  const numberOfInclude = await I.grabNumberOfVisibleElements('tbody tr');
+  if (numberOfInclude === numberOfAll) {
+    throw new Error('Error due to filter websites by "mainForm": "1q_tcpa_v2"');
+  }
+
+  I.fillField('[data-qa="mainForm"]', '!=1q_tcpa_v2');
+  const numberOfEqual = await I.grabNumberOfVisibleElements('tbody tr');
+  console.log({
+    numberOfAll,
+    numberOfInclude,
+    numberOfEqual,
+  });
+  if (numberOfEqual === 0 || numberOfEqual === numberOfInclude) {
+    throw new Error(
+      'Error due to filter websites by "mainForm": "!=1q_tcpa_v2"'
+    );
   }
 });

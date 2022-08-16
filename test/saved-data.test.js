@@ -10,8 +10,12 @@ const websites = {
     template: 'BCL',
     campaignId: 251583,
     mainForm: '1q_pd_im',
+    // todo: uncomment after refactoring form options on websites
+    // mainFormTheme: 'theme2',
     mainLeadType: 19,
     altForm: '1q_36',
+    // todo: uncomment after refactoring form options on websites
+    // altFormTheme: 'theme2',
     altLeadType: 57,
     owner: 'Christian',
     gtmKey: 'GTM-TNP7LR',
@@ -32,8 +36,12 @@ const websites = {
     template: 'WRL',
     campaignId: 241355,
     mainForm: '1q_pd_im',
+    // todo: uncomment after refactoring form options on websites
+    // mainFormTheme: 'no_data',
     mainLeadType: 19,
     altForm: '1q_36',
+    // todo: uncomment after refactoring form options on websites
+    // altFormTheme: 'no_data',
     altLeadType: 57,
     owner: 'Brian',
     gtmKey: 'GTM-TNP7LR',
