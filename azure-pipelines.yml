@@ -5,6 +5,9 @@ trigger:
       - master
       - feature/*
 
+pool:
+  name: CI-POOL-0
+
 resources:
   pipelines:
     - pipeline: app
@@ -30,106 +33,74 @@ resources:
           include:
             - develop
 
-jobs:
-  - job: static_websites
+steps:
+  - task: NodeTool@0
+    displayName: 'use node 14'
+    inputs:
+      versionSpec: 14.x
+      checkLatest: true
+
+  - checkout: self
+    displayName: 'checkout'
+
+  - task: Npm@1
+    displayName: 'npm ci'
+    inputs:
+      command: custom
+      verbose: false
+      customCommand: 'ci --only=prod'
+
+  - powershell: Start-Sleep -Seconds 60
+    displayName: 'wait for 1m'
     condition: |
-      or(
-        ne(variables['Build.Reason'], 'ResourceTrigger'),
+      and(
+        succeeded(),
+        eq(variables['Build.Reason'], 'ResourceTrigger'),
         ne(variables['Resources.TriggeringAlias'], 'sms')
       )
-    pool:
-      name: CI-POOL-0
-    steps:
-      - task: NodeTool@0
-        displayName: 'use node 14'
-        inputs:
-          versionSpec: 14.x
-          checkLatest: true
 
-      - checkout: self
-        displayName: 'checkout'
-
-      - task: Npm@1
-        displayName: 'npm ci'
-        inputs:
-          command: custom
-          verbose: false
-          customCommand: 'ci --only=prod'
-
-      - powershell: Start-Sleep -Seconds 60
-        displayName: 'wait for 1m'
-        condition: |
+  - powershell: npx cross-env HEADLESS=true url=dev.example-app.com env=dev codeceptjs run --grep "#static"
+    displayName: 'run dev env tests'
+    continueOnError: true
+    condition: |
+      and(
+        succeeded(),
+        or(
+          ne(variables['Build.Reason'], 'ResourceTrigger'),
+          eq(variables['Resources.TriggeringAlias'], 'app'),
           and(
-            succeeded(),
-            eq(variables['Build.Reason'], 'ResourceTrigger')
+            eq(variables['Resources.TriggeringAlias'], 'data'),
+            eq(variables['resources.pipeline.data.sourceBranch'], 'refs/heads/development')
           )
+        )
+      )
 
-      - powershell: npx cross-env HEADLESS=true url=dev.example-app.com env=dev codeceptjs run --grep "#static"
-        displayName: 'run dev env tests'
-        continueOnError: true
-        condition: |
+  - powershell: npx cross-env HEADLESS=true url=prod.example-app.com env=prod codeceptjs run --grep "#static"
+    displayName: 'run prod env tests'
+    continueOnError: true
+    condition: |
+      and(
+        succeeded(),
+        or(
+          ne(variables['Build.Reason'], 'ResourceTrigger'),
+          eq(variables['Resources.TriggeringAlias'], 'app'),
           and(
-            succeeded(),
-            or(
-              ne(variables['Build.Reason'], 'ResourceTrigger'),
-              eq(variables['Resources.TriggeringAlias'], 'app'),
-              and(
-                eq(variables['Resources.TriggeringAlias'], 'data'),
-                eq(variables['resources.pipeline.data.sourceBranch'], 'refs/heads/development')
-              )
-            )
+            eq(variables['Resources.TriggeringAlias'], 'data'),
+            eq(variables['resources.pipeline.data.sourceBranch'], 'refs/heads/master')
           )
+        )
+      )
 
-      - powershell: npx cross-env HEADLESS=true url=prod.example-app.com env=prod codeceptjs run --grep "#static"
-        displayName: 'run prod env tests'
-        continueOnError: true
-        condition: |
-          and(
-            succeeded(),
-            or(
-              ne(variables['Build.Reason'], 'ResourceTrigger'),
-              eq(variables['Resources.TriggeringAlias'], 'app'),
-              and(
-                eq(variables['Resources.TriggeringAlias'], 'data'),
-                eq(variables['resources.pipeline.data.sourceBranch'], 'refs/heads/master')
-              )
-            )
-          )
-
-      - task: PublishPipelineArtifact@1
-        displayName: 'publish data'
-        inputs:
-          targetPath: $(System.DefaultWorkingDirectory)/output
-
-  - job: sms_static_websites
+  - powershell: npx cross-env HEADLESS=true url=sms-app.example.com codeceptjs run --grep "#sms"
+    displayName: 'run sms static websites tests'
+    continueOnError: true
     condition: |
       or(
         ne(variables['Build.Reason'], 'ResourceTrigger'),
         eq(variables['Resources.TriggeringAlias'], 'sms')
       )
-    pool:
-      vmImage: 'ubuntu-20.04'
-    steps:
-      - task: NodeTool@0
-        displayName: 'use node 14'
-        inputs:
-          versionSpec: 14.x
-          checkLatest: true
 
-      - checkout: self
-        displayName: 'checkout'
-
-      - task: Npm@1
-        displayName: 'npm ci'
-        inputs:
-          command: custom
-          verbose: false
-          customCommand: 'ci --only=prod'
-
-      - bash: npx cross-env HEADLESS=true url=sms-app.example.com codeceptjs run --grep "#sms"
-        displayName: 'run sms static websites tests'
-
-      - task: PublishPipelineArtifact@1
-        displayName: 'publish data'
-        inputs:
-          targetPath: $(System.DefaultWorkingDirectory)/output
+  - task: PublishPipelineArtifact@1
+    displayName: 'publish data'
+    inputs:
+      targetPath: $(System.DefaultWorkingDirectory)/output
