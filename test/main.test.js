@@ -1,7 +1,7 @@
 const { getRandomNumber, fromCamelCaseToWords } = require('../functions');
 const { URL, WEBSITES_DATA } = require('../config');
 
-Feature('main #common');
+Feature('main #static #sms');
 
 Scenario('random website', async ({ I }) => {
   const search = new URLSearchParams();

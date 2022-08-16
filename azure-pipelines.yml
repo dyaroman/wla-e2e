@@ -64,7 +64,7 @@ jobs:
             eq(variables['Build.Reason'], 'ResourceTrigger')
           )
 
-      - task: Npm@1
+      - powershell: npx cross-env HEADLESS=true url=dev.example-app.com env=dev codeceptjs run --grep "#static"
         displayName: 'run dev env tests'
         continueOnError: true
         condition: |
@@ -79,12 +79,8 @@ jobs:
               )
             )
           )
-        inputs:
-          command: custom
-          verbose: false
-          customCommand: 'run codeceptjs:dev:headless'
 
-      - task: Npm@1
+      - powershell: npx cross-env HEADLESS=true url=prod.example-app.com env=prod codeceptjs run --grep "#static"
         displayName: 'run prod env tests'
         continueOnError: true
         condition: |
@@ -99,10 +95,6 @@ jobs:
               )
             )
           )
-        inputs:
-          command: custom
-          verbose: false
-          customCommand: 'run codeceptjs:prod:headless'
 
       - task: PublishPipelineArtifact@1
         displayName: 'publish data'
@@ -134,7 +126,7 @@ jobs:
           verbose: false
           customCommand: 'ci --only=prod'
 
-      - bash: npx cross-env HEADLESS=true url=sms-app.example.com codeceptjs run --grep "#common|#sms"
+      - bash: npx cross-env HEADLESS=true url=sms-app.example.com codeceptjs run --grep "#sms"
         displayName: 'run sms static websites tests'
 
       - task: PublishPipelineArtifact@1
