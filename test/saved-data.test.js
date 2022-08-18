@@ -1,4 +1,5 @@
-const { URL } = require('../config');
+const { URL } = require('../misc/config');
+const { NO_DATA } = require('../misc/consts');
 
 const isProd = process.env.ENV === 'prod';
 
@@ -10,12 +11,10 @@ const websites = {
     template: 'BCL',
     campaignId: 251583,
     mainForm: '1q_pd_im',
-    // todo: uncomment after refactoring form options on websites
-    // mainFormTheme: 'theme2',
+    mainFormTheme: 'theme2',
     mainLeadType: 19,
     altForm: '1q_36',
-    // todo: uncomment after refactoring form options on websites
-    // altFormTheme: 'theme2',
+    altFormTheme: 'theme2',
     altLeadType: 57,
     owner: 'Christian',
     gtmKey: 'GTM-TNP7LR',
@@ -30,18 +29,19 @@ const websites = {
       'Springates Building, Lower Government Road, Charlestown, Nevis, ',
     address2: 'Saint Kitts and Nevis',
     tags: ['freshmarketer', 'index btn'],
+    host: isProd ? 'bad-credit-loans.co' : 'bad-credit-loans_co.example-app.com',
+    mainFormPrimaryColor: '#FE6645',
+    altFormPrimaryColor: '#FE6645',
   },
   'WhiteRockLoans.com': {
     website: 'WhiteRockLoans.com',
     template: 'WRL',
     campaignId: 241355,
     mainForm: '1q_pd_im',
-    // todo: uncomment after refactoring form options on websites
-    // mainFormTheme: 'no_data',
+    mainFormTheme: NO_DATA,
     mainLeadType: 19,
     altForm: '1q_36',
-    // todo: uncomment after refactoring form options on websites
-    // altFormTheme: 'no_data',
+    altFormTheme: NO_DATA,
     altLeadType: 57,
     owner: 'Brian',
     gtmKey: 'GTM-TNP7LR',
@@ -62,6 +62,9 @@ const websites = {
       'sc',
       'unsubscribe',
     ],
+    host: isProd ? 'whiterockloans.com' : 'whiterockloans_com.example-app.com',
+    mainFormPrimaryColor: 'no_data',
+    altFormPrimaryColor: 'no_data',
   },
 };
 
@@ -71,12 +74,19 @@ for (const website in websites) {
     I.amOnPage(URL);
     I.waitForElement('table', 60);
     for (const key in data) {
-      if (key === 'tags') {
-        for (const tag of data[key]) {
-          I.click(`.filters [data-qa="${tag}"]`);
-        }
-      } else {
-        I.fillField(`[data-qa="${key}"]`, data[key]);
+      switch (key) {
+        case 'tags':
+          for (const tag of data[key]) {
+            I.click(`.filters [data-qa="${tag}"]`);
+          }
+          break;
+        case 'host':
+        case 'mainFormPrimaryColor':
+        case 'altFormPrimaryColor':
+          break;
+        default:
+          I.fillField(`[data-qa="${key}"]`, data[key]);
+          break;
       }
     }
     I.seeTextEquals(`Website: 1`, `[data-qa="websitesNumber"]`);

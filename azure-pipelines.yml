@@ -59,7 +59,7 @@ steps:
         ne(variables['Resources.TriggeringAlias'], 'sms')
       )
 
-  - powershell: npx cross-env HEADLESS=true url=dev.example-app.com env=dev codeceptjs run --grep "#static"
+  - powershell: npx cross-env HEADLESS=true url=dev.example-app.com ENV=dev codeceptjs run --grep "#static"
     displayName: 'run dev env tests'
     continueOnError: true
     condition: |
@@ -75,7 +75,7 @@ steps:
         )
       )
 
-  - powershell: npx cross-env HEADLESS=true url=prod.example-app.com env=prod codeceptjs run --grep "#static"
+  - powershell: npx cross-env HEADLESS=true url=prod.example-app.com ENV=prod codeceptjs run --grep "#static"
     displayName: 'run prod env tests'
     continueOnError: true
     condition: |

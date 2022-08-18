@@ -1,11 +1,13 @@
-const { getRandomNumber, fromCamelCaseToWords } = require('../functions');
-const { URL, WEBSITES_DATA } = require('../config');
+const { getRandomNumber, fromCamelCaseToWords } = require('../misc/functions');
+const { URL, WEBSITES_DATA } = require('../misc/config');
+const { NO_DATA } = require('../misc/consts');
+const { rgb2hex } = require('../misc/color');
 
 Feature('main #static #sms');
 
 Scenario('random website', async ({ I }) => {
   const search = new URLSearchParams();
-  const response = await I.makeApiRequest('GET', `${URL}/${WEBSITES_DATA}`);
+  const response = await I.makeApiRequest('GET', `${URL}/${WEBSITES_DATA}`, {});
   const { env, columns, commit, repoPath, timestamp, websites } =
     await response.json();
   const numberOfWebsites = websites.length;
@@ -16,6 +18,7 @@ Scenario('random website', async ({ I }) => {
   );
   I.amOnPage(URL);
   I.waitForElement('table', 60);
+
   if (env === undefined) {
     I.seeInTitle('Websites List App');
     I.dontSeeElement(`[data-qa="env"]`);
@@ -23,11 +26,13 @@ Scenario('random website', async ({ I }) => {
     I.seeInTitle(`[${env}]: Websites List App`);
     I.seeTextEquals(`env: ${env}`, `[data-qa="env"]`);
   }
+
   if (timestamp === undefined) {
     I.dontSeeElement(`[data-qa="timestamp"]`);
   } else {
     I.seeTextEquals(`Data last updated: ${timestamp}`, `[data-qa="timestamp"]`);
   }
+
   if (repoPath === undefined || commit === undefined) {
     I.dontSeeElement(`[data-qa="commit"]`);
   } else {
@@ -36,6 +41,7 @@ Scenario('random website', async ({ I }) => {
     });
     I.seeTextEquals(commit.slice(0, 8), `[data-qa="commit"]`);
   }
+
   if (numberOfWebsites === 1) {
     I.seeTextEquals(
       `Website: ${numberOfWebsites}`,
@@ -47,6 +53,7 @@ Scenario('random website', async ({ I }) => {
       `[data-qa="websitesNumber"]`
     );
   }
+
   I.seeNumberOfVisibleElements(`.field-title`, columns.length);
   for (const column of columns) {
     switch (column) {
@@ -61,6 +68,7 @@ Scenario('random website', async ({ I }) => {
         });
     }
   }
+
   for (const key in websiteData) {
     switch (key) {
       case 'tags':
@@ -77,6 +85,9 @@ Scenario('random website', async ({ I }) => {
           1
         );
         break;
+      case 'mainFormPrimaryColor':
+      case 'altFormPrimaryColor':
+        break;
       default:
         if (websiteData[key] !== '') {
           search.set(key, websiteData[key]);
@@ -84,12 +95,14 @@ Scenario('random website', async ({ I }) => {
         }
     }
   }
+
   I.seeCurrentUrlEquals(`${URL}/?${search}`);
   I.seeNumberOfVisibleElements('tbody tr', 1);
   I.seeTextEquals(`1`, `[data-qa="#"]`);
   I.seeAttributesOnElements(`[data-qa="#"]`, {
     'data-title': '#',
   });
+
   for (const key in websiteData) {
     switch (key) {
       case 'website':
@@ -110,6 +123,22 @@ Scenario('random website', async ({ I }) => {
         break;
       case 'host':
         break;
+      case 'mainFormPrimaryColor':
+      case 'altFormPrimaryColor':
+        if (websiteData[key] === NO_DATA) return;
+        const selector =
+          key === 'mainFormPrimaryColor' ? 'mainFormTheme' : 'altFormTheme';
+        const bgColorRgb = await I.grabCssPropertyFrom(
+          `td[data-qa="${selector}"]`,
+          'background-color'
+        );
+        const bgColor = rgb2hex(
+          bgColorRgb.replace('rgb(', '').replace(')', '').split(', ')
+        );
+        if (bgColor.toLowerCase() !== websiteData[key].toLowerCase()) {
+          throw new Error(`background color is wrong, please check`);
+        }
+        break;
       default:
         I.seeAttributesOnElements(`tbody [data-qa="${key}"]`, {
           'data-title': fromCamelCaseToWords(key),
@@ -117,8 +146,10 @@ Scenario('random website', async ({ I }) => {
         I.seeTextEquals(String(websiteData[key]), `tbody [data-qa="${key}"]`);
     }
   }
+
   I.click(`[data-qa="clearAll"]`);
   I.seeInCurrentUrl(URL);
+
   for (const key in websiteData) {
     switch (key) {
       case 'tags':
@@ -129,6 +160,9 @@ Scenario('random website', async ({ I }) => {
           `a[href="https://${websiteData[key]}"]`,
           1
         );
+        break;
+      case 'mainFormPrimaryColor':
+      case 'altFormPrimaryColor':
         break;
       default:
         I.seeInField(`[data-qa="${key}"]`, '');

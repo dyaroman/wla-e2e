@@ -1,4 +1,4 @@
-const { URL } = require('../config');
+const { URL } = require('../misc/config');
 
 Feature('no data to show #static #sms');
 

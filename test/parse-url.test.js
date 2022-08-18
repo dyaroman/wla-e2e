@@ -1,11 +1,13 @@
-const { URL, WEBSITES_DATA } = require('../config');
-const { getRandomNumber, fromCamelCaseToWords } = require('../functions');
+const { URL, WEBSITES_DATA } = require('../misc/config');
+const { getRandomNumber, fromCamelCaseToWords } = require('../misc/functions');
+const { NO_DATA } = require('../misc/consts');
+const { rgb2hex } = require('../misc/color');
 
 Feature('parse url #static #sms');
 
 Scenario('filters', async ({ I }) => {
   const search = new URLSearchParams();
-  const response = await I.makeApiRequest('GET', `${URL}/${WEBSITES_DATA}`);
+  const response = await I.makeApiRequest('GET', `${URL}/${WEBSITES_DATA}`, {});
   const { websites } = await response.json();
   const numberOfWebsites = websites.length;
   const randomNumber = getRandomNumber(0, numberOfWebsites - 1);
@@ -22,6 +24,8 @@ Scenario('filters', async ({ I }) => {
         }
         break;
       case 'host':
+      case 'mainFormPrimaryColor':
+      case 'altFormPrimaryColor':
         break;
       default:
         search.set(key, websiteData[key]);
@@ -51,6 +55,22 @@ Scenario('filters', async ({ I }) => {
         break;
       case 'host':
         break;
+      case 'mainFormPrimaryColor':
+      case 'altFormPrimaryColor':
+        if (websiteData[key] === NO_DATA) return;
+        const selector =
+          key === 'mainFormPrimaryColor' ? 'mainFormTheme' : 'altFormTheme';
+        const bgColorRgb = await I.grabCssPropertyFrom(
+          `td[data-qa="${selector}"]`,
+          'background-color'
+        );
+        const bgColor = rgb2hex(
+          bgColorRgb.replace('rgb(', '').replace(')', '').split(', ')
+        );
+        if (bgColor.toLowerCase() !== websiteData[key].toLowerCase()) {
+          throw new Error(`background color is wrong, please check`);
+        }
+        break;
       default:
         I.seeAttributesOnElements(`tbody [data-qa="${key}"]`, {
           'data-title': fromCamelCaseToWords(key),
@@ -78,6 +98,9 @@ Scenario('filters', async ({ I }) => {
           1
         );
         break;
+      case 'mainFormPrimaryColor':
+      case 'altFormPrimaryColor':
+        break;
       default:
         I.seeInField(`[data-qa="${key}"]`, '');
     }
@@ -86,7 +109,7 @@ Scenario('filters', async ({ I }) => {
 
 Scenario('sorts', async ({ I }) => {
   const search = new URLSearchParams();
-  const response = await I.makeApiRequest('GET', `${URL}/${WEBSITES_DATA}`);
+  const response = await I.makeApiRequest('GET', `${URL}/${WEBSITES_DATA}`, {});
   const { websites } = await response.json();
   const websiteData = websites[websites.length - 1];
   const sorts = {
