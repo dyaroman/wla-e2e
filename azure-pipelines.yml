@@ -16,6 +16,7 @@ resources:
         branches:
           include:
             - master
+            - feature/*
 
     - pipeline: data
       source: StaticWebsites-Data
@@ -32,6 +33,7 @@ resources:
         branches:
           include:
             - develop
+            - feature/*
 
 steps:
   - task: NodeTool@0
