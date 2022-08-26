@@ -97,8 +97,6 @@ Scenario('random website', async ({ I }) => {
   }
 
   I.seeCurrentUrlEquals(`${URL}/?${search}`);
-  I.seeNumberOfVisibleElements('tbody tr', 1);
-  I.seeTextEquals('1', '[data-qa="#"]');
   I.seeAttributesOnElements('[data-qa="#"]', {
     'data-title': '#',
   });
