@@ -68,7 +68,7 @@ Scenario('filters', async ({ I }) => {
           bgColorRgb.replace('rgb(', '').replace(')', '').split(', ')
         );
         if (bgColor.toLowerCase() !== websiteData[key].toLowerCase()) {
-          throw new Error(`background color is wrong, please check`);
+          throw new Error('background color is wrong, please check');
         }
         break;
       default:
@@ -80,17 +80,17 @@ Scenario('filters', async ({ I }) => {
   }
 
   I.seeNumberOfVisibleElements('tbody tr', 1);
-  I.seeTextEquals(`1`, `[data-qa="#"]`);
-  I.seeAttributesOnElements(`[data-qa="#"]`, {
+  I.seeTextEquals('1', '[data-qa="#"]');
+  I.seeAttributesOnElements('[data-qa="#"]', {
     'data-title': '#',
   });
-  I.click(`[data-qa="clearAll"]`);
+  I.click('[data-qa="clearAll"]');
   I.seeInCurrentUrl(URL);
 
   for (const key in websiteData) {
     switch (key) {
       case 'tags':
-        I.dontSeeElement(`[data-tag-active]`);
+        I.dontSeeElement('[data-tag-active]');
         break;
       case 'host':
         I.seeNumberOfVisibleElements(
@@ -125,6 +125,6 @@ Scenario('sorts', async ({ I }) => {
   I.waitForElement('table', 60);
   I.seeTextEquals(
     websiteData['website'],
-    `tbody tr:first-child [data-qa="website"]`
+    'tbody tr:first-child [data-qa="website"]'
   );
 });

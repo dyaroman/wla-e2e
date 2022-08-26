@@ -21,44 +21,44 @@ Scenario('random website', async ({ I }) => {
 
   if (env === undefined) {
     I.seeInTitle('Websites List App');
-    I.dontSeeElement(`[data-qa="env"]`);
+    I.dontSeeElement('[data-qa="env"]');
   } else {
     I.seeInTitle(`[${env}]: Websites List App`);
-    I.seeTextEquals(`env: ${env}`, `[data-qa="env"]`);
+    I.seeTextEquals(`env: ${env}`, '[data-qa="env"]');
   }
 
   if (timestamp === undefined) {
-    I.dontSeeElement(`[data-qa="timestamp"]`);
+    I.dontSeeElement('[data-qa="timestamp"]');
   } else {
-    I.seeTextEquals(`Data last updated: ${timestamp}`, `[data-qa="timestamp"]`);
+    I.seeTextEquals(`Data last updated: ${timestamp}`, '[data-qa="timestamp"]');
   }
 
   if (repoPath === undefined || commit === undefined) {
-    I.dontSeeElement(`[data-qa="commit"]`);
+    I.dontSeeElement('[data-qa="commit"]');
   } else {
-    I.seeAttributesOnElements(`[data-qa="commit"]`, {
+    I.seeAttributesOnElements('[data-qa="commit"]', {
       href: `https://dev.azure.com/example-org/${repoPath}/commit/${commit}`,
     });
-    I.seeTextEquals(commit.slice(0, 8), `[data-qa="commit"]`);
+    I.seeTextEquals(commit.slice(0, 8), '[data-qa="commit"]');
   }
 
   if (numberOfWebsites === 1) {
     I.seeTextEquals(
       `Website: ${numberOfWebsites}`,
-      `[data-qa="websitesNumber"]`
+      '[data-qa="websitesNumber"]'
     );
   } else {
     I.seeTextEquals(
       `Websites: ${numberOfWebsites}`,
-      `[data-qa="websitesNumber"]`
+      '[data-qa="websitesNumber"]'
     );
   }
 
-  I.seeNumberOfVisibleElements(`.field-title`, columns.length);
+  I.seeNumberOfVisibleElements('.field-title', columns.length);
   for (const column of columns) {
     switch (column) {
       case 'tags':
-        I.seeElement(`.field-title .tags`);
+        I.seeElement('.field-title .tags');
         break;
       default:
         I.seeElement(`input[data-qa="${column}"]`);
@@ -98,8 +98,8 @@ Scenario('random website', async ({ I }) => {
 
   I.seeCurrentUrlEquals(`${URL}/?${search}`);
   I.seeNumberOfVisibleElements('tbody tr', 1);
-  I.seeTextEquals(`1`, `[data-qa="#"]`);
-  I.seeAttributesOnElements(`[data-qa="#"]`, {
+  I.seeTextEquals('1', '[data-qa="#"]');
+  I.seeAttributesOnElements('[data-qa="#"]', {
     'data-title': '#',
   });
 
@@ -136,7 +136,7 @@ Scenario('random website', async ({ I }) => {
           bgColorRgb.replace('rgb(', '').replace(')', '').split(', ')
         );
         if (bgColor.toLowerCase() !== websiteData[key].toLowerCase()) {
-          throw new Error(`background color is wrong, please check`);
+          throw new Error('background color is wrong, please check');
         }
         break;
       default:
@@ -147,13 +147,13 @@ Scenario('random website', async ({ I }) => {
     }
   }
 
-  I.click(`[data-qa="clearAll"]`);
+  I.click('[data-qa="clearAll"]');
   I.seeInCurrentUrl(URL);
 
   for (const key in websiteData) {
     switch (key) {
       case 'tags':
-        I.dontSeeElement(`[data-tag-active]`);
+        I.dontSeeElement('[data-tag-active]');
         break;
       case 'host':
         I.seeNumberOfVisibleElements(

@@ -89,7 +89,7 @@ for (const website in websites) {
           break;
       }
     }
-    I.seeTextEquals(`Website: 1`, `[data-qa="websitesNumber"]`);
+    I.seeTextEquals('Website: 1', '[data-qa="websitesNumber"]');
     I.seeNumberOfVisibleElements('tbody tr', 1);
   });
 }
