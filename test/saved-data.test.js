@@ -25,8 +25,7 @@ const websites = {
     email: 'support@bad-credit-loans.co',
     emailLegal: 'legal@bad-credit-loans.co',
     effectiveDate: 'July 1, 2020',
-    address1:
-      'Springates Building, Lower Government Road, Charlestown, Nevis, ',
+    address1: 'Springates Building, Lower Government Road, Charlestown, ',
     address2: 'Saint Kitts and Nevis',
     tags: ['freshmarketer', 'index btn'],
     host: isProd ? 'bad-credit-loans.co' : 'bad-credit-loans_co.example-app.com',
@@ -52,8 +51,7 @@ const websites = {
     email: 'support@WhiteRockLoans.com',
     emailLegal: 'legal@WhiteRockLoans.com',
     effectiveDate: 'July 1, 2020',
-    address1:
-      'Springates Building, Lower Government Road, Charlestown, Nevis, ',
+    address1: 'Springates Building, Lower Government Road, Charlestown, ',
     address2: 'Saint Kitts and Nevis',
     tags: [
       'fixed header',
