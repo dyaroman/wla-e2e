@@ -6,7 +6,7 @@ trigger:
       - feature/*
 
 pool:
-  vmImage: 'windows-2022'
+  name: CI-POOL-0
 
 resources:
   pipelines:
