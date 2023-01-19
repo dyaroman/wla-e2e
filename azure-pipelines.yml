@@ -57,8 +57,7 @@ steps:
     condition: |
       and(
         succeeded(),
-        eq(variables['Build.Reason'], 'ResourceTrigger'),
-        ne(variables['Resources.TriggeringAlias'], 'sms')
+        eq(variables['Resources.TriggeringAlias'], 'data')
       )
 
   - powershell: npx cross-env HEADLESS=true url=dev.example-app.com ENV=dev codeceptjs run --grep "#static"
