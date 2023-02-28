@@ -52,11 +52,12 @@ steps:
       verbose: false
       customCommand: 'ci --only=prod'
 
-  - powershell: | 
-      $ip = Invoke-RestMethod http://ipinfo.io/json
-      Add-WebConfigurationProperty -Filter 'system.webServer/security/ipSecurity' -Name "." -Value @{ipAddress="$ip.ip";allowed="true";} -ErrorAction Stop 
-    displayName: 'Add allow IP'
-    continueOnError: false
+  - task: PowerShellOnTargetMachines@3
+    inputs:
+      Machines: '52.183.62.18'
+      InlineScript: |
+        $ip = Invoke-RestMethod http://ipinfo.io/json
+        Add-WebConfigurationProperty  -Filter 'system.webServer/security/ipSecurity' -Name "." -Value @{ipAddress="$ip.ip";allowed="true";} -ErrorAction Stop
 
   - powershell: Start-Sleep -Seconds 60
     displayName: 'wait for 1m'
