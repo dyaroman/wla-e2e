@@ -52,6 +52,12 @@ steps:
       verbose: false
       customCommand: 'ci --only=prod'
 
+  - powershell: | 
+      $ip = Invoke-RestMethod http://ipinfo.io/json
+      Add-WebConfigurationProperty -Filter 'system.webServer/security/ipSecurity' -Name "." -Value @{ipAddress="$ip.ip";allowed="true";} -ErrorAction Stop 
+    displayName: 'Add allow IP'
+    continueOnError: false
+
   - powershell: Start-Sleep -Seconds 60
     displayName: 'wait for 1m'
     condition: |
@@ -100,6 +106,12 @@ steps:
         ne(variables['Build.Reason'], 'ResourceTrigger'),
         eq(variables['Resources.TriggeringAlias'], 'sms')
       )
+
+  - powershell: |
+      $ip = Invoke-RestMethod http://ipinfo.io/json
+      Remove-WebConfigurationProperty /system.webServer/security/ipSecurity -Name "." -AtElement @{ipAddress="$ip.ip";allowed="true"} -PSPath IIS:\
+    displayName: 'Delete allow IP'
+    continueOnError: false
 
   - task: PublishPipelineArtifact@1
     displayName: 'publish data'
