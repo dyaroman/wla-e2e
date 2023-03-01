@@ -54,7 +54,7 @@ stages:
                       $ipAddress = $ip.ip
                       Write-Host  ipAddress - $ipAddress
                       Write-Host "##vso[task.setvariable variable=ipAddressVar;]$ipAddress"
-                      Write-Host ipAddressVar - $ipAddressVar
+                      Write-Host ipAddressVar - $(ipAddressVar)
 
   - stage: AllowIP
     jobs:
