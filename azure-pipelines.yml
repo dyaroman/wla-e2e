@@ -39,7 +39,7 @@ stages:
   - stage: AllowIP
     jobs:
       - deployment: RunScriptOnVM
-        environment: 'StaticWebSites-Dev'
+        environment: 'StaticWebSites-Dev.EXAMPLE-ENV-DEV'
         strategy:
           runOnce:
             deploy:
