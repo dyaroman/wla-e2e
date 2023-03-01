@@ -54,7 +54,7 @@ stages:
                       $ipAddress = $ip.ip
                       Write-Host  ipAddress - $ipAddress
                       Write-Host "##vso[task.setvariable variable=ipAddressVar;]$ipAddress"
-                      Write-Host ipAddressVar - $(ipAddressVar)
+                      Write-Host ipAddressVar - "$(ipAddressVar)"
 
   - stage: AllowIP
     jobs:
@@ -71,7 +71,7 @@ stages:
                     script: |
                       Import-Module WebAdministration
                       Write-Host ipAddressVar - $(ipAddressVar)
-                      Add-WebConfigurationProperty -Filter 'system.webServer/security/ipSecurity' -Name "." -Value @{ipAddress=$(ipAddressVar);allowed="true";} -ErrorAction Stop
+                      Add-WebConfigurationProperty -Filter 'system.webServer/security/ipSecurity' -Name "." -Value @{ipAddress="$(ipAddressVar)";allowed="true";} -ErrorAction Stop
 
   - stage: MainPart
     jobs:
