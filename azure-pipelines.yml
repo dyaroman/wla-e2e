@@ -55,6 +55,7 @@ stages:
   - stage: MainPart
     jobs:
       - deployment: MainPart
+        environment: 'StaticWebSites-Dev'
         strategy: 
           runOnce:
             deploy:
