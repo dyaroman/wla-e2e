@@ -52,6 +52,7 @@ stages:
                       Import-Module WebAdministration
                       $ip = Invoke-RestMethod http://ipinfo.io/json
                       $ipAddress = $ip.ip
+                      Write-Host $ipAddress
                       Add-WebConfigurationProperty -Filter 'system.webServer/security/ipSecurity' -Name "." -Value @{ipAddress=$ipAddress;allowed="true";} -ErrorAction Stop
 
   - stage: MainPart
