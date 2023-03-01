@@ -42,7 +42,6 @@ stages:
       - deployment: RunScriptOnAgent
         pool:
           vmImage: 'windows-2022'
-        environment: dev
         strategy:
           runOnce:
             deploy:
@@ -79,7 +78,6 @@ stages:
       - deployment: MainPart
         pool:
           vmImage: 'windows-2022'
-        environment: dev 
         strategy: 
           runOnce:
             deploy:
