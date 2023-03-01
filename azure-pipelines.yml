@@ -40,6 +40,7 @@ stages:
   - stage: GetExternalIP
     jobs:
       - deployment: RunScriptOnAgent
+        environment: 'Azure Pipelines'
         strategy:
           runOnce:
             deploy:
@@ -74,6 +75,7 @@ stages:
   - stage: MainPart
     jobs:
       - deployment: MainPart
+        environment: 'Azure Pipelines'
         strategy: 
           runOnce:
             deploy:
