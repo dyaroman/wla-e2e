@@ -53,7 +53,7 @@ stages:
                       $ip = Invoke-RestMethod http://ipinfo.io/json
                       $ipAddress = $ip.ip
                       Write-Host  ipAddress - $ipAddress
-                      Write-Host "##vso[task.setvariable variable=$ipAddress;]$ipAddressVar"
+                      Write-Host "##vso[task.setvariable variable=$ipAddressVar;]$ipAddress"
                       Write-Host ipAddressVar - $ipAddressVar
 
   - stage: AllowIP
