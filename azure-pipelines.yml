@@ -51,7 +51,8 @@ stages:
                     script: |
                       Import-Module WebAdministration
                       $ip = Invoke-RestMethod http://ipinfo.io/json
-                      Add-WebConfigurationProperty -Filter 'system.webServer/security/ipSecurity' -Name "." -Value @{ipAddress="$ip.ip";allowed="true";} -ErrorAction Stop
+                      $ipAddress = $ip.ip
+                      Add-WebConfigurationProperty -Filter 'system.webServer/security/ipSecurity' -Name "." -Value @{ipAddress=$ipAddress;allowed="true";} -ErrorAction Stop
 
   - stage: MainPart
     jobs:
@@ -159,4 +160,5 @@ stages:
                     script: |
                       Import-Module WebAdministration
                       $ip = Invoke-RestMethod http://ipinfo.io/json
-                      Remove-WebConfigurationProperty /system.webServer/security/ipSecurity -Name "." -AtElement @{ipAddress="$ip.ip";allowed="true"} -PSPath IIS:\
+                      $ipAddress = $ip.ip
+                      Remove-WebConfigurationProperty /system.webServer/security/ipSecurity -Name "." -AtElement @{ipAddress=ipAddress;allowed="true"} -PSPath IIS:\
