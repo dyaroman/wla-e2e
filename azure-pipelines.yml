@@ -70,8 +70,8 @@ stages:
                     targetType: inline
                     script: |
                       Import-Module WebAdministration
-                      Write-Host ipAddressVar - $ipAddressVar
-                      Add-WebConfigurationProperty -Filter 'system.webServer/security/ipSecurity' -Name "." -Value @{ipAddress=$ipAddressVar;allowed="true";} -ErrorAction Stop
+                      Write-Host ipAddressVar - $(ipAddressVar)
+                      Add-WebConfigurationProperty -Filter 'system.webServer/security/ipSecurity' -Name "." -Value @{ipAddress=$(ipAddressVar);allowed="true";} -ErrorAction Stop
 
   - stage: MainPart
     jobs:
