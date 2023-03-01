@@ -35,86 +35,125 @@ resources:
             - develop
             - feature/*
 
-steps:
-  - task: NodeTool@0
-    displayName: 'use node 14'
-    inputs:
-      versionSpec: 14.x
-      checkLatest: true
+stages:
+  - stage: AllowIP
+    jobs:
+      - deployment: RunScriptOnVM
+        environment: 'StaticWebSites-Dev'
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - task: PowerShell@2
+                  displayName: 'AlowIP'
+                  inputs:
+                    targetType: inline
+                    script: |
+                      $ip = Invoke-RestMethod http://ipinfo.io/json
+                      Add-WebConfigurationProperty  -Filter 'system.webServer/security/ipSecurity' -Name "." -Value @{ipAddress="$ip.ip";allowed="true";} -ErrorAction Stop
 
-  - checkout: self
-    displayName: 'checkout'
+  - stage: MainPart
+    jobs:
+      - deployment: MainPart
+        strategy: 
+          runOnce:
+            deploy:
+              steps:
+                - task: NodeTool@0
+                  displayName: 'use node 14'
+                  inputs:
+                    versionSpec: 14.x
+                    checkLatest: true
 
-  - task: Npm@1
-    displayName: 'npm ci'
-    inputs:
-      command: custom
-      verbose: false
-      customCommand: 'ci --only=prod'
+                - checkout: self
+                  displayName: 'checkout'
 
-  - task: PowerShellOnTargetMachines@3
-    inputs:
-      Machines: '52.183.62.18'
-      InlineScript: |
-        $ip = Invoke-RestMethod http://ipinfo.io/json
-        Add-WebConfigurationProperty  -Filter 'system.webServer/security/ipSecurity' -Name "." -Value @{ipAddress="$ip.ip";allowed="true";} -ErrorAction Stop
+                - task: Npm@1
+                  displayName: 'npm ci'
+                  inputs:
+                    command: custom
+                    verbose: false
+                    customCommand: 'ci --only=prod'
 
-  - powershell: Start-Sleep -Seconds 60
-    displayName: 'wait for 1m'
-    condition: |
-      and(
-        succeeded(),
-        eq(variables['Resources.TriggeringAlias'], 'data')
-      )
+                - task: PowerShellOnTargetMachines@3
+                  inputs:
+                    Machines: '52.183.62.18'
+                    InlineScript: |
+                      $ip = Invoke-RestMethod http://ipinfo.io/json
+                      Add-WebConfigurationProperty  -Filter 'system.webServer/security/ipSecurity' -Name "." -Value @{ipAddress="$ip.ip";allowed="true";} -ErrorAction Stop
 
-  - powershell: npx cross-env HEADLESS=true url=dev.example-app.com ENV=dev codeceptjs run --grep "#static"
-    displayName: 'run dev env tests'
-    continueOnError: true
-    condition: |
-      and(
-        succeeded(),
-        or(
-          ne(variables['Build.Reason'], 'ResourceTrigger'),
-          eq(variables['Resources.TriggeringAlias'], 'app'),
-          and(
-            eq(variables['Resources.TriggeringAlias'], 'data'),
-            eq(variables['resources.pipeline.data.sourceBranch'], 'refs/heads/development')
-          )
-        )
-      )
+                - powershell: Start-Sleep -Seconds 60
+                  displayName: 'wait for 1m'
+                  condition: |
+                    and(
+                      succeeded(),
+                      eq(variables['Resources.TriggeringAlias'], 'data')
+                    )
 
-  - powershell: npx cross-env HEADLESS=true url=prod.example-app.com ENV=prod codeceptjs run --grep "#static"
-    displayName: 'run prod env tests'
-    continueOnError: true
-    condition: |
-      and(
-        succeeded(),
-        or(
-          ne(variables['Build.Reason'], 'ResourceTrigger'),
-          eq(variables['Resources.TriggeringAlias'], 'app'),
-          and(
-            eq(variables['Resources.TriggeringAlias'], 'data'),
-            eq(variables['resources.pipeline.data.sourceBranch'], 'refs/heads/master')
-          )
-        )
-      )
+                - powershell: npx cross-env HEADLESS=true url=dev.example-app.com ENV=dev codeceptjs run --grep "#static"
+                  displayName: 'run dev env tests'
+                  continueOnError: true
+                  condition: |
+                    and(
+                      succeeded(),
+                      or(
+                        ne(variables['Build.Reason'], 'ResourceTrigger'),
+                        eq(variables['Resources.TriggeringAlias'], 'app'),
+                        and(
+                          eq(variables['Resources.TriggeringAlias'], 'data'),
+                          eq(variables['resources.pipeline.data.sourceBranch'], 'refs/heads/development')
+                        )
+                      )
+                    )
 
-  - powershell: npx cross-env HEADLESS=true url=sms-app.example.com codeceptjs run --grep "#sms"
-    displayName: 'run sms static websites tests'
-    continueOnError: true
-    condition: |
-      or(
-        ne(variables['Build.Reason'], 'ResourceTrigger'),
-        eq(variables['Resources.TriggeringAlias'], 'sms')
-      )
+                - powershell: npx cross-env HEADLESS=true url=prod.example-app.com ENV=prod codeceptjs run --grep "#static"
+                  displayName: 'run prod env tests'
+                  continueOnError: true
+                  condition: |
+                    and(
+                      succeeded(),
+                      or(
+                        ne(variables['Build.Reason'], 'ResourceTrigger'),
+                        eq(variables['Resources.TriggeringAlias'], 'app'),
+                        and(
+                          eq(variables['Resources.TriggeringAlias'], 'data'),
+                          eq(variables['resources.pipeline.data.sourceBranch'], 'refs/heads/master')
+                        )
+                      )
+                    )
 
-  - powershell: |
-      $ip = Invoke-RestMethod http://ipinfo.io/json
-      Remove-WebConfigurationProperty /system.webServer/security/ipSecurity -Name "." -AtElement @{ipAddress="$ip.ip";allowed="true"} -PSPath IIS:\
-    displayName: 'Delete allow IP'
-    continueOnError: false
+                - powershell: npx cross-env HEADLESS=true url=sms-app.example.com codeceptjs run --grep "#sms"
+                  displayName: 'run sms static websites tests'
+                  continueOnError: true
+                  condition: |
+                    or(
+                      ne(variables['Build.Reason'], 'ResourceTrigger'),
+                      eq(variables['Resources.TriggeringAlias'], 'sms')
+                    )
 
-  - task: PublishPipelineArtifact@1
-    displayName: 'publish data'
-    inputs:
-      targetPath: $(System.DefaultWorkingDirectory)/output
+                - powershell: |
+                    $ip = Invoke-RestMethod http://ipinfo.io/json
+                    Remove-WebConfigurationProperty /system.webServer/security/ipSecurity -Name "." -AtElement @{ipAddress="$ip.ip";allowed="true"} -PSPath IIS:\
+                  displayName: 'Delete allow IP'
+                  continueOnError: false
+
+                - task: PublishPipelineArtifact@1
+                  displayName: 'publish data'
+                  inputs:
+                    targetPath: $(System.DefaultWorkingDirectory)/output
+
+  - stage: RemoveAllowedIP
+    jobs:
+      - deployment: RunScriptOnVM
+        environment: 'StaticWebSites-Dev'
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - task: PowerShell@2
+                  displayName: 'RemoveIP'
+                  inputs:
+                    targetType: inline
+                    script: |
+                      $ip = Invoke-RestMethod http://ipinfo.io/json
+                      Remove-WebConfigurationProperty /system.webServer/security/ipSecurity -Name "." -AtElement @{ipAddress="$ip.ip";allowed="true"} -PSPath IIS:\
