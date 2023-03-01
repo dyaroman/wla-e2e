@@ -6,7 +6,7 @@ trigger:
       - feature/*
 
 pool:
-  name: CI-POOL-0
+  vmImage: 'windows-2022'
 
 resources:
   pipelines:
@@ -36,6 +36,27 @@ resources:
             - feature/*
 
 stages:
+  
+  - stage: GetExternalIP
+    jobs:
+      - deployment: RunScriptOnAgent
+        pool:
+          vmImage: 'windows-2022'
+        environment: dev
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - task: PowerShell@2
+                  displayName: 'GetExternalIP'
+                  inputs:
+                    targetType: inline
+                    script: |
+                      $ip = Invoke-RestMethod http://ipinfo.io/json
+                      $ipAddress = $ip.ip
+                      Write-Host  $ipAddress
+                      Write-Host "##vso[task.setvariable variable=$ipAddress;]$ipAddressVar"
+
   - stage: AllowIP
     jobs:
       - deployment: RunScriptOnVM
@@ -50,15 +71,15 @@ stages:
                     targetType: inline
                     script: |
                       Import-Module WebAdministration
-                      $ip = Invoke-RestMethod http://ipinfo.io/json
-                      $ipAddress = $ip.ip
-                      Write-Host $ipAddress
-                      Add-WebConfigurationProperty -Filter 'system.webServer/security/ipSecurity' -Name "." -Value @{ipAddress=$ipAddress;allowed="true";} -ErrorAction Stop
+                      Write-Host  $ipAddressVar
+                      Add-WebConfigurationProperty -Filter 'system.webServer/security/ipSecurity' -Name "." -Value @{ipAddress=$ipAddressVar;allowed="true";} -ErrorAction Stop
 
   - stage: MainPart
     jobs:
       - deployment: MainPart
-        environment: 'StaticWebSites-Dev'
+        pool:
+          vmImage: 'windows-2022'
+        environment: dev 
         strategy: 
           runOnce:
             deploy:
@@ -78,13 +99,6 @@ stages:
                     command: custom
                     verbose: false
                     customCommand: 'ci --only=prod'
-
-                - task: PowerShellOnTargetMachines@3
-                  inputs:
-                    Machines: '52.183.62.18'
-                    InlineScript: |
-                      $ip = Invoke-RestMethod http://ipinfo.io/json
-                      Add-WebConfigurationProperty  -Filter 'system.webServer/security/ipSecurity' -Name "." -Value @{ipAddress="$ip.ip";allowed="true";} -ErrorAction Stop
 
                 - powershell: Start-Sleep -Seconds 60
                   displayName: 'wait for 1m'
@@ -135,12 +149,6 @@ stages:
                       eq(variables['Resources.TriggeringAlias'], 'sms')
                     )
 
-                - powershell: |
-                    $ip = Invoke-RestMethod http://ipinfo.io/json
-                    Remove-WebConfigurationProperty /system.webServer/security/ipSecurity -Name "." -AtElement @{ipAddress="$ip.ip";allowed="true"} -PSPath IIS:\
-                  displayName: 'Delete allow IP'
-                  continueOnError: false
-
                 - task: PublishPipelineArtifact@1
                   displayName: 'publish data'
                   inputs:
@@ -149,7 +157,7 @@ stages:
   - stage: RemoveAllowedIP
     jobs:
       - deployment: RunScriptOnVM
-        environment: 'StaticWebSites-Dev'
+        environment: 'StaticWebSites-Dev.EXAMPLE-ENV-DEV'
         strategy:
           runOnce:
             deploy:
@@ -160,6 +168,4 @@ stages:
                     targetType: inline
                     script: |
                       Import-Module WebAdministration
-                      $ip = Invoke-RestMethod http://ipinfo.io/json
-                      $ipAddress = $ip.ip
-                      Remove-WebConfigurationProperty /system.webServer/security/ipSecurity -Name "." -AtElement @{ipAddress=ipAddress;allowed="true"} -PSPath IIS:\
+                      Remove-WebConfigurationProperty /system.webServer/security/ipSecurity -Name "." -AtElement @{ipAddress=$ipAddressVar;allowed="true"} -PSPath IIS:\
