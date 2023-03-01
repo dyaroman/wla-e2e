@@ -40,8 +40,6 @@ stages:
   - stage: GetExternalIP
     jobs:
       - deployment: RunScriptOnAgent
-        pool:
-          vmImage: 'windows-2022'
         strategy:
           runOnce:
             deploy:
@@ -76,8 +74,6 @@ stages:
   - stage: MainPart
     jobs:
       - deployment: MainPart
-        pool:
-          vmImage: 'windows-2022'
         strategy: 
           runOnce:
             deploy:
