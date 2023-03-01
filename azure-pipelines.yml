@@ -52,8 +52,9 @@ stages:
                     script: |
                       $ip = Invoke-RestMethod http://ipinfo.io/json
                       $ipAddress = $ip.ip
-                      Write-Host  $ipAddress
+                      Write-Host  ipAddress - $ipAddress
                       Write-Host "##vso[task.setvariable variable=$ipAddress;]$ipAddressVar"
+                      Write-Host ipAddressVar - $ipAddressVar
 
   - stage: AllowIP
     jobs:
@@ -69,7 +70,7 @@ stages:
                     targetType: inline
                     script: |
                       Import-Module WebAdministration
-                      Write-Host  $ipAddressVar
+                      Write-Host ipAddressVar - $ipAddressVar
                       Add-WebConfigurationProperty -Filter 'system.webServer/security/ipSecurity' -Name "." -Value @{ipAddress=$ipAddressVar;allowed="true";} -ErrorAction Stop
 
   - stage: MainPart
