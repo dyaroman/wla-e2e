@@ -6,7 +6,7 @@ trigger:
       - feature/*
 
 pool:
-  vmImage: 'windows-2022'
+  name: CI-POOL-0
 
 resources:
   pipelines:
@@ -35,134 +35,73 @@ resources:
             - develop
             - feature/*
 
-stages:
-  
-  - stage: GetExternalIP
-    jobs:
-      - deployment: RunScriptOnAgent
-        environment: 'Azure Pipelines'
-        strategy:
-          runOnce:
-            deploy:
-              steps:
-                - task: PowerShell@2
-                  displayName: 'GetExternalIP'
-                  inputs:
-                    targetType: inline
-                    script: |
-                      $ip = Invoke-RestMethod http://ipinfo.io/json
-                      $ipAddress = $ip.ip
-                      Write-Host  ipAddress - $ipAddress
-                      Write-Host "##vso[task.setvariable variable=ipAddressVar;]$ipAddress"
-                      Write-Host ipAddressVar - "$(ipAddressVar)"
+steps:
+  - task: NodeTool@0
+    displayName: 'use node 14'
+    inputs:
+      versionSpec: 14.x
+      checkLatest: true
 
-  - stage: AllowIP
-    jobs:
-      - deployment: RunScriptOnVM
-        environment: 'StaticWebSites-Dev.EXAMPLE-ENV-DEV'
-        strategy:
-          runOnce:
-            deploy:
-              steps:
-                - task: PowerShell@2
-                  displayName: 'AlowIP'
-                  inputs:
-                    targetType: inline
-                    script: |
-                      Import-Module WebAdministration
-                      Write-Host ipAddressVar - $(ipAddressVar)
-                      Add-WebConfigurationProperty -Filter 'system.webServer/security/ipSecurity' -Name "." -Value @{ipAddress="$(ipAddressVar)";allowed="true";} -ErrorAction Stop
+  - checkout: self
+    displayName: 'checkout'
 
-  - stage: MainPart
-    jobs:
-      - deployment: MainPart
-        environment: 'Azure Pipelines'
-        strategy: 
-          runOnce:
-            deploy:
-              steps:
-                - task: NodeTool@0
-                  displayName: 'use node 14'
-                  inputs:
-                    versionSpec: 14.x
-                    checkLatest: true
+  - task: Npm@1
+    displayName: 'npm ci'
+    inputs:
+      command: custom
+      verbose: false
+      customCommand: 'ci --only=prod'
 
-                - checkout: self
-                  displayName: 'checkout'
+  - powershell: Start-Sleep -Seconds 60
+    displayName: 'wait for 1m'
+    condition: |
+      and(
+        succeeded(),
+        eq(variables['Resources.TriggeringAlias'], 'data')
+      )
 
-                - task: Npm@1
-                  displayName: 'npm ci'
-                  inputs:
-                    command: custom
-                    verbose: false
-                    customCommand: 'ci --only=prod'
+  - powershell: npx cross-env HEADLESS=true url=dev.example-app.com ENV=dev codeceptjs run --grep "#static"
+    displayName: 'run dev env tests'
+    continueOnError: true
+    condition: |
+      and(
+        succeeded(),
+        or(
+          ne(variables['Build.Reason'], 'ResourceTrigger'),
+          eq(variables['Resources.TriggeringAlias'], 'app'),
+          and(
+            eq(variables['Resources.TriggeringAlias'], 'data'),
+            eq(variables['resources.pipeline.data.sourceBranch'], 'refs/heads/development')
+          )
+        )
+      )
 
-                - powershell: Start-Sleep -Seconds 60
-                  displayName: 'wait for 1m'
-                  condition: |
-                    and(
-                      succeeded(),
-                      eq(variables['Resources.TriggeringAlias'], 'data')
-                    )
+  - powershell: npx cross-env HEADLESS=true url=prod.example-app.com ENV=prod codeceptjs run --grep "#static"
+    displayName: 'run prod env tests'
+    continueOnError: true
+    condition: |
+      and(
+        succeeded(),
+        or(
+          ne(variables['Build.Reason'], 'ResourceTrigger'),
+          eq(variables['Resources.TriggeringAlias'], 'app'),
+          and(
+            eq(variables['Resources.TriggeringAlias'], 'data'),
+            eq(variables['resources.pipeline.data.sourceBranch'], 'refs/heads/master')
+          )
+        )
+      )
 
-                - powershell: npx cross-env HEADLESS=true url=dev.example-app.com ENV=dev codeceptjs run --grep "#static"
-                  displayName: 'run dev env tests'
-                  continueOnError: true
-                  condition: |
-                    and(
-                      succeeded(),
-                      or(
-                        ne(variables['Build.Reason'], 'ResourceTrigger'),
-                        eq(variables['Resources.TriggeringAlias'], 'app'),
-                        and(
-                          eq(variables['Resources.TriggeringAlias'], 'data'),
-                          eq(variables['resources.pipeline.data.sourceBranch'], 'refs/heads/development')
-                        )
-                      )
-                    )
+  - powershell: npx cross-env HEADLESS=true url=sms-app.example.com codeceptjs run --grep "#sms"
+    displayName: 'run sms static websites tests'
+    continueOnError: true
+    condition: |
+      or(
+        ne(variables['Build.Reason'], 'ResourceTrigger'),
+        eq(variables['Resources.TriggeringAlias'], 'sms')
+      )
 
-                - powershell: npx cross-env HEADLESS=true url=prod.example-app.com ENV=prod codeceptjs run --grep "#static"
-                  displayName: 'run prod env tests'
-                  continueOnError: true
-                  condition: |
-                    and(
-                      succeeded(),
-                      or(
-                        ne(variables['Build.Reason'], 'ResourceTrigger'),
-                        eq(variables['Resources.TriggeringAlias'], 'app'),
-                        and(
-                          eq(variables['Resources.TriggeringAlias'], 'data'),
-                          eq(variables['resources.pipeline.data.sourceBranch'], 'refs/heads/master')
-                        )
-                      )
-                    )
-
-                - powershell: npx cross-env HEADLESS=true url=sms-app.example.com codeceptjs run --grep "#sms"
-                  displayName: 'run sms static websites tests'
-                  continueOnError: true
-                  condition: |
-                    or(
-                      ne(variables['Build.Reason'], 'ResourceTrigger'),
-                      eq(variables['Resources.TriggeringAlias'], 'sms')
-                    )
-
-                - task: PublishPipelineArtifact@1
-                  displayName: 'publish data'
-                  inputs:
-                    targetPath: $(System.DefaultWorkingDirectory)/output
-
-  - stage: RemoveAllowedIP
-    jobs:
-      - deployment: RunScriptOnVM
-        environment: 'StaticWebSites-Dev.EXAMPLE-ENV-DEV'
-        strategy:
-          runOnce:
-            deploy:
-              steps:
-                - task: PowerShell@2
-                  displayName: 'RemoveIP'
-                  inputs:
-                    targetType: inline
-                    script: |
-                      Import-Module WebAdministration
-                      Remove-WebConfigurationProperty /system.webServer/security/ipSecurity -Name "." -AtElement @{ipAddress=$ipAddressVar;allowed="true"} -PSPath IIS:\
+  - task: PublishPipelineArtifact@1
+    displayName: 'publish data'
+    inputs:
+      targetPath: $(System.DefaultWorkingDirectory)/output
