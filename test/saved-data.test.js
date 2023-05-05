@@ -47,7 +47,7 @@ const websites = {
     effectiveDate: 'July 1, 2020',
     address1: 'Springates Building, Lower Government Road, Charlestown, ',
     address2: 'Saint Kitts and Nevis',
-    tags: ['fixed header', 'index main form', 'sc', 'unsubscribe'],
+    tags: ['fixed header', 'index main form', 'ocs', 'unsubscribe'],
     host: isProd ? 'whiterockloans.com' : 'whiterockloans_com.example-app.com',
     mainFormPrimaryColor: 'no_data',
     altFormPrimaryColor: 'no_data',
