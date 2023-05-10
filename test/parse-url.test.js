@@ -26,6 +26,7 @@ Scenario('filters', async ({ I }) => {
       case 'host':
       case 'mainFormPrimaryColor':
       case 'altFormPrimaryColor':
+      case 'mainFormEsPrimaryColor':
         break;
       default:
         search.set(key, websiteData[key]);
@@ -57,9 +58,9 @@ Scenario('filters', async ({ I }) => {
         break;
       case 'mainFormPrimaryColor':
       case 'altFormPrimaryColor':
+      case 'mainFormEsPrimaryColor':
         if (websiteData[key] === NO_DATA) return;
-        const selector =
-          key === 'mainFormPrimaryColor' ? 'mainFormTheme' : 'altFormTheme';
+        const selector = key.replace('PrimaryColor', 'Theme');
         const bgColorRgb = await I.grabCssPropertyFrom(
           `td[data-qa="${selector}"]`,
           'background-color'
@@ -98,6 +99,7 @@ Scenario('filters', async ({ I }) => {
         break;
       case 'mainFormPrimaryColor':
       case 'altFormPrimaryColor':
+      case 'mainFormEsPrimaryColor':
         break;
       default:
         I.seeInField(`[data-qa="${key}"]`, '');

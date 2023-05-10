@@ -87,6 +87,7 @@ Scenario('random website', async ({ I }) => {
         break;
       case 'mainFormPrimaryColor':
       case 'altFormPrimaryColor':
+      case 'mainFormEsPrimaryColor':
         break;
       default:
         if (websiteData[key] !== '') {
@@ -123,9 +124,9 @@ Scenario('random website', async ({ I }) => {
         break;
       case 'mainFormPrimaryColor':
       case 'altFormPrimaryColor':
+      case 'mainFormEsPrimaryColor':
         if (websiteData[key] === NO_DATA) return;
-        const selector =
-          key === 'mainFormPrimaryColor' ? 'mainFormTheme' : 'altFormTheme';
+        const selector = key.replace('PrimaryColor', 'Theme');
         const bgColorRgb = await I.grabCssPropertyFrom(
           `td[data-qa="${selector}"]`,
           'background-color'
@@ -161,6 +162,7 @@ Scenario('random website', async ({ I }) => {
         break;
       case 'mainFormPrimaryColor':
       case 'altFormPrimaryColor':
+      case 'mainFormEsPrimaryColor':
         break;
       default:
         I.seeInField(`[data-qa="${key}"]`, '');
