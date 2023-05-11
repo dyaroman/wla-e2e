@@ -9,7 +9,7 @@ const websites = {
   'bad-credit-loans.co': {
     address1: 'Springates Building, Lower Government Road, Charlestown, ',
     address2: 'Saint Kitts and Nevis',
-    altForm: '1q_36',
+    altForm: '1q_pd_im',
     altFormLeadType: 57,
     altFormPrimaryColor: '#FE6645',
     altFormTheme: 'theme2',
@@ -21,6 +21,10 @@ const websites = {
     gtmKey: 'GTM-TNP7LR',
     host: isProd ? 'bad-credit-loans.co' : 'bad-credit-loans_co.example-app.com',
     mainForm: '1q_pd_im',
+    mainFormEs: NO_DATA,
+    mainFormEsLeadType: NO_DATA,
+    mainFormEsPrimaryColor: NO_DATA,
+    mainFormEsTheme: NO_DATA,
     mainFormLeadType: 19,
     mainFormPrimaryColor: '#FE6645',
     mainFormTheme: 'theme2',
@@ -32,9 +36,9 @@ const websites = {
   'WhiteRockLoans.com': {
     address1: 'Springates Building, Lower Government Road, Charlestown, ',
     address2: 'Saint Kitts and Nevis',
-    altForm: '1q_36',
+    altForm: '1q_pd_im',
     altFormLeadType: 57,
-    altFormPrimaryColor: 'no_data',
+    altFormPrimaryColor: NO_DATA,
     altFormTheme: NO_DATA,
     campaignId: 241355,
     companyName: 'Customer Acquisition LLC',
@@ -44,8 +48,12 @@ const websites = {
     gtmKey: 'GTM-TNP7LR',
     host: isProd ? 'whiterockloans.com' : 'whiterockloans_com.example-app.com',
     mainForm: '1q_pd_im',
+    mainFormEs: NO_DATA,
+    mainFormEsLeadType: NO_DATA,
+    mainFormEsPrimaryColor: NO_DATA,
+    mainFormEsTheme: NO_DATA,
     mainFormLeadType: 19,
-    mainFormPrimaryColor: 'no_data',
+    mainFormPrimaryColor: NO_DATA,
     mainFormTheme: NO_DATA,
     owner: 'Brian',
     tags: ['fixed header', 'index main form', 'ocs', 'unsubscribe'],
@@ -68,6 +76,7 @@ for (const website in websites) {
           break;
         case 'host':
         case 'mainFormPrimaryColor':
+        case 'mainFormEsPrimaryColor':
         case 'altFormPrimaryColor':
           break;
         default:
