@@ -88,6 +88,7 @@ Scenario('random website', async ({ I }) => {
       case 'mainFormPrimaryColor':
       case 'altFormPrimaryColor':
       case 'mainFormEsPrimaryColor':
+      case 'vmGroup':
         break;
       default:
         if (websiteData[key] !== '') {
