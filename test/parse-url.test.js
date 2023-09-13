@@ -27,6 +27,7 @@ Scenario('filters', async ({ I }) => {
       case 'mainFormPrimaryColor':
       case 'altFormPrimaryColor':
       case 'mainFormEsPrimaryColor':
+      case 'vmGroup':
         break;
       default:
         search.set(key, websiteData[key]);
@@ -55,6 +56,7 @@ Scenario('filters', async ({ I }) => {
         });
         break;
       case 'host':
+      case 'vmGroup':
         break;
       case 'mainFormPrimaryColor':
       case 'altFormPrimaryColor':
@@ -100,6 +102,7 @@ Scenario('filters', async ({ I }) => {
       case 'mainFormPrimaryColor':
       case 'altFormPrimaryColor':
       case 'mainFormEsPrimaryColor':
+      case 'vmGroup':
         break;
       default:
         I.seeInField(`[data-qa="${key}"]`, '');
