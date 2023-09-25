@@ -1,5 +1,5 @@
 const { getRandomNumber, fromCamelCaseToWords } = require('../misc/functions');
-const { URL, WEBSITES_DATA } = require('../misc/config');
+const { URL, WEBSITES_DATA, DATA_URL } = require('../misc/config');
 const { NO_DATA } = require('../misc/consts');
 const { rgb2hex } = require('../misc/color');
 
@@ -7,7 +7,11 @@ Feature('main #static #sms');
 
 Scenario('random website', async ({ I }) => {
   const search = new URLSearchParams();
-  const response = await I.makeApiRequest('GET', `${URL}/${WEBSITES_DATA}`, {});
+  const response = await I.makeApiRequest(
+    'GET',
+    `${DATA_URL}/${WEBSITES_DATA}`,
+    {}
+  );
   const { env, columns, commit, repoPath, timestamp, websites } =
     await response.json();
   const numberOfWebsites = websites.length;

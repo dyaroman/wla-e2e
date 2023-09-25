@@ -27,3 +27,18 @@ if (URL === undefined) {
 exports.URL = URL;
 
 exports.WEBSITES_DATA = 'websites.data.json';
+
+let DATA_URL = process.env.DATA_URL;
+if (process.env.DATA_URL === undefined) {
+  switch (process.env.ENV) {
+    case 'prod':
+      DATA_URL = 'https://prod.example-app.com';
+      break;
+    case 'local':
+    case 'dev':
+    default:
+      DATA_URL = 'https://dev.example-app.com';
+  }
+}
+
+exports.DATA_URL = DATA_URL;
