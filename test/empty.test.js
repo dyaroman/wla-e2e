@@ -8,7 +8,7 @@ Scenario('not existing website', ({ I }) => {
   I.fillField('[data-qa="website"]', 'google.com');
   I.seeTextEquals('Websites: 0', '[data-qa="websitesNumber"]');
   I.seeTextEquals(
-    'No data to show, please change your filters.',
-    '[data-qa="badFilters"]'
+    'No data to show, please check your filters.',
+    '[data-qa="noResults"]'
   );
 });

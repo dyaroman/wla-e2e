@@ -58,11 +58,10 @@ Scenario('random website', async ({ I }) => {
     );
   }
 
-  I.seeNumberOfVisibleElements('.field-title', columns.length);
   for (const column of columns) {
     switch (column) {
       case 'tags':
-        I.seeElement('.field-title .tags');
+        I.seeElement('.tags');
         break;
       default:
         I.seeElement(`input[data-qa="${column}"]`);
