@@ -1,15 +1,6 @@
-let URL = process.env.url;
-if (URL !== undefined) {
-  // add protocol if it wasn't passed
-  if (/^https?:\/\//.test(URL) === false) {
-    URL = `https://${URL}`;
-  }
-  // remove trailing slash if it was passed
-  if (/\/$/.test(URL)) {
-    URL = URL.slice(0, -1);
-  }
-}
+const { prepareUrl } = require('./functions');
 
+let URL = process.env.URL;
 if (URL === undefined) {
   switch (process.env.ENV) {
     case 'local':
@@ -22,11 +13,10 @@ if (URL === undefined) {
     default:
       URL = 'https://dev.example-app.com';
   }
+} else {
+  URL = prepareUrl(URL);
 }
-
 exports.URL = URL;
-
-exports.WEBSITES_DATA = 'websites.data.json';
 
 let DATA_URL = process.env.DATA_URL;
 if (process.env.DATA_URL === undefined) {
@@ -39,6 +29,8 @@ if (process.env.DATA_URL === undefined) {
     default:
       DATA_URL = 'https://dev.example-app.com';
   }
+} else {
+  DATA_URL = prepareUrl(DATA_URL);
 }
 
 exports.DATA_URL = DATA_URL;

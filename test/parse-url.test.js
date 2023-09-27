@@ -1,6 +1,6 @@
-const { URL, WEBSITES_DATA, DATA_URL } = require('../misc/config');
+const { URL, DATA_URL } = require('../misc/config');
 const { getRandomNumber, fromCamelCaseToWords } = require('../misc/functions');
-const { NO_DATA } = require('../misc/consts');
+const { NO_DATA, WEBSITES_DATA } = require('../misc/consts');
 const { rgb2hex } = require('../misc/color');
 
 Feature('parse url #static #sms');

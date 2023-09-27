@@ -1,4 +1,5 @@
-const { URL, WEBSITES_DATA, DATA_URL } = require('../misc/config');
+const { URL, DATA_URL } = require('../misc/config');
+const { WEBSITES_DATA } = require('../misc/consts');
 
 Feature('project info #sms');
 
