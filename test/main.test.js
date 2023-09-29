@@ -92,6 +92,7 @@ Scenario('random website', async ({ I }) => {
       case 'altFormPrimaryColor':
       case 'mainFormEsPrimaryColor':
       case 'vmGroup':
+      case 'OG':
         break;
       default:
         if (websiteData[key] !== '') {
@@ -126,6 +127,7 @@ Scenario('random website', async ({ I }) => {
         break;
       case 'host':
       case 'vmGroup':
+      case 'OG':
         break;
       case 'mainFormPrimaryColor':
       case 'altFormPrimaryColor':
@@ -169,6 +171,7 @@ Scenario('random website', async ({ I }) => {
       case 'altFormPrimaryColor':
       case 'mainFormEsPrimaryColor':
       case 'vmGroup':
+      case 'OG':
         break;
       default:
         I.seeInField(`[data-qa="${key}"]`, '');

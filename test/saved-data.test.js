@@ -79,6 +79,7 @@ for (const website in websites) {
         case 'mainFormEsPrimaryColor':
         case 'altFormPrimaryColor':
         case 'vmGroup':
+        case 'OG':
           break;
         default:
           I.fillField(`[data-qa="${key}"]`, data[key]);
