@@ -15,11 +15,13 @@ Scenario('campaignId: 1 #static', async ({ I }) => {
 
   I.fillField('input[data-qa="campaignId"]', '!=1');
   const numberOfEqual = await I.grabNumberOfVisibleElements('tbody tr');
-  console.log({
-    numberOfAll,
-    numberOfInclude,
-    numberOfEqual,
-  });
+  I.say(
+    JSON.stringify({
+      numberOfAll,
+      numberOfInclude,
+      numberOfEqual,
+    })
+  );
   if (numberOfEqual === 0 || numberOfEqual === numberOfInclude) {
     throw new Error('Error due to filter websites by "campaignId": "!=1"');
   }
@@ -38,11 +40,13 @@ Scenario('mainForm: 1q_pd_im #static', async ({ I }) => {
 
   I.fillField('input[data-qa="mainForm"]', '!=1q_pd_im');
   const numberOfEqual = await I.grabNumberOfVisibleElements('tbody tr');
-  console.log({
-    numberOfAll,
-    numberOfInclude,
-    numberOfEqual,
-  });
+  I.say(
+    JSON.stringify({
+      numberOfAll,
+      numberOfInclude,
+      numberOfEqual,
+    })
+  );
   if (numberOfEqual === 0 || numberOfEqual === numberOfInclude) {
     throw new Error('Error due to filter websites by "mainForm": "!=1q_pd_im"');
   }
@@ -61,11 +65,13 @@ Scenario('mainForm: 1q #sms', async ({ I }) => {
 
   I.fillField('input[data-qa="mainForm"]', '!=1q_tcpa_v2');
   const numberOfEqual = await I.grabNumberOfVisibleElements('tbody tr');
-  console.log({
-    numberOfAll,
-    numberOfInclude,
-    numberOfEqual,
-  });
+  I.say(
+    JSON.stringify({
+      numberOfAll,
+      numberOfInclude,
+      numberOfEqual,
+    })
+  );
   if (numberOfEqual === 0 || numberOfEqual === numberOfInclude) {
     throw new Error(
       'Error due to filter websites by "mainForm": "!=1q_tcpa_v2"'
