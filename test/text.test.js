@@ -1,0 +1,181 @@
+const { fromCamelCaseToWords } = require('../misc/functions');
+const { URL, DATA_URL } = require('../misc/config');
+const { WEBSITES_DATA } = require('../misc/consts');
+
+Feature('check texts #static #sms');
+
+Scenario('websites texts', async ({ I }) => {
+  const response = await I.makeApiRequest(
+    'GET',
+    `${DATA_URL}/${WEBSITES_DATA}`,
+    {}
+  );
+  const { columns, commit, env, project, repoPath, timestamp, websites } =
+    await response['json']();
+  const numberOfWebsites = websites.length;
+  I.amOnPage(URL);
+  I.waitForElement('table', 60);
+
+  // InfoComponent
+  // page title
+  if (env || project) {
+    I.seeTitleEquals(
+      `${project && `[${project}]`}${env && `[${env}]`}: Websites List App`
+    );
+  } else {
+    I.seeTitleEquals('Websites List App');
+  }
+
+  // env
+  if (env) {
+    I.seeTextEquals(`env: ${env}`, '[data-qa="env"]');
+  } else {
+    I.dontSeeElement('[data-qa="env"]');
+  }
+
+  // commit
+  if (repoPath && commit) {
+    I.seeTextEquals(commit.slice(0, 8), '[data-qa="commit"]');
+  } else {
+    I.dontSeeElement('[data-qa="commit"]');
+  }
+
+  // timestamp
+  if (timestamp) {
+    I.seeTextEquals(`Data last updated: ${timestamp}`, '[data-qa="timestamp"]');
+  } else {
+    I.dontSeeElement('[data-qa="timestamp"]');
+  }
+
+  // websites number
+  if (numberOfWebsites === 1) {
+    I.seeTextEquals(
+      `Website: ${numberOfWebsites}`,
+      '[data-qa="websitesNumber"]'
+    );
+  } else {
+    I.seeTextEquals(
+      `Websites: ${numberOfWebsites}`,
+      '[data-qa="websitesNumber"]'
+    );
+  }
+
+  // FiltersComponent
+  // Filters
+  I.seeTextEquals('Filters:', '.filters > summary');
+  // check filter label and placeholder
+  for (const column of Object.keys(columns)) {
+    // take only columns that render filter
+    if (!columns[column]['renderFilter']) continue;
+    switch (column) {
+      case 'tags':
+        I.seeTextEquals('Tags:', '.filters details summary');
+        break;
+      default:
+        I.seeElement(
+          `//details[@class='filters']//span[text()='${fromCamelCaseToWords(
+            column
+          )}']`
+        );
+        I.seeAttributesOnElements(`input[data-qa="${column}"]`, {
+          placeholder: fromCamelCaseToWords(column),
+        });
+    }
+  }
+
+  // Tags
+  const tags = [];
+  websites.forEach((website) =>
+    website.tags.forEach((tag) => tags.includes(tag) || tags.push(tag))
+  );
+  tags.forEach((tag) => {
+    I.seeTextEquals(tag, `label[data-qa='${tag}'] span.checkbox__label`);
+  });
+
+  // Filters controls
+  I.seeTextEquals('clear all', 'button[data-qa="clearAll"]');
+  I.seeTextEquals('copy websites', 'button[data-qa="copyWebsites"]');
+
+  // TableControlsComponent
+  // Showed columns
+  I.seeTextEquals('Showed columns:', '.table-controls details summary');
+  const showedColumns = [];
+  for (const column in columns) {
+    columns[column]['showColumn'] && showedColumns.push(column);
+  }
+  I.click('.table-controls details summary');
+  for (const column in columns) {
+    if (!columns[column]['renderColumn']) continue;
+    const label = `.showed-columns label[data-qa='${fromCamelCaseToWords(
+      column
+    )}']`;
+    I.seeTextEquals(
+      fromCamelCaseToWords(column),
+      `${label} span.checkbox__label`
+    );
+    if (showedColumns.includes(column)) {
+      I.seeCheckboxIsChecked(`${label} input.checkbox__input`);
+    } else {
+      I.dontSeeCheckboxIsChecked(`${label} input.checkbox__input`);
+    }
+  }
+
+  // Controls
+  I.seeTextEquals(
+    'hide all columns',
+    '.table-controls button[data-qa="hideAllColumns"]'
+  );
+  I.seeTextEquals(
+    'restore default columns',
+    '.table-controls button[data-qa="restoreDefaultColumns"]'
+  );
+
+  // TableComponent
+  // Table Head
+  I.click('[data-qa="showAllColumns"]');
+  for (const column in columns) {
+    if (!columns[column]['renderColumn']) continue;
+    I.seeTextEquals(
+      fromCamelCaseToWords(column),
+      `.table thead th[data-qa="${column}"]`
+    );
+  }
+
+  // Table Body
+  for (let i = 0; i < websites.length; i++) {
+    const website = websites[i];
+    I.say(`check texts for ${website['website']}`);
+    for (const column in columns) {
+      if (!columns[column]['renderColumn']) continue;
+      const row = `.table tbody tr:nth-child(${i + 1})`;
+      switch (column) {
+        case 'tags':
+          I.seeAttributesOnElements(`${row}  [data-qa='${column}']`, {
+            'data-title': fromCamelCaseToWords(column),
+          });
+          Array.isArray(website[column]) &&
+            website[column].forEach((tag) =>
+              I.seeTextEquals(tag, `${row} [data-qa='${tag}']`)
+            );
+          break;
+        case 'ogImage':
+          I.seeAttributesOnElements(`${row}  [data-qa='${column}']`, {
+            'data-title': fromCamelCaseToWords(column),
+          });
+          Array.isArray(website[column]) &&
+            website[column].forEach((path) =>
+              I.seeElementInDOM(`img[src="https://${website['host']}/${path}"]`)
+            );
+          break;
+        default:
+          I.seeAttributesOnElements(`${row}  [data-qa='${column}']`, {
+            'data-title': fromCamelCaseToWords(column),
+          });
+          I.seeTextEquals(
+            String(website[column]),
+            `${row} [data-qa='${column}']`
+          );
+      }
+    }
+  }
+});

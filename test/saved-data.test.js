@@ -1,24 +1,21 @@
 const { URL } = require('../misc/config');
-const { NO_DATA } = require('../misc/consts');
 
 const isProd = process.env.ENV === 'prod';
-
-Feature('saved data #static');
-
 const websites = {
   'bad-credit-loans.co': {
     website: 'bad-credit-loans.co',
     template: 'BCL',
     campaignId: 251583,
+    campaignUid: 'no_data',
     mainForm: '1q_pd_im',
     mainFormTheme: 'theme2',
     mainFormLeadType: 19,
     altForm: '1q_pd_im',
     altFormTheme: 'theme2',
     altFormLeadType: 57,
-    mainFormEs: NO_DATA,
-    mainFormEsTheme: NO_DATA,
-    mainFormEsLeadType: NO_DATA,
+    mainFormEs: 'no_data',
+    mainFormEsTheme: 'no_data',
+    mainFormEsLeadType: 'no_data',
     gtmKey: 'GTM-TNP7LR',
     owner: 'Christian',
     email: 'support@bad-credit-loans.co',
@@ -27,25 +24,28 @@ const websites = {
     companyName: 'Customer Acquisition LLC',
     address1: 'Springates Building, Lower Government Road, Charlestown, ',
     address2: 'Saint Kitts and Nevis',
+    vmGroup: 'us',
     tags: ['index btn'],
-    altFormPrimaryColor: '#FE6645',
+    ogImage: ['images/OG_image.jpg'],
     host: isProd ? 'bad-credit-loans.co' : 'bad-credit-loans_co.example-app.com',
-    mainFormEsPrimaryColor: NO_DATA,
     mainFormPrimaryColor: '#FE6645',
+    altFormPrimaryColor: '#FE6645',
+    mainFormEsPrimaryColor: 'no_data',
   },
   'WhiteRockLoans.com': {
     website: 'WhiteRockLoans.com',
     template: 'WRL',
     campaignId: 241355,
+    campaignUid: 'no_data',
     mainForm: '1q_pd_im',
-    mainFormTheme: NO_DATA,
+    mainFormTheme: 'no_data',
     mainFormLeadType: 19,
     altForm: '1q_pd_im',
-    altFormTheme: NO_DATA,
+    altFormTheme: 'no_data',
     altFormLeadType: 57,
-    mainFormEs: NO_DATA,
-    mainFormEsTheme: NO_DATA,
-    mainFormEsLeadType: NO_DATA,
+    mainFormEs: 'no_data',
+    mainFormEsTheme: 'no_data',
+    mainFormEsLeadType: 'no_data',
     gtmKey: 'GTM-TNP7LR',
     owner: 'Brian',
     email: 'support@WhiteRockLoans.com',
@@ -54,19 +54,24 @@ const websites = {
     companyName: 'Customer Acquisition LLC',
     address1: 'Springates Building, Lower Government Road, Charlestown, ',
     address2: 'Saint Kitts and Nevis',
+    vmGroup: 'us',
     tags: ['fixed header', 'index main form', 'ocs', 'unsubscribe'],
-    altFormPrimaryColor: NO_DATA,
+    ogImage: ['images/OG_image.jpg'],
     host: isProd ? 'whiterockloans.com' : 'whiterockloans_com.example-app.com',
-    mainFormEsPrimaryColor: NO_DATA,
-    mainFormPrimaryColor: NO_DATA,
+    mainFormPrimaryColor: 'no_data',
+    altFormPrimaryColor: 'no_data',
+    mainFormEsPrimaryColor: 'no_data',
   },
 };
+
+Feature('filter website by saved data #static');
 
 for (const website in websites) {
   Scenario(website, async ({ I }) => {
     const data = websites[website];
     I.amOnPage(URL);
     I.waitForElement('table', 60);
+
     for (const key in data) {
       switch (key) {
         case 'tags':
@@ -79,7 +84,7 @@ for (const website in websites) {
         case 'mainFormEsPrimaryColor':
         case 'altFormPrimaryColor':
         case 'vmGroup':
-        case 'OG':
+        case 'ogImage':
           break;
         default:
           I.fillField(`[data-qa="${key}"]`, data[key]);

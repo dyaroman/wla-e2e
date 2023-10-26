@@ -4,10 +4,12 @@ exports.getRandomNumber = (min, max) => {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 
-exports.fromCamelCaseToWords = (str) => {
-  const result = str.replace(/([A-Z\d])/g, ' $1');
-  return result.charAt(0).toUpperCase() + result.slice(1);
-};
+exports.fromCamelCaseToWords = (str) =>
+  str
+    .split(/(?=[A-Z0-9])/)
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ')
+    .replace(/([A-Z]+) /g, '$1');
 
 exports.prepareUrl = (url) => {
   // add protocol if it wasn't passed

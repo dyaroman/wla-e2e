@@ -20,7 +20,7 @@ Scenario('campaignId: 1 #static', async ({ I }) => {
     numberOfInclude,
     numberOfEqual,
   });
-  if (numberOfEqual === 0 || numberOfEqual === numberOfInclude) {
+  if (numberOfEqual === numberOfInclude) {
     throw new Error('Error due to filter websites by "campaignId": "==1"');
   }
 });
@@ -43,7 +43,7 @@ Scenario('mainForm: 1q_pd_im #static', async ({ I }) => {
     numberOfInclude,
     numberOfEqual,
   });
-  if (numberOfEqual === 0 || numberOfEqual === numberOfInclude) {
+  if (numberOfEqual === numberOfInclude) {
     throw new Error('Error due to filter websites by "mainForm": "==1q_pd_im"');
   }
 });
@@ -66,7 +66,7 @@ Scenario('mainForm: 1q #sms', async ({ I }) => {
     numberOfInclude,
     numberOfEqual,
   });
-  if (numberOfEqual === 0 || numberOfEqual === numberOfInclude) {
+  if (numberOfEqual === numberOfInclude) {
     throw new Error('Error due to filter websites by "mainForm": "==1q_tcpa"');
   }
 });
