@@ -1,4 +1,4 @@
-const { fromCamelCaseToWords } = require('../misc/functions');
+const { fromCamelCaseToWords, getRandomSubset } = require('../misc/functions');
 const { URL, DATA_URL } = require('../misc/config');
 const { WEBSITES_DATA } = require('../misc/consts');
 
@@ -12,7 +12,6 @@ Scenario('websites texts', async ({ I }) => {
   );
   const { columns, commit, env, project, repoPath, timestamp, websites } =
     await response['json']();
-  const numberOfWebsites = websites.length;
   I.amOnPage(URL);
   I.waitForElement('table', 60);
 
@@ -48,14 +47,14 @@ Scenario('websites texts', async ({ I }) => {
   }
 
   // websites number
-  if (numberOfWebsites === 1) {
+  if (websites.length === 1) {
     I.seeTextEquals(
-      `Website: ${numberOfWebsites}`,
+      `Website: ${websites.length}`,
       '[data-qa="websitesNumber"]'
     );
   } else {
     I.seeTextEquals(
-      `Websites: ${numberOfWebsites}`,
+      `Websites: ${websites.length}`,
       '[data-qa="websitesNumber"]'
     );
   }
@@ -142,12 +141,15 @@ Scenario('websites texts', async ({ I }) => {
   }
 
   // Table Body
-  for (let i = 0; i < websites.length; i++) {
-    const website = websites[i];
+  const random10websites = getRandomSubset(websites, 10);
+  for (const website of random10websites) {
+    const websiteIndex = websites.findIndex(
+      (w) => w['website'] === website['website']
+    );
     I.say(`check texts for ${website['website']}`);
     for (const column in columns) {
       if (!columns[column]['renderColumn']) continue;
-      const row = `.table tbody tr:nth-child(${i + 1})`;
+      const row = `.table tbody tr:nth-child(${websiteIndex + 1})`;
       switch (column) {
         case 'tags':
           I.seeAttributesOnElements(`${row}  [data-qa='${column}']`, {

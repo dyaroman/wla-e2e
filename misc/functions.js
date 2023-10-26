@@ -4,6 +4,20 @@ exports.getRandomNumber = (min, max) => {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 
+exports.getRandomSubset = (arr = [], size = arr.length) => {
+  const subsetSize = Math.min(size, arr.length);
+  const shuffledArray = [...arr];
+
+  // Shuffle the array using the Fisher-Yates algorithm.
+  for (let i = shuffledArray.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffledArray[i], shuffledArray[j]] = [shuffledArray[j], shuffledArray[i]];
+  }
+
+  // Return a subset of the shuffled array.
+  return shuffledArray.slice(0, subsetSize);
+};
+
 exports.fromCamelCaseToWords = (str) =>
   str
     .split(/(?=[A-Z0-9])/)
