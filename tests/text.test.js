@@ -88,7 +88,10 @@ Scenario('websites texts', async ({ I }) => {
     website.tags.forEach((tag) => tags.includes(tag) || tags.push(tag))
   );
   tags.forEach((tag) => {
-    I.seeTextEquals(tag, `label[data-qa='${tag}'] span.checkbox__label`);
+    I.seeTextEquals(
+      tag,
+      `.filters label[data-qa='${tag}'] span.checkbox__label`
+    );
   });
 
   // Filters controls
