@@ -71,6 +71,13 @@ for (const website in websites) {
     const data = websites[website];
     I.amOnPage(URL);
     I.waitForElement('table', 60);
+    const filtersCollapse = await I.grabAttributeFrom(
+      'details.filters',
+      'open'
+    ).then((attr) => attr === null);
+    if (filtersCollapse) {
+      I.click('details.filters summary');
+    }
 
     for (const key in data) {
       switch (key) {

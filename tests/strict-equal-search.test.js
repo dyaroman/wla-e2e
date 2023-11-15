@@ -5,6 +5,13 @@ Feature('strict equal search');
 Scenario('campaignId: 1 #static', async ({ I }) => {
   I.amOnPage(URL);
   I.waitForElement('table', 60);
+  const filtersCollapse = await I.grabAttributeFrom(
+    'details.filters',
+    'open'
+  ).then((attr) => attr === null);
+  if (filtersCollapse) {
+    I.click('details.filters summary');
+  }
 
   const numberOfAll = await I.grabNumberOfVisibleElements('tbody tr');
   I.fillField('input[data-qa="campaignId"]', '1');
@@ -30,6 +37,13 @@ Scenario('campaignId: 1 #static', async ({ I }) => {
 Scenario('mainForm: 1q_pd_im #static', async ({ I }) => {
   I.amOnPage(URL);
   I.waitForElement('table', 60);
+  const filtersCollapse = await I.grabAttributeFrom(
+    'details.filters',
+    'open'
+  ).then((attr) => attr === null);
+  if (filtersCollapse) {
+    I.click('details.filters summary');
+  }
 
   const numberOfAll = await I.grabNumberOfVisibleElements('tbody tr');
   I.fillField('input[data-qa="mainForm"]', '1q_pd_im');
@@ -55,6 +69,13 @@ Scenario('mainForm: 1q_pd_im #static', async ({ I }) => {
 Scenario('mainForm: 1q #sms', async ({ I }) => {
   I.amOnPage(URL);
   I.waitForElement('table', 60);
+  const filtersCollapse = await I.grabAttributeFrom(
+    'details.filters',
+    'open'
+  ).then((attr) => attr === null);
+  if (filtersCollapse) {
+    I.click('details.filters summary');
+  }
 
   const numberOfAll = await I.grabNumberOfVisibleElements('tbody tr');
   I.fillField('input[data-qa="mainForm"]', '1q_tcpa');

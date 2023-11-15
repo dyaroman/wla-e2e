@@ -61,6 +61,13 @@ Scenario('filters', async ({ I }) => {
 
   I.amOnPage(`${URL}/?${search}`);
   I.waitForElement('table', 60);
+  const filtersCollapse = await I.grabAttributeFrom(
+    'details.filters',
+    'open'
+  ).then((attr) => attr === null);
+  if (filtersCollapse) {
+    I.click('details.filters summary');
+  }
 
   I.seeTextEquals('Website: 1', '[data-qa="websitesNumber"]');
   I.seeNumberOfVisibleElements('tbody tr', 1);

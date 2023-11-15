@@ -14,6 +14,13 @@ Scenario('websites texts', async ({ I }) => {
     await response['json']();
   I.amOnPage(URL);
   I.waitForElement('table', 60);
+  const filtersCollapse = await I.grabAttributeFrom(
+    'details.filters',
+    'open'
+  ).then((attr) => attr === null);
+  if (filtersCollapse) {
+    I.click('details.filters summary');
+  }
 
   // InfoComponent
   // page title
