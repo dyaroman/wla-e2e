@@ -34,7 +34,7 @@ Scenario('websites texts', async ({ I }) => {
 
   // env
   if (env) {
-    I.seeTextEquals(`env: ${env}`, '[data-qa="env"]');
+    I.seeTextEquals(`Environment: ${env}`, '[data-qa="env"]');
   } else {
     I.dontSeeElement('[data-qa="env"]');
   }
