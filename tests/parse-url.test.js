@@ -78,7 +78,7 @@ Scenario('filters', async ({ I }) => {
     switch (key) {
       case 'tags':
         I.seeNumberOfVisibleElements(
-          '.filters .tags li',
+          '.table .tags li',
           websiteData['tags'].length
         );
         break;
