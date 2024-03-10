@@ -151,8 +151,8 @@ Scenario('websites texts', async ({ I }) => {
   }
 
   // Table Body
-  const random10websites = getRandomSubset(websites, 10);
-  for (const website of random10websites) {
+  const randomWebsites = getRandomSubset(websites, 10);
+  for (const website of randomWebsites) {
     const websiteIndex = websites.findIndex(
       (w) => w['website'] === website['website']
     );
