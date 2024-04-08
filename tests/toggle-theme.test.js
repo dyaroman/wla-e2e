@@ -1,7 +1,7 @@
 const { URL } = require('../misc/config');
 const { rgb2hex, hex2rgb } = require('../misc/color');
 
-Feature('theme toggle button #static #sms');
+Feature('theme toggle button @static @sms');
 
 Scenario('check light theme and toggle to dark', async ({ I }) => {
   I.amOnPage(URL);

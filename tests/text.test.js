@@ -2,7 +2,7 @@ const { fromCamelCaseToWords, getRandomSubset } = require('../misc/functions');
 const { URL, DATA_URL } = require('../misc/config');
 const { WEBSITES_DATA } = require('../misc/consts');
 
-Feature('check texts #static #sms');
+Feature('check texts @static @sms');
 
 Scenario('websites texts', async ({ I }) => {
   const response = await I.makeApiRequest(

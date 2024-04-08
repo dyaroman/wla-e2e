@@ -1,6 +1,6 @@
 const { URL } = require('../misc/config');
 
-Feature('no data to show #static #sms');
+Feature('no data to show @static @sms');
 
 Scenario('not existing website', async ({ I }) => {
   I.amOnPage(URL);

@@ -2,7 +2,7 @@ const { URL, DATA_URL } = require('../misc/config');
 const { WEBSITES_DATA } = require('../misc/consts');
 const { getRandomSubset } = require('../misc/functions');
 
-Feature('links #static #sms');
+Feature('links @static @sms');
 
 Scenario('commit link', async ({ I }) => {
   const response = await I.makeApiRequest(

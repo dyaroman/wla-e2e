@@ -2,7 +2,7 @@ const { URL } = require('../misc/config');
 
 Feature('strict not equal search');
 
-Scenario('campaignId: 1 #static', async ({ I }) => {
+Scenario('campaignId: 1 @static', async ({ I }) => {
   I.amOnPage(URL);
   I.waitForElement('table', 60);
   const filtersCollapse = await I.grabAttributeFrom(
@@ -34,7 +34,7 @@ Scenario('campaignId: 1 #static', async ({ I }) => {
   }
 });
 
-Scenario('mainForm: 1q_pd_im #static', async ({ I }) => {
+Scenario('mainForm: 1q_pd_im @static', async ({ I }) => {
   I.amOnPage(URL);
   I.waitForElement('table', 60);
   const filtersCollapse = await I.grabAttributeFrom(
@@ -66,7 +66,7 @@ Scenario('mainForm: 1q_pd_im #static', async ({ I }) => {
   }
 });
 
-Scenario('mainForm: 1q #sms', async ({ I }) => {
+Scenario('mainForm: 1q @sms', async ({ I }) => {
   I.amOnPage(URL);
   I.waitForElement('table', 60);
   const filtersCollapse = await I.grabAttributeFrom(

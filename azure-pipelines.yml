@@ -63,7 +63,7 @@ steps:
         eq(variables['Resources.TriggeringAlias'], 'data')
       )
 
-  - powershell: npx cross-env HEADLESS=true URL=dev.example-app.com ENV=dev codeceptjs run --grep "#static" --steps
+  - powershell: npx cross-env HEADLESS=true URL=dev.example-app.com ENV=dev codeceptjs run --grep "@static" --steps
     displayName: 'run dev env tests'
     continueOnError: true
     condition: |
@@ -79,7 +79,7 @@ steps:
         )
       )
 
-  - powershell: npx cross-env HEADLESS=true URL=prod.example-app.com ENV=prod codeceptjs run --grep "#static" --steps
+  - powershell: npx cross-env HEADLESS=true URL=prod.example-app.com ENV=prod codeceptjs run --grep "@static" --steps
     displayName: 'run prod env tests'
     continueOnError: true
     condition: |
@@ -95,7 +95,7 @@ steps:
         )
       )
 
-  #  - powershell: npx cross-env HEADLESS=true URL=sms-app.example.com DATA_URL=sms-app.example.com codeceptjs run --grep "#sms" --steps
+  #  - powershell: npx cross-env HEADLESS=true URL=sms-app.example.com DATA_URL=sms-app.example.com codeceptjs run --grep "@sms" --steps
   #    displayName: 'run sms static websites tests'
   #    continueOnError: true
   #    condition: |

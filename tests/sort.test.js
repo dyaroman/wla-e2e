@@ -1,7 +1,7 @@
 const { URL, DATA_URL } = require('../misc/config');
 const { WEBSITES_DATA } = require('../misc/consts');
 
-Feature('check sorts #static #sms');
+Feature('check sorts @static @sms');
 
 Scenario('desc website sort', async ({ I }) => {
   const response = await I.makeApiRequest(

@@ -3,7 +3,7 @@ const { NO_DATA, WEBSITES_DATA } = require('../misc/consts');
 const { hex2rgb } = require('../misc/color');
 const { fromCamelCaseToWords, getRandomSubset } = require('../misc/functions');
 
-Feature('color cells #static #sms');
+Feature('color cells @static @sms');
 
 Scenario('form theme bg color', async ({ I }) => {
   const response = await I.makeApiRequest(

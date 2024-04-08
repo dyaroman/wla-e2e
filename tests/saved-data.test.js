@@ -64,7 +64,7 @@ const websites = {
   },
 };
 
-Feature('filter website by saved data #static');
+Feature('filter website by saved data @static');
 
 for (const website in websites) {
   Scenario(website, async ({ I }) => {
