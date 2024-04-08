@@ -7,7 +7,7 @@ Scenario('campaignId: 1 #static', async ({ I }) => {
   I.waitForElement('table', 60);
   const filtersCollapse = await I.grabAttributeFrom(
     'details.filters',
-    'open'
+    'open',
   ).then((attr) => attr === null);
   if (filtersCollapse) {
     I.click('details.filters summary');
@@ -27,7 +27,7 @@ Scenario('campaignId: 1 #static', async ({ I }) => {
       numberOfAll,
       numberOfInclude,
       numberOfEqual,
-    })
+    }),
   );
   if (numberOfEqual === numberOfInclude) {
     throw new Error('Error due to filter websites by "campaignId": "==1"');
@@ -39,7 +39,7 @@ Scenario('mainForm: 1q_pd_im #static', async ({ I }) => {
   I.waitForElement('table', 60);
   const filtersCollapse = await I.grabAttributeFrom(
     'details.filters',
-    'open'
+    'open',
   ).then((attr) => attr === null);
   if (filtersCollapse) {
     I.click('details.filters summary');
@@ -59,7 +59,7 @@ Scenario('mainForm: 1q_pd_im #static', async ({ I }) => {
       numberOfAll,
       numberOfInclude,
       numberOfEqual,
-    })
+    }),
   );
   if (numberOfEqual === numberOfInclude) {
     throw new Error('Error due to filter websites by "mainForm": "==1q_pd_im"');
@@ -71,7 +71,7 @@ Scenario('mainForm: 1q #sms', async ({ I }) => {
   I.waitForElement('table', 60);
   const filtersCollapse = await I.grabAttributeFrom(
     'details.filters',
-    'open'
+    'open',
   ).then((attr) => attr === null);
   if (filtersCollapse) {
     I.click('details.filters summary');
@@ -91,7 +91,7 @@ Scenario('mainForm: 1q #sms', async ({ I }) => {
       numberOfAll,
       numberOfInclude,
       numberOfEqual,
-    })
+    }),
   );
   if (numberOfEqual === numberOfInclude) {
     throw new Error('Error due to filter websites by "mainForm": "==1q_tcpa"');

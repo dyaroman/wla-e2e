@@ -28,8 +28,8 @@ const websites = {
     tags: ['index btn'],
     ogImage: ['images/OG_image.jpg'],
     host: isProd ? 'bad-credit-loans.co' : 'bad-credit-loans_co.example-app.com',
-    mainFormPrimaryColor: '#FE6645',
-    altFormPrimaryColor: '#FE6645',
+    mainFormPrimaryColor: '#fe6645',
+    altFormPrimaryColor: '#fe6645',
     mainFormEsPrimaryColor: 'no_data',
   },
   'WhiteRockLoans.com': {
@@ -73,7 +73,7 @@ for (const website in websites) {
     I.waitForElement('table', 60);
     const filtersCollapse = await I.grabAttributeFrom(
       'details.filters',
-      'open'
+      'open',
     ).then((attr) => attr === null);
     if (filtersCollapse) {
       I.click('details.filters summary');

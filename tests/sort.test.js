@@ -7,7 +7,7 @@ Scenario('desc website sort', async ({ I }) => {
   const response = await I.makeApiRequest(
     'GET',
     `${DATA_URL}/${WEBSITES_DATA}`,
-    {}
+    {},
   );
   const { websites } = await response['json']();
   const websiteData = websites[websites.length - 1];
@@ -24,6 +24,6 @@ Scenario('desc website sort', async ({ I }) => {
   I.seeInCurrentUrl('column=website&direction=desc');
   I.seeTextEquals(
     websiteData['website'],
-    'tbody tr:first-child [data-qa="website"]'
+    'tbody tr:first-child [data-qa="website"]',
   );
 });

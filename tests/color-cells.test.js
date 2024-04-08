@@ -9,7 +9,7 @@ Scenario('form theme bg color', async ({ I }) => {
   const response = await I.makeApiRequest(
     'GET',
     `${DATA_URL}/${WEBSITES_DATA}`,
-    {}
+    {},
   );
   const { columns, websites } = await response['json']();
   I.amOnPage(URL);
@@ -27,7 +27,7 @@ Scenario('form theme bg color', async ({ I }) => {
   const randomWebsites = getRandomSubset(websites, 10);
   for (const website of randomWebsites) {
     const websiteIndex = websites.findIndex(
-      (w) => w['website'] === website['website']
+      (w) => w['website'] === website['website'],
     );
     const row = `.table tbody tr:nth-child(${websiteIndex + 1})`;
     for (const key in website) {
@@ -40,7 +40,7 @@ Scenario('form theme bg color', async ({ I }) => {
           const selector = key.replace('PrimaryColor', 'Theme');
           const bgColorRgb = await I.grabCssPropertyFrom(
             `${row} td[data-qa="${selector}"]`,
-            'background-color'
+            'background-color',
           );
           if (bgColorRgb !== hex2rgb(website[key])) {
             throw new Error('background color is wrong, please check');

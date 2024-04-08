@@ -9,7 +9,7 @@ Scenario('sorts', async ({ I }) => {
   const response = await I.makeApiRequest(
     'GET',
     `${DATA_URL}/${WEBSITES_DATA}`,
-    {}
+    {},
   );
   const { websites } = await response['json']();
   const websiteData = websites[websites.length - 1];
@@ -26,7 +26,7 @@ Scenario('sorts', async ({ I }) => {
   I.waitForElement('table', 60);
   I.seeTextEquals(
     websiteData['website'],
-    'tbody tr:first-child [data-qa="website"]'
+    'tbody tr:first-child [data-qa="website"]',
   );
 });
 
@@ -35,14 +35,14 @@ Scenario('filters', async ({ I }) => {
   const response = await I.makeApiRequest(
     'GET',
     `${DATA_URL}/${WEBSITES_DATA}`,
-    {}
+    {},
   );
   const { websites, columns } = await response['json']();
   const numberOfWebsites = websites.length;
   const randomNumber = getRandomNumber(0, numberOfWebsites - 1);
   const websiteData = websites[randomNumber];
   await I.say(
-    `Run test for website #${randomNumber} ${websiteData['website']}`
+    `Run test for website #${randomNumber} ${websiteData['website']}`,
   );
 
   // prepare searchParams
@@ -63,7 +63,7 @@ Scenario('filters', async ({ I }) => {
   I.waitForElement('table', 60);
   const filtersCollapse = await I.grabAttributeFrom(
     'details.filters',
-    'open'
+    'open',
   ).then((attr) => attr === null);
   if (filtersCollapse) {
     I.click('details.filters summary');
@@ -79,7 +79,7 @@ Scenario('filters', async ({ I }) => {
       case 'tags':
         I.seeNumberOfVisibleElements(
           '.table .tags li',
-          websiteData['tags'].length
+          websiteData['tags'].length,
         );
         break;
       default:

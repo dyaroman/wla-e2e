@@ -8,7 +8,7 @@ Scenario('commit link', async ({ I }) => {
   const response = await I.makeApiRequest(
     'GET',
     `${DATA_URL}/${WEBSITES_DATA}`,
-    {}
+    {},
   );
   const { commit, repoPath } = await response['json']();
   I.amOnPage(URL);
@@ -26,7 +26,7 @@ Scenario('websites links', async ({ I }) => {
   const response = await I.makeApiRequest(
     'GET',
     `${DATA_URL}/${WEBSITES_DATA}`,
-    {}
+    {},
   );
   const { websites } = await response['json']();
   I.amOnPage(URL);
@@ -35,7 +35,7 @@ Scenario('websites links', async ({ I }) => {
   const randomWebsites = getRandomSubset(websites, 10);
   for (const website of randomWebsites) {
     const websiteIndex = websites.findIndex(
-      (w) => w['website'] === website['website']
+      (w) => w['website'] === website['website'],
     );
     const row = `.table tbody tr:nth-child(${websiteIndex + 1})`;
     for (const column in website) {

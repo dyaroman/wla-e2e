@@ -7,7 +7,7 @@ Scenario('not existing website', async ({ I }) => {
   I.waitForElement('table', 60);
   const filtersCollapse = await I.grabAttributeFrom(
     'details.filters',
-    'open'
+    'open',
   ).then((attr) => attr === null);
   if (filtersCollapse) {
     I.click('details.filters summary');
@@ -16,6 +16,6 @@ Scenario('not existing website', async ({ I }) => {
   I.seeTextEquals('Websites: 0', '[data-qa="websitesNumber"]');
   I.seeTextEquals(
     'No data to show, please check your filters.',
-    '[data-qa="noResults"]'
+    '[data-qa="noResults"]',
   );
 });

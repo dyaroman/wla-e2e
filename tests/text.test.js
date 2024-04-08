@@ -8,7 +8,7 @@ Scenario('websites texts', async ({ I }) => {
   const response = await I.makeApiRequest(
     'GET',
     `${DATA_URL}/${WEBSITES_DATA}`,
-    {}
+    {},
   );
   const { columns, commit, env, project, repoPath, timestamp, websites } =
     await response['json']();
@@ -16,7 +16,7 @@ Scenario('websites texts', async ({ I }) => {
   I.waitForElement('table', 60);
   const filtersCollapse = await I.grabAttributeFrom(
     'details.filters',
-    'open'
+    'open',
   ).then((attr) => attr === null);
   if (filtersCollapse) {
     I.click('details.filters summary');
@@ -26,7 +26,7 @@ Scenario('websites texts', async ({ I }) => {
   // page title
   if (env || project) {
     I.seeTitleEquals(
-      `${project && `[${project}]`}${env && `[${env}]`}: Websites List App`
+      `${project && `[${project}]`}${env && `[${env}]`}: Websites List App`,
     );
   } else {
     I.seeTitleEquals('Websites List App');
@@ -57,12 +57,12 @@ Scenario('websites texts', async ({ I }) => {
   if (websites.length === 1) {
     I.seeTextEquals(
       `Website: ${websites.length}`,
-      '[data-qa="websitesNumber"]'
+      '[data-qa="websitesNumber"]',
     );
   } else {
     I.seeTextEquals(
       `Websites: ${websites.length}`,
-      '[data-qa="websitesNumber"]'
+      '[data-qa="websitesNumber"]',
     );
   }
 
@@ -80,8 +80,8 @@ Scenario('websites texts', async ({ I }) => {
       default:
         I.seeElement(
           `//details[@class='filters']//span[text()='${fromCamelCaseToWords(
-            column
-          )}']`
+            column,
+          )}']`,
         );
         I.seeAttributesOnElements(`input[data-qa="${column}"]`, {
           placeholder: fromCamelCaseToWords(column),
@@ -92,12 +92,12 @@ Scenario('websites texts', async ({ I }) => {
   // Tags
   const tags = [];
   websites.forEach((website) =>
-    website.tags.forEach((tag) => tags.includes(tag) || tags.push(tag))
+    website.tags.forEach((tag) => tags.includes(tag) || tags.push(tag)),
   );
   tags.forEach((tag) => {
     I.seeTextEquals(
       tag,
-      `.filters label[data-qa='${tag}'] span.checkbox__label`
+      `.filters label[data-qa='${tag}'] span.checkbox__label`,
     );
   });
 
@@ -116,11 +116,11 @@ Scenario('websites texts', async ({ I }) => {
   for (const column in columns) {
     if (!columns[column]['renderColumn']) continue;
     const label = `.showed-columns label[data-qa='${fromCamelCaseToWords(
-      column
+      column,
     )}']`;
     I.seeTextEquals(
       fromCamelCaseToWords(column),
-      `${label} span.checkbox__label`
+      `${label} span.checkbox__label`,
     );
     if (showedColumns.includes(column)) {
       I.seeCheckboxIsChecked(`${label} input.checkbox__input`);
@@ -132,11 +132,11 @@ Scenario('websites texts', async ({ I }) => {
   // Controls
   I.seeTextEquals(
     'hide all columns',
-    '.table-controls button[data-qa="hideAllColumns"]'
+    '.table-controls button[data-qa="hideAllColumns"]',
   );
   I.seeTextEquals(
     'restore default columns',
-    '.table-controls button[data-qa="restoreDefaultColumns"]'
+    '.table-controls button[data-qa="restoreDefaultColumns"]',
   );
 
   // TableComponent
@@ -146,7 +146,7 @@ Scenario('websites texts', async ({ I }) => {
     if (!columns[column]['renderColumn']) continue;
     I.seeTextEquals(
       fromCamelCaseToWords(column),
-      `.table thead th[data-qa="${column}"]`
+      `.table thead th[data-qa="${column}"]`,
     );
   }
 
@@ -154,7 +154,7 @@ Scenario('websites texts', async ({ I }) => {
   const randomWebsites = getRandomSubset(websites, 10);
   for (const website of randomWebsites) {
     const websiteIndex = websites.findIndex(
-      (w) => w['website'] === website['website']
+      (w) => w['website'] === website['website'],
     );
     I.say(`check texts for ${website['website']}`);
     for (const column in columns) {
@@ -167,7 +167,7 @@ Scenario('websites texts', async ({ I }) => {
           });
           Array.isArray(website[column]) &&
             website[column].forEach((tag) =>
-              I.seeTextEquals(tag, `${row} [data-qa='${tag}']`)
+              I.seeTextEquals(tag, `${row} [data-qa='${tag}']`),
             );
           break;
         case 'ogImage':
@@ -176,7 +176,9 @@ Scenario('websites texts', async ({ I }) => {
           });
           Array.isArray(website[column]) &&
             website[column].forEach((path) =>
-              I.seeElementInDOM(`img[src="https://${website['host']}/${path}"]`)
+              I.seeElementInDOM(
+                `img[src="https://${website['host']}/${path}"]`,
+              ),
             );
           break;
         default:
@@ -185,7 +187,7 @@ Scenario('websites texts', async ({ I }) => {
           });
           I.seeTextEquals(
             String(website[column]),
-            `${row} [data-qa='${column}']`
+            `${row} [data-qa='${column}']`,
           );
       }
     }
