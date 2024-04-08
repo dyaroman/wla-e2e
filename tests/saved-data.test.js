@@ -99,6 +99,7 @@ for (const website in websites) {
       }
     }
     I.seeTextEquals('Website: 1', '[data-qa="websitesNumber"]');
+    I.seeInTitle('[1]');
     I.seeNumberOfVisibleElements('tbody tr', 1);
   });
 }

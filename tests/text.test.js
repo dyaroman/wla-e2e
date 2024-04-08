@@ -24,13 +24,15 @@ Scenario('websites texts', async ({ I }) => {
 
   // InfoComponent
   // page title
-  if (env || project) {
-    I.seeTitleEquals(
-      `${project && `[${project}]`}${env && `[${env}]`}: Websites List App`,
-    );
-  } else {
-    I.seeTitleEquals('Websites List App');
+  let title = `[${websites.length}]`;
+  if (project) {
+    title += `[${project}]`;
   }
+  if (env) {
+    title += `[${env}]`;
+  }
+  title += ': Websites List App';
+  I.seeTitleEquals(title);
 
   // env
   if (env) {

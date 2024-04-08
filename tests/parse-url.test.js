@@ -70,6 +70,7 @@ Scenario('filters', async ({ I }) => {
   }
 
   I.seeTextEquals('Website: 1', '[data-qa="websitesNumber"]');
+  I.seeInTitle('[1]');
   I.seeNumberOfVisibleElements('tbody tr', 1);
 
   // check that data from URL searchParams equal to data from file
