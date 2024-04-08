@@ -52,6 +52,9 @@ steps:
       verbose: false
       customCommand: 'ci --omit=dev'
 
+  - powershell: npx playwright install --with-deps
+    displayName: 'Install playwright browsers'
+
   - powershell: Start-Sleep -Seconds 60
     displayName: 'wait for 1m'
     condition: |
