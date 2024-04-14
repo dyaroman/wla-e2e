@@ -21,7 +21,9 @@ Scenario('form theme bg color', async ({ I }) => {
   for (const column in columns) {
     if (column !== 'website' && !column.toLowerCase().includes('theme'))
       continue;
-    I.click(`.showed-columns label[data-qa="${fromCamelCaseToWords(column)}"]`);
+    I.click(
+      `.customize-columns label[data-qa="${fromCamelCaseToWords(column)}"]`,
+    );
   }
 
   const randomWebsites = getRandomSubset(websites, 10);

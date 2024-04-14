@@ -108,8 +108,8 @@ Scenario('websites texts', async ({ I }) => {
   I.seeTextEquals('copy websites', 'button[data-qa="copyWebsites"]');
 
   // TableControlsComponent
-  // Showed columns
-  I.seeTextEquals('Showed columns:', '.table-controls details summary');
+  // Customize columns
+  I.seeTextEquals('Customize columns:', '.table-controls details summary');
   const showedColumns = [];
   for (const column in columns) {
     columns[column]['showColumn'] && showedColumns.push(column);
@@ -117,7 +117,7 @@ Scenario('websites texts', async ({ I }) => {
   I.click('.table-controls details summary');
   for (const column in columns) {
     if (!columns[column]['renderColumn']) continue;
-    const label = `.showed-columns label[data-qa='${fromCamelCaseToWords(
+    const label = `.customize-columns label[data-qa='${fromCamelCaseToWords(
       column,
     )}']`;
     I.seeTextEquals(
