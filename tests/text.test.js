@@ -164,7 +164,7 @@ Scenario('websites texts', async ({ I }) => {
       const row = `.table tbody tr:nth-child(${websiteIndex + 1})`;
       switch (column) {
         case 'tags':
-          I.seeAttributesOnElements(`${row}  [data-qa='${column}']`, {
+          I.seeAttributesOnElements(`${row} [data-qa='${column}']`, {
             'data-title': fromCamelCaseToWords(column),
           });
           Array.isArray(website[column]) &&
@@ -172,8 +172,9 @@ Scenario('websites texts', async ({ I }) => {
               I.seeTextEquals(tag, `${row} [data-qa='${tag}']`),
             );
           break;
+
         case 'ogImage':
-          I.seeAttributesOnElements(`${row}  [data-qa='${column}']`, {
+          I.seeAttributesOnElements(`${row} [data-qa='${column}']`, {
             'data-title': fromCamelCaseToWords(column),
           });
           Array.isArray(website[column]) &&
@@ -183,8 +184,15 @@ Scenario('websites texts', async ({ I }) => {
               ),
             );
           break;
+
+        case 'pages':
+          for (const page of website[column]) {
+            I.see(page, `${row} [data-qa='${column}']`);
+          }
+          break;
+
         default:
-          I.seeAttributesOnElements(`${row}  [data-qa='${column}']`, {
+          I.seeAttributesOnElements(`${row} [data-qa='${column}']`, {
             'data-title': fromCamelCaseToWords(column),
           });
           I.seeTextEquals(

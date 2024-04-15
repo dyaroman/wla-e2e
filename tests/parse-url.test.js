@@ -54,6 +54,10 @@ Scenario('filters', async ({ I }) => {
           search.set(key, websiteData[key].join());
         }
         break;
+
+      case 'pages':
+        break;
+
       default:
         search.set(key, websiteData[key]);
     }
@@ -83,6 +87,10 @@ Scenario('filters', async ({ I }) => {
           websiteData['tags'].length,
         );
         break;
+
+      case 'pages':
+        break;
+
       default:
         I.seeInField(`[data-qa="${key}"]`, websiteData[key]);
     }
