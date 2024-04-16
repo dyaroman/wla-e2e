@@ -41,6 +41,8 @@ Scenario('filters', async ({ I }) => {
   const numberOfWebsites = websites.length;
   const randomNumber = getRandomNumber(0, numberOfWebsites - 1);
   const websiteData = websites[randomNumber];
+  const randomPage =
+    websiteData['pages'][getRandomNumber(0, websiteData['pages'].length - 1)];
   await I.say(
     `Run test for website #${randomNumber} ${websiteData['website']}`,
   );
@@ -56,6 +58,7 @@ Scenario('filters', async ({ I }) => {
         break;
 
       case 'pages':
+        search.set(key, randomPage);
         break;
 
       default:
@@ -89,6 +92,7 @@ Scenario('filters', async ({ I }) => {
         break;
 
       case 'pages':
+        I.seeInField(`[data-qa="${key}"]`, randomPage);
         break;
 
       default:
