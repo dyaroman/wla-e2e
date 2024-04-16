@@ -4,7 +4,7 @@ const { hex2rgb } = require('../misc/color');
 Feature('theme toggle button @static @sms');
 
 Scenario('check light theme and toggle to dark', async ({ I }) => {
-  I.amOnPage(URL);
+  I.amOnPage(`${URL}/`);
 
   // check light theme
   I.seeAttributesOnElements('body', { 'data-theme': 'light' });

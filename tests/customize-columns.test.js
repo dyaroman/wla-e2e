@@ -3,7 +3,7 @@ const { URL } = require('../misc/config');
 Feature('customize columns @static @sms');
 
 Scenario('default columns', async ({ I }) => {
-  I.amOnPage(URL);
+  I.amOnPage(`${URL}/`);
   I.waitForElement('table', 60);
 
   const columns = await I.grabAttributeFromAll(
@@ -51,7 +51,7 @@ Scenario('alias "none"', async ({ I }) => {
 });
 
 Scenario('show all columns button', async ({ I }) => {
-  I.amOnPage(URL);
+  I.amOnPage(`${URL}/`);
   I.waitForElement('table', 60);
   I.click('.table-controls summary');
   I.click('[data-qa="showAllColumns"]');
@@ -65,7 +65,7 @@ Scenario('show all columns button', async ({ I }) => {
 });
 
 Scenario('hide all columns button', async ({ I }) => {
-  I.amOnPage(URL);
+  I.amOnPage(`${URL}/`);
   I.waitForElement('table', 60);
   I.click('.table-controls summary');
   I.click('[data-qa="hideAllColumns"]');

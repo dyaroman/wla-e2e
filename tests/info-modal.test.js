@@ -3,7 +3,7 @@ const { URL } = require('../misc/config');
 Feature('info modal @static @sms');
 
 Scenario('open and close', ({ I }) => {
-  I.amOnPage(URL);
+  I.amOnPage(`${URL}/`);
   I.click('.info-modal-btn');
   I.seeElement('dialog.info-modal');
   I.seeElement('//h3[text()="Shortcuts:"]');

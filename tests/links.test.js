@@ -11,7 +11,7 @@ Scenario('commit link and websites links', async ({ I }) => {
     {},
   );
   const { commit, repoPath, websites } = await response['json']();
-  I.amOnPage(URL);
+  I.amOnPage(`${URL}/`);
   I.waitForElement('table', 60);
 
   // commit

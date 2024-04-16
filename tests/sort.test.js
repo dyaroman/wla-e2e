@@ -12,7 +12,7 @@ Scenario('desc website sort', async ({ I }) => {
   const { websites } = await response['json']();
   const websiteData = websites[websites.length - 1];
 
-  I.amOnPage(URL);
+  I.amOnPage(`${URL}/`);
   I.waitForElement('table', 60);
 
   // asc direction
