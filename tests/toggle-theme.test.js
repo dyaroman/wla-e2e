@@ -1,5 +1,5 @@
 const { URL } = require('../misc/config');
-const { rgb2hex, hex2rgb } = require('../misc/color');
+const { hex2rgb } = require('../misc/color');
 
 Feature('theme toggle button @static @sms');
 

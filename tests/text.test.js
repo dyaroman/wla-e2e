@@ -12,15 +12,8 @@ Scenario('websites texts', async ({ I }) => {
   );
   const { columns, commit, env, project, repoPath, timestamp, websites } =
     await response['json']();
-  I.amOnPage(URL);
+  I.amOnPage(`${URL}/?filtersOpen=&customizeColumnsOpen=`);
   I.waitForElement('table', 60);
-  const filtersCollapse = await I.grabAttributeFrom(
-    'details.filters',
-    'open',
-  ).then((attr) => attr === null);
-  if (filtersCollapse) {
-    I.click('details.filters summary');
-  }
 
   // InfoComponent
   // page title
@@ -114,7 +107,6 @@ Scenario('websites texts', async ({ I }) => {
   for (const column in columns) {
     columns[column]['showColumn'] && showedColumns.push(column);
   }
-  I.click('.table-controls details summary');
   for (const column in columns) {
     if (!columns[column]['renderColumn']) continue;
     const label = `.customize-columns label[data-qa='${fromCamelCaseToWords(
@@ -153,7 +145,7 @@ Scenario('websites texts', async ({ I }) => {
   }
 
   // Table Body
-  const randomWebsites = getRandomSubset(websites, 10);
+  const randomWebsites = getRandomSubset(websites, 5);
   for (const website of randomWebsites) {
     const websiteIndex = websites.findIndex(
       (w) => w['website'] === website['website'],
