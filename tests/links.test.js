@@ -4,13 +4,13 @@ const { getRandomSubset } = require('../misc/functions');
 
 Feature('links @static @sms');
 
-Scenario('commit link', async ({ I }) => {
+Scenario('commit link and websites links', async ({ I }) => {
   const response = await I.makeApiRequest(
     'GET',
     `${DATA_URL}/${WEBSITES_DATA}`,
     {},
   );
-  const { commit, repoPath } = await response['json']();
+  const { commit, repoPath, websites } = await response['json']();
   I.amOnPage(URL);
   I.waitForElement('table', 60);
 
@@ -20,17 +20,6 @@ Scenario('commit link', async ({ I }) => {
       href: `https://dev.azure.com/example-org/${repoPath}/commit/${commit}`,
     });
   }
-});
-
-Scenario('websites links', async ({ I }) => {
-  const response = await I.makeApiRequest(
-    'GET',
-    `${DATA_URL}/${WEBSITES_DATA}`,
-    {},
-  );
-  const { websites } = await response['json']();
-  I.amOnPage(URL);
-  I.waitForElement('table', 60);
 
   const randomWebsites = getRandomSubset(websites, 10);
   for (const website of randomWebsites) {
