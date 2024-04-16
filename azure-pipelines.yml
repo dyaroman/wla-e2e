@@ -85,13 +85,8 @@ steps:
     condition: |
       and(
         succeeded(),
-        or(
-          ne(variables['Build.Reason'], 'ResourceTrigger'),
-          and(
-            eq(variables['Resources.TriggeringAlias'], 'data'),
-            eq(variables['resources.pipeline.data.sourceBranch'], 'refs/heads/master')
-          )
-        )
+        eq(variables['Resources.TriggeringAlias'], 'data'),
+        eq(variables['resources.pipeline.data.sourceBranch'], 'refs/heads/master')
       )
 
   #  - powershell: npx cross-env HEADLESS=true URL=sms-app.example.com DATA_URL=sms-app.example.com codeceptjs run --grep "@sms" --steps
