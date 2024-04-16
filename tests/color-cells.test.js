@@ -12,12 +12,10 @@ Scenario('form theme bg color', async ({ I }) => {
     {},
   );
   const { columns, websites } = await response['json']();
-  I.amOnPage(URL);
+  I.amOnPage(`${URL}/?showColumns=none&customizeColumnsOpen=`);
   I.waitForElement('table', 60);
 
   // prepare columns
-  I.click('.table-controls details summary');
-  I.click('button[data-qa="hideAllColumns"]');
   for (const column in columns) {
     if (column !== 'website' && !column.toLowerCase().includes('theme'))
       continue;
