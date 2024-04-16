@@ -38,8 +38,7 @@ Scenario('filters', async ({ I }) => {
     {},
   );
   const { websites, columns } = await response['json']();
-  const numberOfWebsites = websites.length;
-  const randomNumber = getRandomNumber(0, numberOfWebsites - 1);
+  const randomNumber = getRandomNumber(0, websites.length - 1);
   const websiteData = websites[randomNumber];
   const randomPage =
     websiteData['pages'][getRandomNumber(0, websiteData['pages'].length - 1)];
