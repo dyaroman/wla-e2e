@@ -1,9 +1,10 @@
 const { URL } = require('../misc/config');
+const { FILTERS_OPEN } = require('../misc/consts');
 
 Feature('strict != search');
 
 Scenario('mainForm != 1q_pd_im @static', async ({ I }) => {
-  I.amOnPage(`${URL}/?filtersOpen=`);
+  I.amOnPage(`${URL}/?${FILTERS_OPEN}=`);
   I.waitForElement('table', 60);
 
   const numberOfAll = await I.grabNumberOfVisibleElements('tbody tr');
@@ -28,7 +29,7 @@ Scenario('mainForm != 1q_pd_im @static', async ({ I }) => {
 });
 
 Scenario('mainForm != 1q_tcpa_v2 @sms', async ({ I }) => {
-  I.amOnPage(`${URL}/?filtersOpen=`);
+  I.amOnPage(`${URL}/?${FILTERS_OPEN}=`);
   I.waitForElement('table', 60);
 
   const numberOfAll = await I.grabNumberOfVisibleElements('tbody tr');
