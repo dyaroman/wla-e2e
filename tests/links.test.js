@@ -4,7 +4,7 @@ const { getRandomSubset } = require('../misc/functions');
 
 Feature('links @static @sms');
 
-Scenario('commit link and websites links', async ({ I }) => {
+Scenario('should see last commit link and websites links', async ({ I }) => {
   const response = await I.makeApiRequest(
     'GET',
     `${DATA_URL}/${WEBSITES_DATA}`,

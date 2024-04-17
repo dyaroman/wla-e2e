@@ -2,7 +2,7 @@ const { URL } = require('../misc/config');
 
 Feature('show columns @static @sms');
 
-Scenario('show filtered column', async ({ I }) => {
+Scenario('should show filtered column if it present in url', async ({ I }) => {
   I.amOnPage(`${URL}/?showColumns=none&customizeColumnsOpen=&website=loan`);
   I.waitForElement('table', 60);
   const columns = await I.grabAttributeFromAll(
@@ -20,7 +20,7 @@ Scenario('show filtered column', async ({ I }) => {
   }
 });
 
-Scenario('show sorted column', async ({ I }) => {
+Scenario('should show sorted column if it present in url', async ({ I }) => {
   I.amOnPage(`${URL}/?showColumns=none&customizeColumnsOpen=&column=website`);
   I.waitForElement('table', 60);
   const columns = await I.grabAttributeFromAll(

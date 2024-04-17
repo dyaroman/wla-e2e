@@ -2,7 +2,7 @@ const { URL } = require('../misc/config');
 
 Feature('gtm @static @sms');
 
-Scenario('check key', async ({ I }) => {
+Scenario('should see gtm script and correct key in source', async ({ I }) => {
   I.amOnPage(`${URL}/`);
   I.seeInSource('https://www.googletagmanager.com/gtm.js');
   I.seeInSource('GTM-XXXXXXXX');

@@ -1,103 +1,174 @@
-const { URL } = require('../misc/config');
+const { URL, DATA_URL } = require('../misc/config');
+const { WEBSITES_DATA } = require('../misc/consts');
+const { fromCamelCaseToWords } = require('../misc/functions');
 
 Feature('customize columns @static @sms');
 
-Scenario('default columns', async ({ I }) => {
-  I.amOnPage(`${URL}/`);
-  I.waitForElement('table', 60);
+Scenario(
+  "default columns should be checked, showed and url don't have showColumns parameter",
+  async ({ I }) => {
+    I.amOnPage(`${URL}/`);
 
-  const columns = await I.grabAttributeFromAll(
-    '.customize-columns .checkbox__input',
-    'name',
-  );
-  for (const column of columns) {
-    const checked = await I.grabCheckedElementStatus(
-      `.checkbox__input[name="${column}"]`,
+    const response = await I.makeApiRequest(
+      'GET',
+      `${DATA_URL}/${WEBSITES_DATA}`,
+      {},
     );
-    if (checked) {
-      I.seeElement(`//table//th[text()='${column}']`);
-    } else {
-      I.dontSeeElement(`//table//th[text()='${column}']`);
+    const { columns } = await response['json']();
+
+    for (const column in columns) {
+      // skip columns that can't be rendered
+      if (!columns[column]['renderColumn']) continue;
+
+      const columnName = fromCamelCaseToWords(column);
+      const checkbox = `.customize-columns .checkbox__input[name='${columnName}']`;
+      if (columns[column]['showColumn']) {
+        I.seeCheckboxIsChecked(checkbox);
+        I.seeElement(`//th[text()='${columnName}']`);
+      } else {
+        I.dontSeeCheckboxIsChecked(checkbox);
+        I.dontSeeElement(`//th[text()='${columnName}']`);
+      }
     }
-  }
-});
 
-Scenario('alias "all"', async ({ I }) => {
-  I.amOnPage(`${URL}/?showColumns=all`);
-  I.waitForElement('table', 60);
+    I.dontSeeInCurrentUrl('showColumns=');
+  },
+);
 
-  const columns = await I.grabAttributeFromAll(
-    '.customize-columns .checkbox__input',
-    'name',
-  );
+Scenario(
+  'should show all columns when url parameter showColumns="all"',
+  async ({ I }) => {
+    I.amOnPage(`${URL}/?showColumns=all`);
 
-  for (const column of columns) {
-    I.seeElement(`//table//th[text()='${column}']`);
-  }
-});
-
-Scenario('alias "none"', async ({ I }) => {
-  I.amOnPage(`${URL}/?showColumns=none`);
-  I.waitForElement('table', 60);
-
-  const columns = await I.grabAttributeFromAll(
-    '.customize-columns .checkbox__input',
-    'name',
-  );
-
-  for (const column of columns) {
-    I.dontSeeElement(`//table//th[text()='${column}']`);
-  }
-});
-
-Scenario('show all columns button', async ({ I }) => {
-  I.amOnPage(`${URL}/`);
-  I.waitForElement('table', 60);
-  I.click('.table-controls summary');
-  I.click('[data-qa="showAllColumns"]');
-  const columns = await I.grabAttributeFromAll(
-    '.customize-columns .checkbox__input',
-    'name',
-  );
-  for (const column of columns) {
-    I.seeElement(`//table//th[text()='${column}']`);
-  }
-});
-
-Scenario('hide all columns button', async ({ I }) => {
-  I.amOnPage(`${URL}/`);
-  I.waitForElement('table', 60);
-  I.click('.table-controls summary');
-  I.click('[data-qa="hideAllColumns"]');
-  const columns = await I.grabAttributeFromAll(
-    '.customize-columns .checkbox__input',
-    'name',
-  );
-  for (const column of columns) {
-    I.dontSeeElement(`//table//th[text()='${column}']`);
-  }
-});
-
-Scenario('restore default columns button', async ({ I }) => {
-  I.amOnPage(`${URL}/?showColumns=none`);
-  I.waitForElement('table', 60);
-  const columns = await I.grabAttributeFromAll(
-    '.customize-columns .checkbox__input',
-    'name',
-  );
-  for (const column of columns) {
-    I.dontSeeElement(`//table//th[text()='${column}']`);
-  }
-  I.click('.table-controls summary');
-  I.click('[data-qa="restoreDefaultColumns"]');
-  for (const column of columns) {
-    const checked = await I.grabCheckedElementStatus(
-      `.checkbox__input[name="${column}"]`,
+    const response = await I.makeApiRequest(
+      'GET',
+      `${DATA_URL}/${WEBSITES_DATA}`,
+      {},
     );
-    if (checked) {
-      I.seeElement(`//table//th[text()='${column}']`);
-    } else {
-      I.dontSeeElement(`//table//th[text()='${column}']`);
+    const { columns } = await response['json']();
+
+    for (const column in columns) {
+      // skip columns that can't be rendered
+      if (!columns[column]['renderColumn']) continue;
+
+      const columnName = fromCamelCaseToWords(column);
+      const checkbox = `.customize-columns .checkbox__input[name='${columnName}']`;
+      I.seeCheckboxIsChecked(checkbox);
+      I.seeElement(`//th[text()='${columnName}']`);
     }
-  }
-});
+  },
+);
+
+Scenario(
+  'should show none columns when url parameter showColumns="none"',
+  async ({ I }) => {
+    I.amOnPage(`${URL}/?showColumns=none`);
+
+    const response = await I.makeApiRequest(
+      'GET',
+      `${DATA_URL}/${WEBSITES_DATA}`,
+      {},
+    );
+    const { columns } = await response['json']();
+
+    for (const column in columns) {
+      // skip columns that can't be rendered
+      if (!columns[column]['renderColumn']) continue;
+
+      const columnName = fromCamelCaseToWords(column);
+      const checkbox = `.customize-columns .checkbox__input[name='${columnName}']`;
+      I.dontSeeCheckboxIsChecked(checkbox);
+      I.dontSeeElement(`//th[text()='${columnName}']`);
+    }
+  },
+);
+
+Scenario(
+  'should show all columns when "show all columns" button clicked',
+  async ({ I }) => {
+    I.amOnPage(`${URL}/`);
+    const response = await I.makeApiRequest(
+      'GET',
+      `${DATA_URL}/${WEBSITES_DATA}`,
+      {},
+    );
+    const { columns } = await response['json']();
+
+    I.click('.table-controls summary');
+    I.click('[data-qa="showAllColumns"]');
+    for (const column in columns) {
+      // skip columns that can't be rendered
+      if (!columns[column]['renderColumn']) continue;
+
+      const columnName = fromCamelCaseToWords(column);
+      const checkbox = `.customize-columns .checkbox__input[name='${columnName}']`;
+      I.seeCheckboxIsChecked(checkbox);
+      I.seeElement(`//th[text()='${columnName}']`);
+    }
+  },
+);
+
+Scenario(
+  'should hide all columns when "hide all columns" button clicked',
+  async ({ I }) => {
+    I.amOnPage(`${URL}/`);
+    const response = await I.makeApiRequest(
+      'GET',
+      `${DATA_URL}/${WEBSITES_DATA}`,
+      {},
+    );
+    const { columns } = await response['json']();
+
+    I.click('.table-controls summary');
+    I.click('[data-qa="hideAllColumns"]');
+    for (const column in columns) {
+      // skip columns that can't be rendered
+      if (!columns[column]['renderColumn']) continue;
+
+      const columnName = fromCamelCaseToWords(column);
+      const checkbox = `.customize-columns .checkbox__input[name='${columnName}']`;
+      I.dontSeeCheckboxIsChecked(checkbox);
+      I.dontSeeElement(`//th[text()='${columnName}']`);
+    }
+  },
+);
+
+Scenario(
+  'should show default columns when "restore default columns" button clicked',
+  async ({ I }) => {
+    I.amOnPage(`${URL}/?showColumns=none`);
+    const response = await I.makeApiRequest(
+      'GET',
+      `${DATA_URL}/${WEBSITES_DATA}`,
+      {},
+    );
+    const { columns } = await response['json']();
+
+    for (const column in columns) {
+      // skip columns that can't be rendered
+      if (!columns[column]['renderColumn']) continue;
+
+      const columnName = fromCamelCaseToWords(column);
+      const checkbox = `.customize-columns .checkbox__input[name='${columnName}']`;
+      I.dontSeeCheckboxIsChecked(checkbox);
+      I.dontSeeElement(`//th[text()='${columnName}']`);
+    }
+
+    I.click('.table-controls summary');
+    I.click('[data-qa="restoreDefaultColumns"]');
+    for (const column in columns) {
+      // skip columns that can't be rendered
+      if (!columns[column]['renderColumn']) continue;
+
+      const columnName = fromCamelCaseToWords(column);
+      const checkbox = `.customize-columns .checkbox__input[name='${columnName}']`;
+      if (columns[column]['showColumn']) {
+        I.seeCheckboxIsChecked(checkbox);
+        I.seeElement(`//th[text()='${columnName}']`);
+      } else {
+        I.dontSeeCheckboxIsChecked(checkbox);
+        I.dontSeeElement(`//th[text()='${columnName}']`);
+      }
+    }
+  },
+);

@@ -5,7 +5,7 @@ const { fromCamelCaseToWords, getRandomSubset } = require('../misc/functions');
 
 Feature('color cells @static @sms');
 
-Scenario('form theme bg color', async ({ I }) => {
+Scenario('should have primary color as a background color', async ({ I }) => {
   const response = await I.makeApiRequest(
     'GET',
     `${DATA_URL}/${WEBSITES_DATA}`,

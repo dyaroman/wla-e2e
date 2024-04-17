@@ -2,7 +2,7 @@ const { URL } = require('../misc/config');
 
 Feature('info modal @static @sms');
 
-Scenario('open and close', ({ I }) => {
+Scenario('should open and close by click "i" button', ({ I }) => {
   I.amOnPage(`${URL}/`);
   I.click('.info-modal-btn');
   I.seeElement('dialog.info-modal');

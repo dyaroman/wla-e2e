@@ -4,7 +4,7 @@ const { WEBSITES_DATA } = require('../misc/consts');
 
 Feature('check texts @static @sms');
 
-Scenario('websites texts', async ({ I }) => {
+Scenario('should render correct texts', async ({ I }) => {
   const response = await I.makeApiRequest(
     'GET',
     `${DATA_URL}/${WEBSITES_DATA}`,
