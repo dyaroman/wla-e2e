@@ -1,6 +1,6 @@
 const { fromCamelCaseToWords, getRandomSubset } = require('../misc/functions');
 const { URL, DATA_URL } = require('../misc/config');
-const { WEBSITES_DATA } = require('../misc/consts');
+const { WEBSITES_DATA, CUSTOMIZE_COLUMNS_OPEN } = require('../misc/consts');
 
 Feature('check texts @static @sms');
 
@@ -12,7 +12,7 @@ Scenario('should render correct texts', async ({ I }) => {
   );
   const { columns, commit, env, project, repoPath, timestamp, websites } =
     await response['json']();
-  I.amOnPage(`${URL}/?filtersOpen=&customizeColumnsOpen=`);
+  I.amOnPage(`${URL}/?filtersOpen=&${CUSTOMIZE_COLUMNS_OPEN}=`);
   I.waitForElement('table', 60);
 
   // InfoComponent
