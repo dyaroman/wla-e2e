@@ -1,9 +1,10 @@
 const { URL } = require('../misc/config');
+const { SHOW_COLUMNS } = require('../misc/consts');
 
 Feature('show columns @static @sms');
 
 Scenario('should show filtered column if it present in url', async ({ I }) => {
-  I.amOnPage(`${URL}/?showColumns=none&customizeColumnsOpen=&website=loan`);
+  I.amOnPage(`${URL}/?${SHOW_COLUMNS}=none&customizeColumnsOpen=&website=loan`);
   I.waitForElement('table', 60);
   const columns = await I.grabAttributeFromAll(
     '.customize-columns .checkbox__input',
@@ -21,7 +22,9 @@ Scenario('should show filtered column if it present in url', async ({ I }) => {
 });
 
 Scenario('should show sorted column if it present in url', async ({ I }) => {
-  I.amOnPage(`${URL}/?showColumns=none&customizeColumnsOpen=&column=website`);
+  I.amOnPage(
+    `${URL}/?${SHOW_COLUMNS}=none&customizeColumnsOpen=&column=website`,
+  );
   I.waitForElement('table', 60);
   const columns = await I.grabAttributeFromAll(
     '.customize-columns .checkbox__input',

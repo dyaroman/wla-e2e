@@ -1,11 +1,11 @@
 const { URL, DATA_URL } = require('../misc/config');
-const { WEBSITES_DATA } = require('../misc/consts');
+const { WEBSITES_DATA, SHOW_COLUMNS } = require('../misc/consts');
 const { fromCamelCaseToWords } = require('../misc/functions');
 
 Feature('customize columns @static @sms');
 
 Scenario(
-  "default columns should be checked, showed and url don't have showColumns parameter",
+  `default columns should be checked, showed and url don't have ${SHOW_COLUMNS} parameter`,
   async ({ I }) => {
     I.amOnPage(`${URL}/`);
 
@@ -31,14 +31,14 @@ Scenario(
       }
     }
 
-    I.dontSeeInCurrentUrl('showColumns=');
+    I.dontSeeInCurrentUrl(`${SHOW_COLUMNS}=`);
   },
 );
 
 Scenario(
-  'should show all columns when url parameter showColumns="all"',
+  `should show all columns when url parameter ${SHOW_COLUMNS}="all"`,
   async ({ I }) => {
-    I.amOnPage(`${URL}/?showColumns=all`);
+    I.amOnPage(`${URL}/?${SHOW_COLUMNS}=all`);
 
     const response = await I.makeApiRequest(
       'GET',
@@ -60,9 +60,9 @@ Scenario(
 );
 
 Scenario(
-  'should show none columns when url parameter showColumns="none"',
+  `should show none columns when url parameter ${SHOW_COLUMNS}="none"`,
   async ({ I }) => {
-    I.amOnPage(`${URL}/?showColumns=none`);
+    I.amOnPage(`${URL}/?${SHOW_COLUMNS}=none`);
 
     const response = await I.makeApiRequest(
       'GET',
@@ -136,7 +136,7 @@ Scenario(
 Scenario(
   'should show default columns when "restore default columns" button clicked',
   async ({ I }) => {
-    I.amOnPage(`${URL}/?showColumns=none`);
+    I.amOnPage(`${URL}/?${SHOW_COLUMNS}=none`);
     const response = await I.makeApiRequest(
       'GET',
       `${DATA_URL}/${WEBSITES_DATA}`,

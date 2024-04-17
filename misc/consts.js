@@ -1,2 +1,5 @@
 exports.NO_DATA = 'no_data';
 exports.WEBSITES_DATA = 'websites.data.json';
+
+// url parameters
+exports.SHOW_COLUMNS = 'showColumns';

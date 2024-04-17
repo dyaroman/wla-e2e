@@ -1,5 +1,5 @@
 const { URL, DATA_URL } = require('../misc/config');
-const { NO_DATA, WEBSITES_DATA } = require('../misc/consts');
+const { NO_DATA, WEBSITES_DATA, SHOW_COLUMNS } = require('../misc/consts');
 const { hex2rgb } = require('../misc/color');
 const { fromCamelCaseToWords, getRandomSubset } = require('../misc/functions');
 
@@ -12,7 +12,7 @@ Scenario('should have primary color as a background color', async ({ I }) => {
     {},
   );
   const { columns, websites } = await response['json']();
-  I.amOnPage(`${URL}/?showColumns=none&customizeColumnsOpen=`);
+  I.amOnPage(`${URL}/?${SHOW_COLUMNS}=none&customizeColumnsOpen=`);
   I.waitForElement('table', 60);
 
   // prepare columns
