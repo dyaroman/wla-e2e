@@ -1,7 +1,7 @@
 const { URL } = require('../misc/config');
 const { SHOW_COLUMNS, CUSTOMIZE_COLUMNS_OPEN } = require('../misc/consts');
 
-Feature('show columns @static @sms');
+Feature('show columns @sms');
 
 Scenario('should show filtered column if it present in url', async ({ I }) => {
   I.amOnPage(

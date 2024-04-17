@@ -1,7 +1,7 @@
 const { URL } = require('../misc/config');
 const { FILTERS_OPEN } = require('../misc/consts');
 
-Feature('disabled tags @static @sms');
+Feature('disabled tags @sms');
 
 Scenario('should see disabled tags if select "uk" tag', async ({ I }) => {
   I.amOnPage(`${URL}/?${FILTERS_OPEN}=`);

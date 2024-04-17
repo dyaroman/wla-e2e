@@ -1,6 +1,6 @@
 const { URL } = require('../misc/config');
 
-Feature('no data @static @sms');
+Feature('no data @sms');
 
 Scenario(
   'should see "no data to show" for non existing website search',

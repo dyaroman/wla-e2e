@@ -8,7 +8,7 @@ const {
 const { hex2rgb } = require('../misc/color');
 const { fromCamelCaseToWords, getRandomSubset } = require('../misc/functions');
 
-Feature('color cells @static @sms');
+Feature('color cells @sms');
 
 Scenario('should have primary color as a background color', async ({ I }) => {
   const response = await I.makeApiRequest(

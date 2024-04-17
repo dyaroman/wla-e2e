@@ -1,6 +1,6 @@
 const { URL } = require('../misc/config');
 
-Feature('info modal @static @sms');
+Feature('info modal @sms');
 
 Scenario('should open and close by click "i" button', ({ I }) => {
   I.amOnPage(`${URL}/`);

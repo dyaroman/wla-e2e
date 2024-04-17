@@ -2,7 +2,7 @@ const { URL, DATA_URL } = require('../misc/config');
 const { WEBSITES_DATA, SHOW_COLUMNS } = require('../misc/consts');
 const { fromCamelCaseToWords } = require('../misc/functions');
 
-Feature('customize columns @static @sms');
+Feature('customize columns @sms');
 
 Scenario(
   `default columns should be checked, showed and url don't have ${SHOW_COLUMNS} parameter`,

@@ -2,7 +2,7 @@ const { URL, DATA_URL } = require('../misc/config');
 const { getRandomNumber } = require('../misc/functions');
 const { WEBSITES_DATA, FILTERS_OPEN } = require('../misc/consts');
 
-Feature('parse url @static @sms');
+Feature('parse url @sms');
 
 Scenario(
   'should sort "website" column by "desc" direction from url parameters',

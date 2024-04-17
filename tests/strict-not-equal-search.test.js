@@ -3,7 +3,7 @@ const { FILTERS_OPEN } = require('../misc/consts');
 
 Feature('strict != search');
 
-Scenario('mainForm != 1q_pd_im @static', async ({ I }) => {
+Scenario('mainForm != 1q_pd_im', async ({ I }) => {
   I.amOnPage(`${URL}/?${FILTERS_OPEN}=`);
   I.waitForElement('table', 60);
 
