@@ -1,6 +1,6 @@
 const { URL } = require('../misc/config');
 
-Feature('gtm @sms');
+Feature('gtm');
 
 Scenario('should see gtm script and correct key in source', async ({ I }) => {
   I.amOnPage(`${URL}/`);

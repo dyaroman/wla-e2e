@@ -2,7 +2,7 @@ const { URL, DATA_URL } = require('../misc/config');
 const { WEBSITES_DATA, SHOW_COLUMNS } = require('../misc/consts');
 const { getRandomNumber } = require('../misc/functions');
 
-Feature('quick search @sms');
+Feature('quick search');
 
 Scenario(
   'should insert value from cell clicked with ALT modifier in appropriate search input',

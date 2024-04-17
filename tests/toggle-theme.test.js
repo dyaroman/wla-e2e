@@ -1,7 +1,7 @@
 const { URL } = require('../misc/config');
 const { hex2rgb } = require('../misc/color');
 
-Feature('theme toggle @sms');
+Feature('theme toggle');
 
 Scenario('should toggle from light theme to dark theme', async ({ I }) => {
   I.amOnPage(`${URL}/`);

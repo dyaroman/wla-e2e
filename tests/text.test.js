@@ -6,7 +6,7 @@ const {
   FILTERS_OPEN,
 } = require('../misc/consts');
 
-Feature('check texts @sms');
+Feature('check texts');
 
 Scenario('should render correct texts', async ({ I }) => {
   const response = await I.makeApiRequest(

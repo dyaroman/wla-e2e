@@ -26,15 +26,6 @@ resources:
             - master
             - development
 
-#    - pipeline: sms
-#      project: SMS Publisher
-#      source: SMSApp
-#      trigger:
-#        branches:
-#          include:
-#            - develop
-#            - feature/*
-
 steps:
   - task: NodeTool@0
     displayName: 'Use node 18.16.x'
@@ -88,15 +79,6 @@ steps:
         eq(variables['Resources.TriggeringAlias'], 'data'),
         eq(variables['resources.pipeline.data.sourceBranch'], 'refs/heads/master')
       )
-
-  #  - powershell: npx cross-env HEADLESS=true URL=sms-app.example.com DATA_URL=sms-app.example.com codeceptjs run --grep "@sms" --steps
-  #    displayName: 'Run sms static websites tests'
-  #    continueOnError: true
-  #    condition: |
-  #      or(
-  #        ne(variables['Build.Reason'], 'ResourceTrigger'),
-  #        eq(variables['Resources.TriggeringAlias'], 'sms')
-  #      )
 
   - task: PublishPipelineArtifact@1
     displayName: 'Publish data'

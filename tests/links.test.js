@@ -2,7 +2,7 @@ const { URL, DATA_URL } = require('../misc/config');
 const { WEBSITES_DATA } = require('../misc/consts');
 const { getRandomSubset } = require('../misc/functions');
 
-Feature('links @sms');
+Feature('links');
 
 Scenario('should see last commit link and websites links', async ({ I }) => {
   const response = await I.makeApiRequest(

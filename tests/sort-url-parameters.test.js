@@ -1,7 +1,7 @@
 const { URL, DATA_URL } = require('../misc/config');
 const { WEBSITES_DATA } = require('../misc/consts');
 
-Feature('sorts url parameters @sms');
+Feature('sorts url parameters');
 
 Scenario(
   'should see "column" and "direction" in url when some column sorted',
