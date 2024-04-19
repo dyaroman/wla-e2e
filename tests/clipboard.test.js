@@ -1,5 +1,6 @@
 const os = require('os');
 
+const { getRandomNumber } = require('../misc/functions');
 const { URL, DATA_URL } = require('../misc/config');
 const {
   WEBSITES_DATA,
@@ -37,6 +38,34 @@ Scenario(
     if (hexFromClipboard !== hexFromWebsiteData) {
       throw new Error(
         `HEX from website data (${hexFromWebsiteData}) and clipboard (${hexFromClipboard}) should match, but it does not!`,
+      );
+    }
+  },
+);
+
+Scenario(
+  'should contains text content from table cell after click on it with Meta key pressed',
+  async ({ I }) => {
+    const response = await I.makeApiRequest(
+      'GET',
+      `${DATA_URL}/${WEBSITES_DATA}`,
+      {},
+    );
+    const { websites } = await response['json']();
+    const randomWebsite = websites[getRandomNumber(0, websites.length - 1)];
+    const websiteNameFromData = randomWebsite['website'];
+    I.restartBrowser({ permissions: ['clipboard-read', 'clipboard-write'] });
+    I.amOnPage(`${URL}/?website=${websiteNameFromData}`);
+    I.waitForElement('table', 60);
+    I.click('tbody [data-qa="website"]', null, {
+      modifiers: ['Meta'],
+    });
+    const websiteNameFromClipboard = await I.executeScript(() =>
+      navigator.clipboard.readText(),
+    );
+    if (websiteNameFromClipboard !== websiteNameFromData) {
+      throw new Error(
+        `Website name from website data (${websiteNameFromData}) and clipboard (${websiteNameFromClipboard}) should match, but it does not!`,
       );
     }
   },
