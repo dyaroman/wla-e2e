@@ -98,3 +98,31 @@ Scenario(
     }
   },
 );
+
+Scenario(
+  'should contains websites urls list on "copy websites urls" button click',
+  async ({ I }) => {
+    const response = await I.makeApiRequest(
+      'GET',
+      `${DATA_URL}/${WEBSITES_DATA}`,
+      {},
+    );
+    const { websites } = await response['json']();
+    const websitesUrlsFromData = websites
+      .filter((website) => website['website'].toLowerCase().includes('coffee'))
+      .map((website) => `https://${website['host']}/`)
+      .join(os.EOL);
+    I.restartBrowser({ permissions: ['clipboard-read', 'clipboard-write'] });
+    I.amOnPage(`${URL}/?website=coffee&${SHOW_COLUMNS}=none&${FILTERS_OPEN}=`);
+    I.waitForElement('table', 60);
+    I.click('[data-qa="copyWebsitesUrls"]');
+    const websitesUrlsFromClipboard = await I.executeScript(() =>
+      navigator.clipboard.readText(),
+    );
+    if (websitesUrlsFromData !== websitesUrlsFromClipboard) {
+      throw new Error(
+        `Websites urls list from data (${websitesUrlsFromData}) and clipboard (${websitesUrlsFromClipboard}) should match, but it does not!`,
+      );
+    }
+  },
+);
