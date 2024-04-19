@@ -11,7 +11,7 @@ const {
 Feature('clipboard');
 
 Scenario(
-  'should contains hex from table color cell after click on it',
+  'should contains hex from table color cell after click on it with Meta key pressed',
   async ({ I }) => {
     const response = await I.makeApiRequest(
       'GET',
@@ -27,7 +27,9 @@ Scenario(
       `${URL}/?website=${websiteWithHex['website']}&${SHOW_COLUMNS}=website,mainFormTheme`,
     );
     I.waitForElement('table', 60);
-    I.click('tbody [data-qa="mainFormTheme"]');
+    I.click('tbody [data-qa="mainFormTheme"]', null, {
+      modifiers: ['Meta'],
+    });
     const hexFromClipboard = await I.executeScript(() =>
       navigator.clipboard.readText(),
     );
