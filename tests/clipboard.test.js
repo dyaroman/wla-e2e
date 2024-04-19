@@ -93,7 +93,7 @@ Scenario(
     );
     if (websitesFromData !== websitesFromClipboard) {
       throw new Error(
-        `Websites from data (${websitesFromData}) and clipboard (${websitesFromClipboard}) should match, but it does not!`,
+        `Websites list from data (${websitesFromData}) and clipboard (${websitesFromClipboard}) should match, but it does not!`,
       );
     }
   },
