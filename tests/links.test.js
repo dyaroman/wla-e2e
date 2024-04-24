@@ -16,7 +16,7 @@ Scenario('should see last commit link and websites links', async ({ I }) => {
 
   // commit
   if (repoPath && commit) {
-    I.seeAttributesOnElements('[data-qa="commit"]', {
+    I.seeAttributesOnElements('[data-qa="commit"] a', {
       href: `https://dev.azure.com/example-org/${repoPath}/commit/${commit}`,
     });
   }

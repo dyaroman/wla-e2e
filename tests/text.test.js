@@ -40,7 +40,7 @@ Scenario('should render correct texts', async ({ I }) => {
 
   // commit
   if (repoPath && commit) {
-    I.seeTextEquals(commit.slice(0, 8), '[data-qa="commit"]');
+    I.seeTextEquals(commit.slice(0, 8), '[data-qa="commit"] a');
   } else {
     I.dontSeeElement('[data-qa="commit"]');
   }
@@ -113,9 +113,7 @@ Scenario('should render correct texts', async ({ I }) => {
   }
   for (const column in columns) {
     if (!columns[column]['renderColumn']) continue;
-    const label = `.customize-columns label[data-qa='${fromCamelCaseToWords(
-      column,
-    )}']`;
+    const label = `.customize-columns label[data-qa='${column}']`;
     I.seeTextEquals(
       fromCamelCaseToWords(column),
       `${label} span.checkbox__label`,
@@ -142,22 +140,30 @@ Scenario('should render correct texts', async ({ I }) => {
   I.click('[data-qa="showAllColumns"]');
   for (const column in columns) {
     if (!columns[column]['renderColumn']) continue;
-    I.seeTextEquals(
-      fromCamelCaseToWords(column),
-      `.table thead th[data-qa="${column}"]`,
-    );
+    let title;
+    switch (column) {
+      case 'index':
+        title = '#';
+        break;
+      case 'checkbox':
+        title = '';
+        break;
+      default:
+        title = fromCamelCaseToWords(column);
+        break;
+    }
+    I.seeTextEquals(title, `.table thead th[data-qa="${column}"]`);
   }
 
   // Table Body
   const randomWebsites = getRandomSubset(websites, 5);
   for (const website of randomWebsites) {
-    const websiteIndex = websites.findIndex(
-      (w) => w['website'] === website['website'],
-    );
+    const websiteIndex =
+      websites.findIndex((w) => w['website'] === website['website']) + 1;
     I.say(`check texts for ${website['website']}`);
     for (const column in columns) {
       if (!columns[column]['renderColumn']) continue;
-      const row = `.table tbody tr:nth-child(${websiteIndex + 1})`;
+      const row = `.table tbody tr:nth-child(${websiteIndex})`;
       switch (column) {
         case 'tags':
           I.seeAttributesOnElements(`${row} [data-qa='${column}']`, {
@@ -187,6 +193,19 @@ Scenario('should render correct texts', async ({ I }) => {
           }
           break;
 
+        case 'checkbox':
+          I.seeAttributesOnElements(`${row} [data-qa='${column}']`, {
+            'data-title': fromCamelCaseToWords(column),
+          });
+          break;
+
+        case 'index':
+          I.seeAttributesOnElements(`${row} [data-qa='${column}']`, {
+            'data-title': fromCamelCaseToWords(column),
+          });
+          I.seeTextEquals(String(websiteIndex), `${row} [data-qa='${column}']`);
+          break;
+
         default:
           I.seeAttributesOnElements(`${row} [data-qa='${column}']`, {
             'data-title': fromCamelCaseToWords(column),
@@ -195,6 +214,7 @@ Scenario('should render correct texts', async ({ I }) => {
             String(website[column]),
             `${row} [data-qa='${column}']`,
           );
+          break;
       }
     }
   }

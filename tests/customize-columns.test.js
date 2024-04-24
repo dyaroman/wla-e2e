@@ -1,6 +1,5 @@
 const { URL, DATA_URL } = require('../misc/config');
 const { WEBSITES_DATA, SHOW_COLUMNS } = require('../misc/consts');
-const { fromCamelCaseToWords } = require('../misc/functions');
 
 Feature('customize columns');
 
@@ -20,14 +19,15 @@ Scenario(
       // skip columns that can't be rendered
       if (!columns[column]['renderColumn']) continue;
 
-      const columnName = fromCamelCaseToWords(column);
-      const checkbox = `.customize-columns .checkbox__input[name='${columnName}']`;
+      const checkbox = `.customize-columns .checkbox__input[name='${column}']`;
       if (columns[column]['showColumn']) {
         I.seeCheckboxIsChecked(checkbox);
-        I.seeElement(`//th[text()='${columnName}']`);
+        // table column
+        I.seeElement(`thead [data-qa="${column}"]`);
       } else {
         I.dontSeeCheckboxIsChecked(checkbox);
-        I.dontSeeElement(`//th[text()='${columnName}']`);
+        // table column
+        I.dontSeeElement(`thead [data-qa="${column}"]`);
       }
     }
 
@@ -51,10 +51,11 @@ Scenario(
       // skip columns that can't be rendered
       if (!columns[column]['renderColumn']) continue;
 
-      const columnName = fromCamelCaseToWords(column);
-      const checkbox = `.customize-columns .checkbox__input[name='${columnName}']`;
-      I.seeCheckboxIsChecked(checkbox);
-      I.seeElement(`//th[text()='${columnName}']`);
+      I.seeCheckboxIsChecked(
+        `.customize-columns .checkbox__input[name='${column}']`,
+      );
+      // table column
+      I.seeElement(`thead [data-qa="${column}"]`);
     }
   },
 );
@@ -75,11 +76,17 @@ Scenario(
       // skip columns that can't be rendered
       if (!columns[column]['renderColumn']) continue;
 
-      const columnName = fromCamelCaseToWords(column);
-      const checkbox = `.customize-columns .checkbox__input[name='${columnName}']`;
-      I.dontSeeCheckboxIsChecked(checkbox);
-      I.dontSeeElement(`//th[text()='${columnName}']`);
+      I.dontSeeCheckboxIsChecked(
+        `.customize-columns .checkbox__input[name='${column}']`,
+      );
+      // table column
+      I.dontSeeElement(`thead [data-qa="${column}"]`);
     }
+
+    I.seeTextEquals(
+      'No columns to show, please check customize columns.',
+      '[data-qa="noColumns"]',
+    );
   },
 );
 
@@ -100,10 +107,11 @@ Scenario(
       // skip columns that can't be rendered
       if (!columns[column]['renderColumn']) continue;
 
-      const columnName = fromCamelCaseToWords(column);
-      const checkbox = `.customize-columns .checkbox__input[name='${columnName}']`;
-      I.seeCheckboxIsChecked(checkbox);
-      I.seeElement(`//th[text()='${columnName}']`);
+      I.seeCheckboxIsChecked(
+        `.customize-columns .checkbox__input[name='${column}']`,
+      );
+      // table column
+      I.seeElement(`thead [data-qa="${column}"]`);
     }
   },
 );
@@ -125,10 +133,11 @@ Scenario(
       // skip columns that can't be rendered
       if (!columns[column]['renderColumn']) continue;
 
-      const columnName = fromCamelCaseToWords(column);
-      const checkbox = `.customize-columns .checkbox__input[name='${columnName}']`;
-      I.dontSeeCheckboxIsChecked(checkbox);
-      I.dontSeeElement(`//th[text()='${columnName}']`);
+      I.dontSeeCheckboxIsChecked(
+        `.customize-columns .checkbox__input[name='${column}']`,
+      );
+      // table column
+      I.dontSeeElement(`thead [data-qa="${column}"]`);
     }
   },
 );
@@ -148,10 +157,11 @@ Scenario(
       // skip columns that can't be rendered
       if (!columns[column]['renderColumn']) continue;
 
-      const columnName = fromCamelCaseToWords(column);
-      const checkbox = `.customize-columns .checkbox__input[name='${columnName}']`;
-      I.dontSeeCheckboxIsChecked(checkbox);
-      I.dontSeeElement(`//th[text()='${columnName}']`);
+      I.dontSeeCheckboxIsChecked(
+        `.customize-columns .checkbox__input[name='${column}']`,
+      );
+      // table column
+      I.dontSeeElement(`thead [data-qa="${column}"]`);
     }
 
     I.click('.table-controls summary');
@@ -160,14 +170,15 @@ Scenario(
       // skip columns that can't be rendered
       if (!columns[column]['renderColumn']) continue;
 
-      const columnName = fromCamelCaseToWords(column);
-      const checkbox = `.customize-columns .checkbox__input[name='${columnName}']`;
+      const checkbox = `.customize-columns .checkbox__input[name='${column}']`;
       if (columns[column]['showColumn']) {
         I.seeCheckboxIsChecked(checkbox);
-        I.seeElement(`//th[text()='${columnName}']`);
+        // table column
+        I.seeElement(`thead [data-qa="${column}"]`);
       } else {
         I.dontSeeCheckboxIsChecked(checkbox);
-        I.dontSeeElement(`//th[text()='${columnName}']`);
+        // table column
+        I.dontSeeElement(`thead [data-qa="${column}"]`);
       }
     }
   },

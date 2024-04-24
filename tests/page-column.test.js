@@ -1,9 +1,10 @@
 const { URL } = require('../misc/config');
+const { SHOW_COLUMNS } = require('../misc/consts');
 
 Feature('page column');
 
 Scenario('should filter websites by "==sc" page', async ({ I }) => {
-  I.amOnPage(`${URL}/?pages=%3D%3Dsc&showColumns=website%2Cpages`);
+  I.amOnPage(`${URL}/?pages=%3D%3Dsc&${SHOW_COLUMNS}=website%2Cpages`);
   I.waitForElement('table', 60);
   const websitesNumberByPageFilter =
     (await I.grabNumberOfVisibleElements('tr')) - 1;

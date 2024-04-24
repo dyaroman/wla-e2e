@@ -13,12 +13,14 @@ Scenario('should show filtered column if it present in url', async ({ I }) => {
     'name',
   );
   for (const column of columns) {
-    if (column === 'Website') {
+    if (column === 'website') {
       I.seeCheckboxIsChecked(`.checkbox__input[name="${column}"]`);
-      I.seeElement(`//table//th[text()='${column}']`);
+      // table column
+      I.seeElement(`thead [data-qa="${column}"]`);
     } else {
       I.dontSeeCheckboxIsChecked(`.checkbox__input[name="${column}"]`);
-      I.dontSeeElement(`//table//th[text()='${column}']`);
+      // table column
+      I.dontSeeElement(`thead [data-qa="${column}"]`);
     }
   }
 });
@@ -33,12 +35,14 @@ Scenario('should show sorted column if it present in url', async ({ I }) => {
     'name',
   );
   for (const column of columns) {
-    if (column === 'Website') {
+    if (column === 'website') {
       I.seeCheckboxIsChecked(`.checkbox__input[name="${column}"]`);
-      I.seeElement(`//table//th[text()='${column}']`);
+      // table column
+      I.seeElement(`thead [data-qa="${column}"]`);
     } else {
       I.dontSeeCheckboxIsChecked(`.checkbox__input[name="${column}"]`);
-      I.dontSeeElement(`//table//th[text()='${column}']`);
+      // table column
+      I.dontSeeElement(`thead [data-qa="${column}"]`);
     }
   }
 });

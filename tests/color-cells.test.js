@@ -6,7 +6,7 @@ const {
   CUSTOMIZE_COLUMNS_OPEN,
 } = require('../misc/consts');
 const { hex2rgb } = require('../misc/color');
-const { fromCamelCaseToWords, getRandomSubset } = require('../misc/functions');
+const { getRandomSubset } = require('../misc/functions');
 
 Feature('color cells');
 
@@ -18,15 +18,13 @@ Scenario('should have primary color as a background color', async ({ I }) => {
   );
   const { columns, websites } = await response['json']();
   I.amOnPage(`${URL}/?${SHOW_COLUMNS}=none&${CUSTOMIZE_COLUMNS_OPEN}=`);
-  I.waitForElement('table', 60);
+  I.waitForElement('[data-qa="noColumns"]', 60);
 
   // prepare columns
   for (const column in columns) {
     if (column !== 'website' && !column.toLowerCase().includes('theme'))
       continue;
-    I.click(
-      `.customize-columns label[data-qa="${fromCamelCaseToWords(column)}"]`,
-    );
+    I.click(`.customize-columns label[data-qa="${column}"]`);
   }
 
   const randomWebsites = getRandomSubset(websites, 10);
