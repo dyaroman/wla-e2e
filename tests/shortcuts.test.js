@@ -64,7 +64,7 @@ Scenario(
     I.waitForElement('table', 60);
     I.seeInField('.filters [data-qa="website"]', 'cash');
     I.seeInField('.filters [data-qa="template"]', 'sml');
-    I.pressKey(['CommandOrControl', 'Shift', 'R']);
+    I.pressKey(['CommandOrControl', 'Shift', 'E']);
     I.seeInField('.filters [data-qa="website"]', '');
     I.seeInField('.filters [data-qa="template"]', '');
     I.dontSeeInCurrentUrl('website=cash');
