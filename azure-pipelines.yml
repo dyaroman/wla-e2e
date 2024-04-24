@@ -46,6 +46,7 @@ steps:
   - powershell: npx playwright install --with-deps
     displayName: 'Install playwright browsers'
 
+  # need to wait for some time for data to be deployed on server
   - powershell: Start-Sleep -Seconds 60
     displayName: 'Wait for 1m'
     condition: |
@@ -54,23 +55,29 @@ steps:
         eq(variables['Resources.TriggeringAlias'], 'data')
       )
 
-  - powershell: npx cross-env HEADLESS=true URL=dev.example-app.com ENV=dev codeceptjs run --steps
-    displayName: 'Run dev env tests'
+  - powershell: npx cross-env HEADLESS=true URL=rc.example-app.com DATA_URL=dev.example-app.com codeceptjs run --steps
+    displayName: 'Run rc env tests'
     continueOnError: true
     condition: |
       and(
         succeeded(),
         or(
           ne(variables['Build.Reason'], 'ResourceTrigger'),
-          eq(variables['Resources.TriggeringAlias'], 'app'),
-          and(
-            eq(variables['Resources.TriggeringAlias'], 'data'),
-            eq(variables['resources.pipeline.data.sourceBranch'], 'refs/heads/development')
-          )
+          eq(variables['Resources.TriggeringAlias'], 'app')
         )
       )
 
-  - powershell: npx cross-env HEADLESS=true URL=prod.example-app.com ENV=prod codeceptjs run --steps
+  - powershell: npx cross-env HEADLESS=true URL=dev.example-app.com DATA_URL=dev.example-app.com codeceptjs run --steps
+    displayName: 'Run dev env tests'
+    continueOnError: true
+    condition: |
+      and(
+        succeeded(),
+        eq(variables['Resources.TriggeringAlias'], 'data'),
+        eq(variables['resources.pipeline.data.sourceBranch'], 'refs/heads/development')
+      )
+
+  - powershell: npx cross-env HEADLESS=true URL=prod.example-app.com DATA_URL=prod.example-app.com codeceptjs run --steps
     displayName: 'Run prod env tests'
     continueOnError: true
     condition: |
