@@ -16,7 +16,7 @@ resources:
         branches:
           include:
             - master
-            - feature/*
+            - development
 
     - pipeline: data
       source: StaticWebsites-Data
