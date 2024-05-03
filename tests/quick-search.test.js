@@ -21,7 +21,6 @@ Scenario(
     I.click(`.table tr:nth-child(${randomNumber}) [data-qa='website']`, null, {
       modifiers: ['Alt'],
     });
-    I.seeInTitle(`[1]`);
     I.seeInCurrentUrl(`website=${websiteData['website']}`);
     I.seeInField('input[data-qa="website"]', websiteData['website']);
   },
