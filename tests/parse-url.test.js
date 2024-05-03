@@ -1,6 +1,6 @@
 const { URL, DATA_URL } = require('../misc/config');
 const { getRandomNumber } = require('../misc/functions');
-const { WEBSITES_DATA, FILTERS_OPEN } = require('../misc/consts');
+const { WEBSITES_DATA, SIDEBAR_OPEN } = require('../misc/consts');
 
 Feature('parse url');
 
@@ -70,7 +70,7 @@ Scenario(
       }
     }
 
-    I.amOnPage(`${URL}/?${search}&${FILTERS_OPEN}=`);
+    I.amOnPage(`${URL}/?${search}&${SIDEBAR_OPEN}=`);
     I.waitForElement('table', 60);
     I.seeTextEquals('Website: 1', '[data-qa="websitesNumber"]');
     I.seeInTitle('[1]');

@@ -3,7 +3,7 @@ const {
   NO_DATA,
   WEBSITES_DATA,
   SHOW_COLUMNS,
-  CUSTOMIZE_COLUMNS_OPEN,
+  SIDEBAR_OPEN,
 } = require('../misc/consts');
 const { hex2rgb } = require('../misc/color');
 const { getRandomSubset } = require('../misc/functions');
@@ -17,7 +17,7 @@ Scenario('should have primary color as a background color', async ({ I }) => {
     {},
   );
   const { columns, websites } = await response['json']();
-  I.amOnPage(`${URL}/?${SHOW_COLUMNS}=none&${CUSTOMIZE_COLUMNS_OPEN}=`);
+  I.amOnPage(`${URL}/?${SHOW_COLUMNS}=none&${SIDEBAR_OPEN}=`);
   I.waitForElement('[data-qa="noColumns"]', 60);
 
   // prepare columns

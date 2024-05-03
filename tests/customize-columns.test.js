@@ -1,5 +1,5 @@
 const { URL, DATA_URL } = require('../misc/config');
-const { WEBSITES_DATA, SHOW_COLUMNS } = require('../misc/consts');
+const { WEBSITES_DATA, SHOW_COLUMNS, SIDEBAR_OPEN } = require('../misc/consts');
 
 Feature('customize columns');
 
@@ -93,7 +93,7 @@ Scenario(
 Scenario(
   'should show all columns when "show all columns" button clicked',
   async ({ I }) => {
-    I.amOnPage(`${URL}/`);
+    I.amOnPage(`${URL}/?${SIDEBAR_OPEN}=`);
     const response = await I.makeApiRequest(
       'GET',
       `${DATA_URL}/${WEBSITES_DATA}`,
@@ -101,7 +101,6 @@ Scenario(
     );
     const { columns } = await response['json']();
 
-    I.click('.table-controls summary');
     I.click('[data-qa="showAllColumns"]');
     for (const column in columns) {
       // skip columns that can't be rendered
@@ -119,7 +118,7 @@ Scenario(
 Scenario(
   'should hide all columns when "hide all columns" button clicked',
   async ({ I }) => {
-    I.amOnPage(`${URL}/`);
+    I.amOnPage(`${URL}/?${SIDEBAR_OPEN}=`);
     const response = await I.makeApiRequest(
       'GET',
       `${DATA_URL}/${WEBSITES_DATA}`,
@@ -127,7 +126,6 @@ Scenario(
     );
     const { columns } = await response['json']();
 
-    I.click('.table-controls summary');
     I.click('[data-qa="hideAllColumns"]');
     for (const column in columns) {
       // skip columns that can't be rendered
@@ -145,7 +143,7 @@ Scenario(
 Scenario(
   'should show default columns when "restore default columns" button clicked',
   async ({ I }) => {
-    I.amOnPage(`${URL}/?${SHOW_COLUMNS}=none`);
+    I.amOnPage(`${URL}/?${SHOW_COLUMNS}=none&${SIDEBAR_OPEN}=`);
     const response = await I.makeApiRequest(
       'GET',
       `${DATA_URL}/${WEBSITES_DATA}`,
@@ -164,7 +162,6 @@ Scenario(
       I.dontSeeElement(`thead [data-qa="${column}"]`);
     }
 
-    I.click('.table-controls summary');
     I.click('[data-qa="restoreDefaultColumns"]');
     for (const column in columns) {
       // skip columns that can't be rendered

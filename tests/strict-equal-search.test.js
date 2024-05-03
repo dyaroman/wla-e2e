@@ -1,10 +1,10 @@
 const { URL } = require('../misc/config');
-const { FILTERS_OPEN } = require('../misc/consts');
+const { SIDEBAR_OPEN } = require('../misc/consts');
 
 Feature('strict == search');
 
 Scenario('mainForm == 1q_pd_im', async ({ I }) => {
-  I.amOnPage(`${URL}/?${FILTERS_OPEN}=`);
+  I.amOnPage(`${URL}/?${SIDEBAR_OPEN}=`);
   I.waitForElement('table', 60);
 
   const numberOfAll = await I.grabNumberOfVisibleElements('tbody tr');

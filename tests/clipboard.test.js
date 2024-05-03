@@ -6,7 +6,7 @@ const {
   WEBSITES_DATA,
   NO_DATA,
   SHOW_COLUMNS,
-  FILTERS_OPEN,
+  SIDEBAR_OPEN,
 } = require('../misc/consts');
 
 Feature('clipboard');
@@ -85,7 +85,7 @@ Scenario(
       .map((website) => website['website'])
       .join(os.EOL);
     I.restartBrowser({ permissions: ['clipboard-read', 'clipboard-write'] });
-    I.amOnPage(`${URL}/?website=coffee&${SHOW_COLUMNS}=none&${FILTERS_OPEN}=`);
+    I.amOnPage(`${URL}/?website=coffee&${SHOW_COLUMNS}=none&${SIDEBAR_OPEN}=`);
     I.waitForElement('table', 60);
     I.click('[data-qa="copyWebsites"]');
     const websitesFromClipboard = await I.executeScript(() =>
@@ -113,7 +113,7 @@ Scenario(
       .map((website) => `https://${website['host']}/`)
       .join(os.EOL);
     I.restartBrowser({ permissions: ['clipboard-read', 'clipboard-write'] });
-    I.amOnPage(`${URL}/?website=coffee&${SHOW_COLUMNS}=none&${FILTERS_OPEN}=`);
+    I.amOnPage(`${URL}/?website=coffee&${SHOW_COLUMNS}=none&${SIDEBAR_OPEN}=`);
     I.waitForElement('table', 60);
     I.click('[data-qa="copyWebsitesUrls"]');
     const websitesUrlsFromClipboard = await I.executeScript(() =>

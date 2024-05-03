@@ -1,10 +1,10 @@
 const { URL } = require('../misc/config');
-const { FILTERS_OPEN } = require('../misc/consts');
+const { SIDEBAR_OPEN } = require('../misc/consts');
 
 Feature('disabled tags');
 
 Scenario('should see disabled tags if select "uk" tag', async ({ I }) => {
-  I.amOnPage(`${URL}/?${FILTERS_OPEN}=`);
+  I.amOnPage(`${URL}/?${SIDEBAR_OPEN}=`);
   I.waitForElement('table', 60);
   const disabledTagsBefore = await I.grabNumberOfVisibleElements(
     '.filters .checkbox.disabled',

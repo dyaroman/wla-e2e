@@ -1,5 +1,5 @@
 const { URL, DATA_URL } = require('../misc/config');
-const { WEBSITES_DATA } = require('../misc/consts');
+const { WEBSITES_DATA, SIDEBAR_OPEN } = require('../misc/consts');
 const { getRandomSubset } = require('../misc/functions');
 
 Feature('links');
@@ -11,7 +11,7 @@ Scenario('should see last commit link and websites links', async ({ I }) => {
     {},
   );
   const { commit, repoPath, websites } = await response['json']();
-  I.amOnPage(`${URL}/`);
+  I.amOnPage(`${URL}/?${SIDEBAR_OPEN}=`);
   I.waitForElement('table', 60);
 
   // commit
@@ -21,6 +21,9 @@ Scenario('should see last commit link and websites links', async ({ I }) => {
     });
   }
 
+  // close sidebar
+  I.pressKey(['CommandOrControl', '/']);
+
   const randomWebsites = getRandomSubset(websites, 10);
   for (const website of randomWebsites) {
     const websiteIndex = websites.findIndex(
@@ -29,7 +32,7 @@ Scenario('should see last commit link and websites links', async ({ I }) => {
     const row = `.table tbody tr:nth-child(${websiteIndex + 1})`;
     for (const column in website) {
       if (column !== 'website') continue;
-      I.seeAttributesOnElements(`${row} th a`, {
+      I.seeAttributesOnElements(`${row} [data-qa="website"] a`, {
         href: `https://${website['host']}/`,
         target: '_blank',
         rel: 'noreferrer',

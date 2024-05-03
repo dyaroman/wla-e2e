@@ -1,5 +1,5 @@
 const { URL, DATA_URL } = require('../misc/config');
-const { WEBSITES_DATA, SHOW_COLUMNS, FILTERS_OPEN } = require('../misc/consts');
+const { WEBSITES_DATA, SHOW_COLUMNS, SIDEBAR_OPEN } = require('../misc/consts');
 
 Feature('shortcuts');
 
@@ -19,11 +19,11 @@ Scenario(
   async ({ I }) => {
     I.amOnPage(`${URL}/`);
     I.waitForElement('table', 60);
-    I.dontSeeInCurrentUrl(`${FILTERS_OPEN}=`);
+    I.dontSeeInCurrentUrl(`${SIDEBAR_OPEN}=`);
 
     I.pressKey(['CommandOrControl', 'Shift', 'F']);
     I.type('cash');
-    I.seeInCurrentUrl(FILTERS_OPEN);
+    I.seeInCurrentUrl(SIDEBAR_OPEN);
     I.seeInCurrentUrl(`website=cash`);
     I.seeInField('.filters [data-qa="website"]', 'cash');
   },
@@ -43,7 +43,7 @@ Scenario(
       .map((website) => website['website'])
       .join(',');
     I.restartBrowser({ permissions: ['clipboard-read', 'clipboard-write'] });
-    I.amOnPage(`${URL}/?website=loan&${SHOW_COLUMNS}=none&${FILTERS_OPEN}=`);
+    I.amOnPage(`${URL}/?website=loan&${SHOW_COLUMNS}=none`);
     I.waitForElement('table', 60);
     I.pressKey(['CommandOrControl', 'Shift', 'C']);
     const websitesFromClipboard = await I.executeScript(() =>

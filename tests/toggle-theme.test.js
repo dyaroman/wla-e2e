@@ -1,10 +1,11 @@
 const { URL } = require('../misc/config');
+const { SIDEBAR_OPEN } = require('../misc/consts');
 const { hex2rgb } = require('../misc/color');
 
 Feature('theme toggle');
 
 Scenario('should toggle from light theme to dark theme', async ({ I }) => {
-  I.amOnPage(`${URL}/`);
+  I.amOnPage(`${URL}/?${SIDEBAR_OPEN}=`);
 
   // check light theme
   I.seeAttributesOnElements('body', { 'data-theme': 'light' });
@@ -14,7 +15,7 @@ Scenario('should toggle from light theme to dark theme', async ({ I }) => {
   }
 
   // toggle to dark theme
-  I.click('button.theme-toggle');
+  I.click('[data-qa="toggleTheme"]');
 
   // check dark theme
   I.seeAttributesOnElements('body', { 'data-theme': 'dark' });

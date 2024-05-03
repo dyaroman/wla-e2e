@@ -3,5 +3,4 @@ exports.WEBSITES_DATA = 'websites.data.json';
 
 // url parameters
 exports.SHOW_COLUMNS = 'showColumns';
-exports.FILTERS_OPEN = 'filtersOpen';
-exports.CUSTOMIZE_COLUMNS_OPEN = 'customizeColumnsOpen';
+exports.SIDEBAR_OPEN = 'sidebarOpen';
