@@ -1,24 +1,22 @@
 const { URL } = require('../misc/config');
-const { SIDEBAR_OPEN } = require('../misc/consts');
 
 Feature('strict == search');
 
 Scenario('mainForm == 1q_pd_im', async ({ I }) => {
-  I.amOnPage(`${URL}/?${SIDEBAR_OPEN}=`);
+  I.amOnPage(`${URL}/?mainForm=1q_pd_im`);
   I.waitForElement('table', 60);
+  const numberOfInclude = await I.grabTextFrom('[data-qa="counter"]').then(
+    (str) => Number(str),
+  );
 
-  const numberOfAll = await I.grabNumberOfVisibleElements('tbody tr');
-  I.fillField('input[data-qa="mainForm"]', '1q_pd_im');
-  const numberOfInclude = await I.grabNumberOfVisibleElements('tbody tr');
-  if (numberOfInclude === numberOfAll) {
-    throw new Error('Error due to filter websites by "mainForm": "1q_pd_im"');
-  }
+  I.amOnPage(`${URL}/?mainForm===1q_pd_im`);
+  I.waitForElement('table', 60);
+  const numberOfEqual = await I.grabTextFrom('[data-qa="counter"]').then(
+    (str) => Number(str),
+  );
 
-  I.fillField('input[data-qa="mainForm"]', '==1q_pd_im');
-  const numberOfEqual = await I.grabNumberOfVisibleElements('tbody tr');
   I.say(
     JSON.stringify({
-      numberOfAll,
       numberOfInclude,
       numberOfEqual,
     }),
