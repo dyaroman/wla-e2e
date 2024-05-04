@@ -3,14 +3,19 @@ trigger:
   branches:
     include:
       - master
+      - development
       - feature/*
+
+variables:
+  - name: IsMasterBranch
+    value: ${{ startsWith(variables['build.sourceBranch'], 'refs/heads/master') }}
 
 pool:
   name: CI-POOL-NAME
 
 resources:
   pipelines:
-    - pipeline: app
+    - pipeline: wla
       source: websites-list-app
       trigger:
         branches:
@@ -18,7 +23,7 @@ resources:
             - master
             - development
 
-    - pipeline: data
+    - pipeline: websitesData
       source: StaticWebsites-Data
       trigger:
         branches:
@@ -36,6 +41,23 @@ steps:
   - checkout: self
     displayName: 'Checkout tests'
 
+  - powershell: git checkout development
+    displayName: 'Switch git branch to development'
+    condition: |
+      and(
+        succeeded(),
+        or(
+          and(
+            ne(variables['Build.Reason'], 'ResourceTrigger'),
+            eq(variables['IsMasterBranch'], false)
+          ),
+          and(
+            eq(variables['Resources.TriggeringAlias'], 'wla'),
+            eq(variables['resources.pipeline.wla.sourceBranch'], 'refs/heads/development')
+          )
+        )
+      )
+
   - task: Npm@1
     displayName: 'Install dependencies'
     inputs:
@@ -52,7 +74,7 @@ steps:
     condition: |
       and(
         succeeded(),
-        eq(variables['Resources.TriggeringAlias'], 'data')
+        eq(variables['Resources.TriggeringAlias'], 'websitesData')
       )
 
   - powershell: npx cross-env HEADLESS=true URL=rc.example-app.com DATA_URL=dev.example-app.com codeceptjs run
@@ -62,8 +84,14 @@ steps:
       and(
         succeeded(),
         or(
-          ne(variables['Build.Reason'], 'ResourceTrigger'),
-          eq(variables['Resources.TriggeringAlias'], 'app')
+          and(
+            ne(variables['Build.Reason'], 'ResourceTrigger'),
+            eq(variables['IsMasterBranch'], false)
+          ),
+          and(
+            eq(variables['Resources.TriggeringAlias'], 'wla'),
+            eq(variables['resources.pipeline.wla.sourceBranch'], 'refs/heads/development')
+          )
         )
       )
 
@@ -73,8 +101,20 @@ steps:
     condition: |
       and(
         succeeded(),
-        eq(variables['Resources.TriggeringAlias'], 'data'),
-        eq(variables['resources.pipeline.data.sourceBranch'], 'refs/heads/development')
+        or(
+          and(
+            ne(variables['Build.Reason'], 'ResourceTrigger'),
+            eq(variables['IsMasterBranch'], true)
+          ),
+          and(
+            eq(variables['Resources.TriggeringAlias'], 'wla'),
+            eq(variables['resources.pipeline.wla.sourceBranch'], 'refs/heads/master')
+          ),
+          and(
+            eq(variables['Resources.TriggeringAlias'], 'websitesData'),
+            eq(variables['resources.pipeline.websitesData.sourceBranch'], 'refs/heads/development')
+          )
+        )
       )
 
   - powershell: npx cross-env HEADLESS=true URL=prod.example-app.com DATA_URL=prod.example-app.com codeceptjs run
@@ -83,8 +123,20 @@ steps:
     condition: |
       and(
         succeeded(),
-        eq(variables['Resources.TriggeringAlias'], 'data'),
-        eq(variables['resources.pipeline.data.sourceBranch'], 'refs/heads/master')
+        or(
+          and(
+            ne(variables['Build.Reason'], 'ResourceTrigger'),
+            eq(variables['IsMasterBranch'], true)
+          ),
+          and(
+            eq(variables['Resources.TriggeringAlias'], 'wla'),
+            eq(variables['resources.pipeline.wla.sourceBranch'], 'refs/heads/master')
+          ),
+          and(
+            eq(variables['Resources.TriggeringAlias'], 'websitesData'),
+            eq(variables['resources.pipeline.websitesData.sourceBranch'], 'refs/heads/master')
+          )
+        )
       )
 
   - task: PublishPipelineArtifact@1
