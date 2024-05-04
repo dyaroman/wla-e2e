@@ -55,7 +55,7 @@ steps:
         eq(variables['Resources.TriggeringAlias'], 'data')
       )
 
-  - powershell: npx cross-env HEADLESS=true URL=rc.example-app.com DATA_URL=dev.example-app.com codeceptjs run --steps
+  - powershell: npx cross-env HEADLESS=true URL=rc.example-app.com DATA_URL=dev.example-app.com codeceptjs run
     displayName: 'Run rc env tests'
     continueOnError: true
     condition: |
@@ -67,7 +67,7 @@ steps:
         )
       )
 
-  - powershell: npx cross-env HEADLESS=true URL=dev.example-app.com DATA_URL=dev.example-app.com codeceptjs run --steps
+  - powershell: npx cross-env HEADLESS=true URL=dev.example-app.com DATA_URL=dev.example-app.com codeceptjs run
     displayName: 'Run dev env tests'
     continueOnError: true
     condition: |
@@ -77,7 +77,7 @@ steps:
         eq(variables['resources.pipeline.data.sourceBranch'], 'refs/heads/development')
       )
 
-  - powershell: npx cross-env HEADLESS=true URL=prod.example-app.com DATA_URL=prod.example-app.com codeceptjs run --steps
+  - powershell: npx cross-env HEADLESS=true URL=prod.example-app.com DATA_URL=prod.example-app.com codeceptjs run
     displayName: 'Run prod env tests'
     continueOnError: true
     condition: |
