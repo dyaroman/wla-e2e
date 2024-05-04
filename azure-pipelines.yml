@@ -41,7 +41,9 @@ steps:
   - checkout: self
     displayName: 'Checkout tests'
 
-  - powershell: git checkout development
+  - powershell: |
+      git checkout development
+      git reset --hard origin/development
     displayName: 'Switch git branch to development'
     condition: |
       and(
