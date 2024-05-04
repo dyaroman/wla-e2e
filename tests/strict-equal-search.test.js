@@ -15,12 +15,10 @@ Scenario('mainForm == 1q_pd_im', async ({ I }) => {
     (str) => Number(str),
   );
 
-  I.say(
-    JSON.stringify({
-      numberOfInclude,
-      numberOfEqual,
-    }),
-  );
+  console.log({
+    numberOfInclude,
+    numberOfEqual,
+  });
   if (numberOfEqual === numberOfInclude) {
     throw new Error('Error due to filter websites by "mainForm": "==1q_pd_im"');
   }

@@ -14,12 +14,10 @@ Scenario('mainForm != 1q_pd_im', async ({ I }) => {
   const numberOfEqual = await I.grabTextFrom('[data-qa="counter"]').then(
     (str) => Number(str),
   );
-  I.say(
-    JSON.stringify({
-      numberOfInclude,
-      numberOfEqual,
-    }),
-  );
+  console.log({
+    numberOfInclude,
+    numberOfEqual,
+  });
   if (numberOfInclude === numberOfEqual || numberOfEqual === 0) {
     throw new Error('Error due to filter websites by "mainForm": "!=1q_pd_im"');
   }
