@@ -1,6 +1,6 @@
 const { URL, DATA_URL } = require('../misc/config');
-const { getRandomNumber } = require('../misc/functions');
-const { WEBSITES_DATA, SIDEBAR_OPEN } = require('../misc/consts');
+const { getRandomNumber, toRandomCase } = require('../misc/functions');
+const { WEBSITES_DATA, SIDEBAR_OPEN, SHOW_COLUMNS } = require('../misc/consts');
 
 Feature('parse url');
 
@@ -17,6 +17,73 @@ Scenario(
     const sorts = {
       column: 'website',
       direction: 'desc',
+    };
+
+    const search = new URLSearchParams();
+    for (const key in sorts) {
+      search.set(key, sorts[key]);
+    }
+
+    I.amOnPage(`${URL}/?${search}`);
+    I.waitForElement('table', 60);
+    I.seeTextEquals(
+      websiteData['website'],
+      'tbody tr:first-child [data-qa="website"]',
+    );
+  },
+);
+
+Scenario('should read filters from url case insensitive', async ({ I }) => {
+  const response = await I.makeApiRequest(
+    'GET',
+    `${DATA_URL}/${WEBSITES_DATA}`,
+    {},
+  );
+  const { columns, websites } = await response['json']();
+  const randomNumber = getRandomNumber(0, websites.length - 1);
+  const websiteData = websites[randomNumber];
+  const filters = [];
+  for (const column in columns) {
+    if (!columns[column]['renderFilter']) continue;
+    filters.push([column, toRandomCase(column), websiteData[column]]);
+  }
+  I.amOnPage(
+    `${URL}/?${filters
+      .map((filter) =>
+        filter
+          .slice(1)
+          .map((e) => {
+            if (typeof e === 'string' && e.includes('#'))
+              return e.replace('#', encodeURIComponent('#'));
+            return e;
+          })
+          .join('='),
+      )
+      .join('&')}`,
+  );
+  I.waitForElement('[data-qa="app"]', 60);
+
+  for (const [correctCase, incorrectCase] of filters) {
+    I.seeInCurrentUrl(`${correctCase}=`);
+    if (correctCase !== incorrectCase) {
+      I.dontSeeInCurrentUrl(`${incorrectCase}=`);
+    }
+  }
+});
+
+Scenario(
+  'should read sort parameters from url case insensitive',
+  async ({ I }) => {
+    const response = await I.makeApiRequest(
+      'GET',
+      `${DATA_URL}/${WEBSITES_DATA}`,
+      {},
+    );
+    const { websites } = await response['json']();
+    const websiteData = websites[websites.length - 1];
+    const sorts = {
+      [toRandomCase('column')]: toRandomCase('website'),
+      [toRandomCase('direction')]: toRandomCase('desc'),
     };
 
     const search = new URLSearchParams();
@@ -110,6 +177,34 @@ Scenario(
         default:
           I.seeInField(`[data-qa="${key}"]`, '');
       }
+    }
+  },
+);
+
+Scenario(
+  'should show opened sidebar when "sidebarOpen" parameter in url',
+  ({ I }) => {
+    I.amOnPage(`${URL}/?${toRandomCase(SIDEBAR_OPEN)}=`);
+    I.seeElement('.filters');
+  },
+);
+
+Scenario(
+  `should read ${SHOW_COLUMNS} parameter from url case insensitive`,
+  async ({ I }) => {
+    const response = await I.makeApiRequest(
+      'GET',
+      `${DATA_URL}/${WEBSITES_DATA}`,
+      {},
+    );
+    const { columns } = await response['json']();
+    I.amOnPage(`${URL}/?${toRandomCase(SHOW_COLUMNS)}=none`);
+    I.waitForElement('[data-qa="noColumns"]', 60);
+    for (const column in columns) {
+      if (!columns[column]['renderFilter']) continue;
+      I.dontSeeCheckboxIsChecked(`.checkbox__input[name="${column}"]`);
+      // table column
+      I.dontSeeElement(`thead [data-qa="${column}"]`);
     }
   },
 );

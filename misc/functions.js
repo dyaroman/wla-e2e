@@ -25,6 +25,12 @@ exports.fromCamelCaseToWords = (str) =>
     .join(' ')
     .replace(/([A-Z]+) /g, '$1');
 
+exports.toRandomCase = (str) =>
+  str
+    .split('')
+    .map((c) => (Math.random() > 0.5 ? c.toLowerCase() : c.toUpperCase()))
+    .join('');
+
 exports.prepareUrl = (url) => {
   // add protocol if it wasn't passed
   if (/^https?:\/\//.test(url) === false) {
