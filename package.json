@@ -18,9 +18,9 @@
   },
   "dependencies": {
     "@codeceptjs/configure": "^0.8.0",
-    "codeceptjs": "^3.5.15",
+    "codeceptjs": "^3.6.2",
     "cross-env": "^7.0.3",
-    "playwright": "^1.43.0"
+    "playwright": "^1.44.0"
   },
   "devDependencies": {
     "husky": "^4.3.8",
