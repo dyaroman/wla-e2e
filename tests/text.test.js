@@ -172,6 +172,7 @@ Scenario('should render correct texts', async ({ I }) => {
           break;
 
         case 'ogImage':
+        case 'favicon':
           I.seeAttributesOnElements(`${row} [data-qa='${column}']`, {
             'data-title': fromCamelCaseToWords(column),
           });
