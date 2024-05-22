@@ -92,7 +92,7 @@ Scenario('should render correct texts', async ({ I }) => {
   tags.forEach((tag) => {
     I.seeTextEquals(
       tag,
-      `.filters label[data-qa='${tag}'] span.checkbox__label`,
+      `.filters label[data-qa='${tag}'] span[class*="label"]`,
     );
   });
 
