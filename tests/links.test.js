@@ -12,7 +12,9 @@ Scenario('should see last commit link and websites links', async ({ I }) => {
   );
   const { commit, repoPath, websites } = await response['json']();
   I.amOnPage(`${URL}/?${SIDEBAR_OPEN}=`);
-  I.waitForElement('table', 60);
+  I.waitForElement('[data-qa="app"]', 60);
+  // show pages column
+  I.click(`.customize-columns label[data-qa="pages"]`);
 
   // commit
   if (repoPath && commit) {
@@ -26,17 +28,35 @@ Scenario('should see last commit link and websites links', async ({ I }) => {
 
   const randomWebsites = getRandomSubset(websites, 10);
   for (const website of randomWebsites) {
+    I.say(`check links for ${website['website']}`);
     const websiteIndex = websites.findIndex(
       (w) => w['website'] === website['website'],
     );
     const row = `.table tbody tr:nth-child(${websiteIndex + 1})`;
     for (const column in website) {
-      if (column !== 'website') continue;
-      I.seeAttributesOnElements(`${row} [data-qa="website"] a`, {
-        href: `https://${website['host']}/`,
-        target: '_blank',
-        rel: 'noreferrer',
-      });
+      switch (column) {
+        case 'website':
+          I.seeAttributesOnElements(`${row} [data-qa="website"] a`, {
+            href: `https://${website['host']}/`,
+            target: '_blank',
+            rel: 'noreferrer',
+          });
+          break;
+        case 'pages':
+          for (let i = 0; i < website[column].length; i++) {
+            I.seeAttributesOnElements(
+              `${row} [data-qa="pages"] li:nth-child(${i + 1}) a`,
+              {
+                href: `https://${website['host']}/${website[column][i]}`,
+                target: '_blank',
+                rel: 'noreferrer',
+              },
+            );
+          }
+          break;
+        default:
+          break;
+      }
     }
   }
 });
