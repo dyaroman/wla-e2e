@@ -55,7 +55,7 @@ Scenario(
     const randomWebsite = websites[getRandomNumber(0, websites.length - 1)];
     const websiteNameFromData = randomWebsite['website'];
     I.restartBrowser({ permissions: ['clipboard-read', 'clipboard-write'] });
-    I.amOnPage(`${URL}/?website=${websiteNameFromData}`);
+    I.amOnPage(`${URL}/?website===${websiteNameFromData}`);
     I.waitForElement('table', 60);
     I.click('tbody [data-qa="website"]', null, {
       modifiers: ['Meta'],
