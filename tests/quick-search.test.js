@@ -18,9 +18,13 @@ Scenario(
 
     I.amOnPage(`${URL}/?${SHOW_COLUMNS}=website`);
     I.waitForElement('table', 60);
-    I.click(`.table tr:nth-child(${randomNumber}) [data-qa='website']`, null, {
-      modifiers: ['Alt'],
-    });
+    I.click(
+      `.table tr:nth-child(${randomNumber}) td[data-qa='website']`,
+      null,
+      {
+        modifiers: ['Alt'],
+      },
+    );
     I.seeInCurrentUrl(`website=${websiteData['website']}`);
     I.seeInField('input[data-qa="website"]', websiteData['website']);
   },
