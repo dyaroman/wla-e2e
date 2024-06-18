@@ -190,6 +190,12 @@ Scenario('should render correct texts', async ({ I }) => {
           }
           break;
 
+        case 'forms':
+          for (const form of Object.keys(website[column])) {
+            I.see(form, `${row} [data-qa='${column}']`);
+          }
+          break;
+
         case 'checkbox':
           I.seeAttributesOnElements(`${row} [data-qa='${column}']`, {
             'data-title': fromCamelCaseToWords(column),

@@ -113,6 +113,9 @@ Scenario(
     const websiteData = websites[randomNumber];
     const randomPage =
       websiteData['pages'][getRandomNumber(0, websiteData['pages'].length - 1)];
+    const randomForm = Object.keys(websiteData['forms'])[
+      getRandomNumber(0, Object.keys(websiteData['forms']).length - 1)
+    ];
     await I.say(
       `Run test for website #${randomNumber} ${websiteData['website']}`,
     );
@@ -130,6 +133,10 @@ Scenario(
 
         case 'pages':
           search.set(key, randomPage);
+          break;
+
+        case 'forms':
+          search.set(key, randomForm);
           break;
 
         default:
@@ -156,6 +163,10 @@ Scenario(
 
         case 'pages':
           I.seeInField(`[data-qa="${key}"]`, randomPage);
+          break;
+
+        case 'forms':
+          I.seeInField(`[data-qa="${key}"]`, randomForm);
           break;
 
         default:
