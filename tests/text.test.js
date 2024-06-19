@@ -70,11 +70,11 @@ Scenario('should render correct texts', async ({ I }) => {
     if (!columns[column]['renderFilter']) continue;
     switch (column) {
       case 'tags':
-        I.seeTextEquals('Tags:', '.filters details summary');
+        I.seeTextEquals('Tags:', '.tags summary');
         break;
       default:
         I.seeElement(
-          `//details[@class='filters']//span[text()='${fromCamelCaseToWords(
+          `//details[contains(@class, 'filters')]//span[text()='${fromCamelCaseToWords(
             column,
           )}']`,
         );
@@ -90,10 +90,7 @@ Scenario('should render correct texts', async ({ I }) => {
     website.tags.forEach((tag) => tags.includes(tag) || tags.push(tag)),
   );
   tags.forEach((tag) => {
-    I.seeTextEquals(
-      tag,
-      `.filters label[data-qa='${tag}'] span[class*="label"]`,
-    );
+    I.seeTextEquals(tag, `.tags label[data-qa='${tag}'] span[class*="label"]`);
   });
 
   // Filters controls

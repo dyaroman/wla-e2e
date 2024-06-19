@@ -136,7 +136,9 @@ Scenario(
           break;
 
         case 'forms':
-          search.set(key, randomForm);
+          if (randomForm) {
+            search.set(key, randomForm);
+          }
           break;
 
         default:
@@ -156,7 +158,7 @@ Scenario(
       switch (key) {
         case 'tags':
           I.seeNumberOfVisibleElements(
-            '.table .tags li',
+            '.table .tags-list li',
             websiteData['tags'].length,
           );
           break;
@@ -166,7 +168,9 @@ Scenario(
           break;
 
         case 'forms':
-          I.seeInField(`[data-qa="${key}"]`, randomForm);
+          if (randomForm) {
+            I.seeInField(`[data-qa="${key}"]`, randomForm);
+          }
           break;
 
         default:

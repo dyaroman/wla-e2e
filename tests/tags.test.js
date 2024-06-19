@@ -12,9 +12,9 @@ Scenario('should see disabled tags if select "uk" tag', async ({ I }) => {
   if (disabledTagsBefore > 0) {
     throw new Error(`Disabled tags must be 0, but got ${disabledTagsBefore}`);
   }
-  I.click(`.filters label[data-qa='uk']`);
+  I.click(`.tags label[data-qa='uk']`);
   const disabledTagsAfter = await I.grabNumberOfVisibleElements(
-    '.filters label.disabled',
+    '.tags label.disabled',
   );
   if (disabledTagsAfter === 0) {
     throw new Error(
@@ -31,12 +31,12 @@ Scenario('should exclude websites that have the "uk" tag', async ({ I }) => {
     (str) => Number(str),
   );
   // include
-  I.click(`.filters label[data-qa='uk']`);
+  I.click(`.tags label[data-qa='uk']`);
   const numberOfIncludeUkWebsites = await I.grabTextFrom(
     '[data-qa="counter"]',
   ).then((str) => Number(str));
   // exclude
-  I.click(`.filters label[data-qa='uk']`);
+  I.click(`.tags label[data-qa='uk']`);
   const numberOfExcludeUkWebsites = await I.grabTextFrom(
     '[data-qa="counter"]',
   ).then((str) => Number(str));
