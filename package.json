@@ -17,14 +17,14 @@
     "**/*": "prettier --write --ignore-unknown"
   },
   "dependencies": {
-    "@codeceptjs/configure": "^0.8.0",
-    "codeceptjs": "^3.6.2",
+    "@codeceptjs/configure": "^1.0.1",
+    "codeceptjs": "^3.6.4",
     "cross-env": "^7.0.3",
-    "playwright": "^1.44.0"
+    "playwright": "^1.45.0"
   },
   "devDependencies": {
     "husky": "^4.3.8",
     "nano-staged": "^0.8.0",
-    "prettier": "^3.2.5"
+    "prettier": "^3.3.2"
   }
 }
