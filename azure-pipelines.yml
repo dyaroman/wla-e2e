@@ -60,6 +60,9 @@ steps:
         )
       )
 
+  - script: npm pkg delete scripts.prepare
+    displayName: 'Remove prepare script'
+
   - task: Npm@1
     displayName: 'Install dependencies'
     inputs:
