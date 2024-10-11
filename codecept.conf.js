@@ -1,8 +1,12 @@
 const { setHeadlessWhen, setCommonPlugins } = require('@codeceptjs/configure');
 
+const { getObjectPropertyCaseInsensitive } = require('./misc/functions');
+
 // turn on headless mode when running with HEADLESS=true environment variable
 // export HEADLESS=true && npx codeceptjs run
-setHeadlessWhen(process.env.HEADLESS);
+setHeadlessWhen(
+  getObjectPropertyCaseInsensitive('headless', process.env) === 'true',
+);
 
 // enable all common plugins https://github.com/codeceptjs/configure#setcommonplugins
 setCommonPlugins();

@@ -42,3 +42,14 @@ exports.prepareUrl = (url) => {
   }
   return url;
 };
+
+exports.getObjectPropertyCaseInsensitive = (key, obj) => {
+  for (const objKey in obj) {
+    if (
+      obj.hasOwnProperty(objKey) &&
+      objKey.toLowerCase() === key.toLowerCase()
+    ) {
+      return obj[objKey];
+    }
+  }
+};

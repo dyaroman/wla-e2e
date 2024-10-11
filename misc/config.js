@@ -1,8 +1,8 @@
-const { prepareUrl } = require('./functions');
+const { prepareUrl, getObjectPropertyCaseInsensitive } = require('./functions');
 
-let URL = process.env.URL;
+let URL = getObjectPropertyCaseInsensitive('url', process.env);
 if (URL === undefined) {
-  switch (process.env.ENV) {
+  switch (getObjectPropertyCaseInsensitive('env', process.env)) {
     case 'local':
       URL = 'http://localhost:3000';
       break;
@@ -18,9 +18,9 @@ if (URL === undefined) {
 }
 exports.URL = URL;
 
-let DATA_URL = process.env.DATA_URL;
-if (process.env.DATA_URL === undefined) {
-  switch (process.env.ENV) {
+let DATA_URL = getObjectPropertyCaseInsensitive('data_url', process.env);
+if (DATA_URL === undefined) {
+  switch (getObjectPropertyCaseInsensitive('env', process.env)) {
     case 'prod':
       DATA_URL = 'https://prod.example-app.com';
       break;
