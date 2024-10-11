@@ -13,10 +13,9 @@ if (URL === undefined) {
     default:
       URL = 'https://dev.example-app.com';
   }
-} else {
-  URL = prepareUrl(URL);
 }
-exports.URL = URL;
+
+exports.URL = prepareUrl(URL);
 
 let DATA_URL = getObjectPropertyCaseInsensitive('data_url', process.env);
 if (DATA_URL === undefined) {
@@ -29,8 +28,6 @@ if (DATA_URL === undefined) {
     default:
       DATA_URL = 'https://dev.example-app.com';
   }
-} else {
-  DATA_URL = prepareUrl(DATA_URL);
 }
 
-exports.DATA_URL = DATA_URL;
+exports.DATA_URL = prepareUrl(DATA_URL);
