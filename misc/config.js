@@ -1,4 +1,7 @@
-const { prepareUrl, getObjectPropertyCaseInsensitive } = require('./functions');
+const {
+  normalizeUrl,
+  getObjectPropertyCaseInsensitive,
+} = require('./functions');
 
 let URL = getObjectPropertyCaseInsensitive('url', process.env);
 if (URL === undefined) {
@@ -15,7 +18,7 @@ if (URL === undefined) {
   }
 }
 
-exports.URL = prepareUrl(URL);
+exports.URL = normalizeUrl(URL);
 
 let DATA_URL = getObjectPropertyCaseInsensitive('data_url', process.env);
 if (DATA_URL === undefined) {
@@ -30,4 +33,4 @@ if (DATA_URL === undefined) {
   }
 }
 
-exports.DATA_URL = prepareUrl(DATA_URL);
+exports.DATA_URL = normalizeUrl(DATA_URL);

@@ -31,7 +31,7 @@ exports.toRandomCase = (str) =>
     .map((c) => (Math.random() > 0.5 ? c.toLowerCase() : c.toUpperCase()))
     .join('');
 
-exports.prepareUrl = (url) => {
+exports.normalizeUrl = (url) => {
   // add protocol if it wasn't passed
   if (/^https?:\/\//.test(url) === false) {
     url = `https://${url}`;
