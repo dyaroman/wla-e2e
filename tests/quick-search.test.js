@@ -13,7 +13,7 @@ Scenario(
       {},
     );
     const { websites } = await response['json']();
-    const randomNumber = getRandomNumber(0, websites.length - 1);
+    const randomNumber = getRandomNumber(1, websites.length);
     const websiteData = websites[randomNumber - 1];
 
     I.amOnPage(`${URL}/?${SHOW_COLUMNS}=website`);
