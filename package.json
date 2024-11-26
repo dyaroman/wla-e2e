@@ -10,7 +10,7 @@
     "@codeceptjs/configure": "^1.0.1",
     "codeceptjs": "^3.6.7",
     "cross-env": "^7.0.3",
-    "playwright": "^1.47.2"
+    "playwright": "^1.49.0"
   },
   "devDependencies": {
     "husky": "^9.1.7",
