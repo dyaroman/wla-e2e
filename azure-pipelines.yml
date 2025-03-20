@@ -70,8 +70,8 @@ steps:
       verbose: false
       customCommand: 'ci --omit=dev'
 
-  - powershell: npx playwright install --with-deps
-    displayName: 'Install playwright browsers'
+  - powershell: npx playwright install chromium-headless-shell
+    displayName: 'Install headless chromium'
 
   # need to wait for some time for data to be deployed on server
   - powershell: Start-Sleep -Seconds 60
