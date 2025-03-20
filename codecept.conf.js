@@ -1,4 +1,4 @@
-const { setHeadlessWhen, setCommonPlugins } = require('@codeceptjs/configure');
+const { setHeadlessWhen } = require('@codeceptjs/configure');
 
 const { getObjectPropertyCaseInsensitive } = require('./misc/functions');
 
@@ -7,9 +7,6 @@ const { getObjectPropertyCaseInsensitive } = require('./misc/functions');
 setHeadlessWhen(
   getObjectPropertyCaseInsensitive('headless', process.env) === 'true',
 );
-
-// enable all common plugins https://github.com/codeceptjs/configure#setcommonplugins
-setCommonPlugins();
 
 exports.config = {
   tests: './tests/*.test.js',
@@ -22,6 +19,11 @@ exports.config = {
       windowSize: '1920x1080',
       waitForNavigation: 'networkidle',
       uniqueScreenshotNames: true,
+    },
+  },
+  plugins: {
+    screenshotOnFail: {
+      enabled: true,
     },
   },
   include: {
