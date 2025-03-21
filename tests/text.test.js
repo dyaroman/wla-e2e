@@ -10,7 +10,7 @@ Scenario('should render correct texts', async ({ I }) => {
     `${DATA_URL}/${WEBSITES_DATA}`,
     {},
   );
-  const { columns, commit, env, project, repoPath, timestamp, websites } =
+  const { columns, commit, env, repoPath, timestamp, websites } =
     await response['json']();
   I.amOnPage(`${URL}/?${SIDEBAR_OPEN}=`);
   I.waitForElement('table', 60);
@@ -18,13 +18,10 @@ Scenario('should render correct texts', async ({ I }) => {
   // InfoComponent
   // page title
   let title = `[${websites.length}]`;
-  if (project) {
-    title += `[${project}]`;
-  }
   if (env) {
     title += `[${env}]`;
   }
-  title += ': Websites List App';
+  title += ': WLA';
   I.seeTitleEquals(title);
 
   // env
