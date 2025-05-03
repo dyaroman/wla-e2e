@@ -1,18 +1,13 @@
-const { URL, DATA_URL } = require('../misc/config');
+const { URL } = require('../misc/config');
 const { getRandomNumber, toRandomCase } = require('../misc/functions');
-const { WEBSITES_DATA, SIDEBAR_OPEN, SHOW_COLUMNS } = require('../misc/consts');
+const { SHOW_COLUMNS } = require('../misc/consts');
 
 Feature('parse url');
 
 Scenario(
   'should sort "website" column by "desc" direction from url parameters',
   async ({ I }) => {
-    const response = await I.makeApiRequest(
-      'GET',
-      `${DATA_URL}/${WEBSITES_DATA}`,
-      {},
-    );
-    const { websites } = await response['json']();
+    const websites = await I.getWebsitesData();
     const websiteData = websites[websites.length - 1];
     const sorts = {
       column: 'website',
@@ -34,14 +29,8 @@ Scenario(
 );
 
 Scenario('should read filters from url case insensitive', async ({ I }) => {
-  const response = await I.makeApiRequest(
-    'GET',
-    `${DATA_URL}/${WEBSITES_DATA}`,
-    {},
-  );
-  const { columns, websites } = await response['json']();
-  const randomNumber = getRandomNumber(0, websites.length - 1);
-  const websiteData = websites[randomNumber];
+  const columns = await I.getColumns();
+  const websiteData = await I.getRandomWebsiteData();
   const filters = [];
   for (const column in columns) {
     if (!columns[column]['renderFilter']) continue;
@@ -74,12 +63,7 @@ Scenario('should read filters from url case insensitive', async ({ I }) => {
 Scenario(
   'should read sort parameters from url case insensitive',
   async ({ I }) => {
-    const response = await I.makeApiRequest(
-      'GET',
-      `${DATA_URL}/${WEBSITES_DATA}`,
-      {},
-    );
-    const { websites } = await response['json']();
+    const websites = await I.getWebsitesData();
     const websiteData = websites[websites.length - 1];
     const sorts = {
       [toRandomCase('column')]: toRandomCase('website'),
@@ -103,22 +87,14 @@ Scenario(
 Scenario(
   'should show one website for url with filters by this website data and erase url when "clear all" clicked',
   async ({ I }) => {
-    const response = await I.makeApiRequest(
-      'GET',
-      `${DATA_URL}/${WEBSITES_DATA}`,
-      {},
-    );
-    const { websites, columns } = await response['json']();
-    const randomNumber = getRandomNumber(0, websites.length - 1);
-    const websiteData = websites[randomNumber];
+    const columns = await I.getColumns();
+    const websiteData = await I.getRandomWebsiteData();
     const randomPage =
       websiteData['pages'][getRandomNumber(0, websiteData['pages'].length - 1)];
     const randomForm = Object.keys(websiteData['forms'])[
       getRandomNumber(0, Object.keys(websiteData['forms']).length - 1)
     ];
-    await I.say(
-      `Run test for website #${randomNumber} ${websiteData['website']}`,
-    );
+    await I.say(`Run test for website ${websiteData['website']}`);
 
     // prepare searchParams
     const search = new URLSearchParams();
@@ -146,13 +122,18 @@ Scenario(
       }
     }
 
-    I.amOnPage(`${URL}/?${search}&${SIDEBAR_OPEN}=`);
+    I.amOnPage(`${URL}/?${search}`);
     I.waitForElement('table', 60);
+    // open sidebar
+    I.pressKey(['CommandOrControl', '/']);
     I.seeTextEquals('Website: 1', '[data-qa="websitesNumber"]');
     I.seeInTitle('[1]');
     I.seeNumberOfVisibleElements('tbody tr', 1);
+    // close sidebar
+    I.pressKey(['CommandOrControl', '/']);
 
     // check that data from URL searchParams equal to data from file
+    I.openDrawer('filters');
     for (const key in websiteData) {
       if (!columns[key]['renderFilter']) continue;
       switch (key) {
@@ -164,22 +145,24 @@ Scenario(
           break;
 
         case 'pages':
-          I.seeInField(`[data-qa="${key}"]`, randomPage);
+          I.seeInField(`input[data-qa="${key}"]`, randomPage);
           break;
 
         case 'forms':
           if (randomForm) {
-            I.seeInField(`[data-qa="${key}"]`, randomForm);
+            I.seeInField(`input[data-qa="${key}"]`, randomForm);
           }
           break;
 
         default:
-          I.seeInField(`[data-qa="${key}"]`, websiteData[key]);
+          I.seeInField(`input[data-qa="${key}"]`, websiteData[key]);
       }
     }
 
     // clear all filters and sorts
-    I.click('[data-qa="clearAll"]');
+    I.click('[data-qa="resetFilters"]');
+    I.openDrawer('tags');
+    I.click('[data-qa="resetTags"]');
     I.seeInCurrentUrl(URL);
 
     // check that field are empty
@@ -197,24 +180,12 @@ Scenario(
 );
 
 Scenario(
-  'should show opened sidebar when "sidebarOpen" parameter in url',
-  ({ I }) => {
-    I.amOnPage(`${URL}/?${toRandomCase(SIDEBAR_OPEN)}=`);
-    I.seeElement('.filters');
-  },
-);
-
-Scenario(
   `should read ${SHOW_COLUMNS} parameter from url case insensitive`,
   async ({ I }) => {
-    const response = await I.makeApiRequest(
-      'GET',
-      `${DATA_URL}/${WEBSITES_DATA}`,
-      {},
-    );
-    const { columns } = await response['json']();
+    const columns = await I.getColumns();
     I.amOnPage(`${URL}/?${toRandomCase(SHOW_COLUMNS)}=none`);
     I.waitForElement('[data-qa="noColumns"]', 60);
+    I.openDrawer('columns');
     for (const column in columns) {
       if (!columns[column]['renderFilter']) continue;
       I.dontSeeCheckboxIsChecked(`.checkbox__input[name="${column}"]`);

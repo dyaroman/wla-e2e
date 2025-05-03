@@ -1,25 +1,14 @@
 const os = require('os');
 
-const { getRandomNumber } = require('../misc/functions');
-const { URL, DATA_URL } = require('../misc/config');
-const {
-  WEBSITES_DATA,
-  NO_DATA,
-  SHOW_COLUMNS,
-  SIDEBAR_OPEN,
-} = require('../misc/consts');
+const { URL } = require('../misc/config');
+const { NO_DATA, SHOW_COLUMNS } = require('../misc/consts');
 
 Feature('clipboard');
 
 Scenario(
   'should contains hex from table color cell after click on it with Meta key pressed',
   async ({ I }) => {
-    const response = await I.makeApiRequest(
-      'GET',
-      `${DATA_URL}/${WEBSITES_DATA}`,
-      {},
-    );
-    const { websites } = await response['json']();
+    const websites = await I.getWebsitesData();
     const websiteWithHex = websites.find(
       (website) => website['mainFormPrimaryColor'] !== NO_DATA,
     );
@@ -46,14 +35,7 @@ Scenario(
 Scenario(
   'should contains text content from table cell after click on it with Meta key pressed',
   async ({ I }) => {
-    const response = await I.makeApiRequest(
-      'GET',
-      `${DATA_URL}/${WEBSITES_DATA}`,
-      {},
-    );
-    const { websites } = await response['json']();
-    const randomWebsite = websites[getRandomNumber(0, websites.length - 1)];
-    const websiteNameFromData = randomWebsite['website'];
+    const websiteNameFromData = (await I.getRandomWebsiteData()).website;
     I.restartBrowser({ permissions: ['clipboard-read', 'clipboard-write'] });
     I.amOnPage(`${URL}/?website===${websiteNameFromData}`);
     I.waitForElement('table', 60);
@@ -74,19 +56,15 @@ Scenario(
 Scenario(
   'should contains websites list on "copy websites" button click',
   async ({ I }) => {
-    const response = await I.makeApiRequest(
-      'GET',
-      `${DATA_URL}/${WEBSITES_DATA}`,
-      {},
-    );
-    const { websites } = await response['json']();
+    const websites = await I.getWebsitesData();
     const websitesFromData = websites
       .filter((website) => website['website'].toLowerCase().includes('coffee'))
       .map((website) => website['website'])
       .join(os.EOL);
     I.restartBrowser({ permissions: ['clipboard-read', 'clipboard-write'] });
-    I.amOnPage(`${URL}/?website=coffee&${SHOW_COLUMNS}=none&${SIDEBAR_OPEN}=`);
+    I.amOnPage(`${URL}/?website=coffee&${SHOW_COLUMNS}=none`);
     I.waitForElement('table', 60);
+    I.openDrawer('sidebar');
     I.click('[data-qa="copyWebsites"]');
     const websitesFromClipboard = await I.executeScript(() =>
       navigator.clipboard.readText(),
@@ -102,19 +80,15 @@ Scenario(
 Scenario(
   'should contains websites urls list on "copy websites urls" button click',
   async ({ I }) => {
-    const response = await I.makeApiRequest(
-      'GET',
-      `${DATA_URL}/${WEBSITES_DATA}`,
-      {},
-    );
-    const { websites } = await response['json']();
+    const websites = await I.getWebsitesData();
     const websitesUrlsFromData = websites
       .filter((website) => website['website'].toLowerCase().includes('coffee'))
       .map((website) => `https://${website['host']}/`)
       .join(os.EOL);
     I.restartBrowser({ permissions: ['clipboard-read', 'clipboard-write'] });
-    I.amOnPage(`${URL}/?website=coffee&${SHOW_COLUMNS}=none&${SIDEBAR_OPEN}=`);
+    I.amOnPage(`${URL}/?website=coffee&${SHOW_COLUMNS}=none`);
     I.waitForElement('table', 60);
+    I.openDrawer('sidebar');
     I.click('[data-qa="copyWebsitesUrls"]');
     const websitesUrlsFromClipboard = await I.executeScript(() =>
       navigator.clipboard.readText(),

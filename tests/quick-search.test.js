@@ -1,31 +1,21 @@
-const { URL, DATA_URL } = require('../misc/config');
-const { WEBSITES_DATA, SHOW_COLUMNS } = require('../misc/consts');
-const { getRandomNumber } = require('../misc/functions');
+const { URL } = require('../misc/config');
+const { SHOW_COLUMNS } = require('../misc/consts');
 
 Feature('quick search');
 
 Scenario(
   'should insert value from cell clicked with ALT modifier in appropriate search input',
   async ({ I }) => {
-    const response = await I.makeApiRequest(
-      'GET',
-      `${DATA_URL}/${WEBSITES_DATA}`,
-      {},
-    );
-    const { websites } = await response['json']();
-    const randomNumber = getRandomNumber(1, websites.length);
-    const websiteData = websites[randomNumber - 1];
+    const [websiteData, index] = await I.getRandomWebsiteData({
+      returnIndex: true,
+    });
 
     I.amOnPage(`${URL}/?${SHOW_COLUMNS}=website`);
     I.waitForElement('table', 60);
-    I.click(
-      `.table tr:nth-child(${randomNumber}) td[data-qa='website']`,
-      null,
-      {
-        modifiers: ['Alt'],
-      },
-    );
-    I.seeInCurrentUrl(`website=${websiteData['website']}`);
+    I.click(`.table tr:nth-child(${index + 1}) td[data-qa='website']`, null, {
+      modifiers: ['Alt'],
+    });
     I.seeInField('input[data-qa="website"]', websiteData['website']);
+    I.seeInCurrentUrl(`website=${websiteData['website']}`);
   },
 );

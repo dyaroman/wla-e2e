@@ -1,26 +1,30 @@
 const { URL } = require('../misc/config');
-const { SIDEBAR_OPEN } = require('../misc/consts');
-const { hex2rgb } = require('../misc/color');
+const { hex2rgb, rgb2hex } = require('../misc/color');
 
 Feature('theme toggle');
 
 Scenario('should toggle from light theme to dark theme', async ({ I }) => {
-  I.amOnPage(`${URL}/?${SIDEBAR_OPEN}=`);
+  const lightBgColor = '#fff';
+  const darkBgColor = '#212529';
 
+  I.amOnPage(URL);
   // check light theme
-  I.seeAttributesOnElements('body', { 'data-theme': 'light' });
   let bgColor = await I.grabCssPropertyFrom('body', 'background-color');
-  if (hex2rgb('#fff') !== bgColor) {
-    throw new Error(`body bg color should be '#fff' for light theme`);
+  if (hex2rgb(lightBgColor) !== bgColor) {
+    throw new Error(
+      `body bg color should be "${lightBgColor}" for light theme, but got "${rgb2hex(bgColor)}"`,
+    );
   }
 
   // toggle to dark theme
-  I.click('[data-qa="toggleTheme"]');
+  I.restartBrowser({ colorScheme: 'dark' });
+  I.amOnPage(URL);
 
   // check dark theme
-  I.seeAttributesOnElements('body', { 'data-theme': 'dark' });
   bgColor = await I.grabCssPropertyFrom('body', 'background-color');
-  if (hex2rgb('#212529') !== bgColor) {
-    throw new Error(`body bg color should be '#212529' for dark theme`);
+  if (hex2rgb(darkBgColor) !== bgColor) {
+    throw new Error(
+      `body bg color should be "${darkBgColor}" for dark theme, but got "${rgb2hex(bgColor)}"`,
+    );
   }
 });

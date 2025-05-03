@@ -4,7 +4,7 @@ const { SHOW_COLUMNS } = require('../misc/consts');
 Feature('page column');
 
 Scenario('should filter websites by "==sc" page', async ({ I }) => {
-  I.amOnPage(`${URL}/?pages=%3D%3Dsc&${SHOW_COLUMNS}=website%2Cpages`);
+  I.amOnPage(`${URL}/?pages===sc&${SHOW_COLUMNS}=website,pages`);
   I.waitForElement('table', 60);
   const websitesNumberByPageFilter =
     (await I.grabNumberOfVisibleElements('tr')) - 1;
@@ -19,7 +19,7 @@ Scenario('should filter websites by "==sc" page', async ({ I }) => {
 });
 
 Scenario('should show none websites by "!=index" page', async ({ I }) => {
-  I.amOnPage(`${URL}/?pages=%21%3Dindex`);
+  I.amOnPage(`${URL}/?pages=!=index`);
   const websitesNumber = await I.grabNumberOfVisibleElements('tr');
   if (websitesNumber !== 0) {
     throw new Error(

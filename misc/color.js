@@ -1,5 +1,6 @@
-function rgb2hex([red, green, blue]) {
-  const rgb = (red << 16) | (green << 8) | (blue << 0);
+function rgb2hex(rgbString) {
+  const [red, green, blue] = rgbString.match(/\d+/g).map(Number);
+  const rgb = (red << 16) | (green << 8) | blue;
   return '#' + (0x1000000 + rgb).toString(16).slice(1);
 }
 

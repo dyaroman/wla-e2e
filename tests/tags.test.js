@@ -1,13 +1,13 @@
 const { URL } = require('../misc/config');
-const { SIDEBAR_OPEN } = require('../misc/consts');
 
 Feature('tags');
 
 Scenario('should see disabled tags if select "es" tag', async ({ I }) => {
-  I.amOnPage(`${URL}/?${SIDEBAR_OPEN}=`);
+  I.amOnPage(URL);
   I.waitForElement('table', 60);
+  I.openDrawer('tags');
   const disabledTagsBefore = await I.grabNumberOfVisibleElements(
-    '.filters label.disabled',
+    '.tags label.disabled',
   );
   if (disabledTagsBefore > 0) {
     throw new Error(`Disabled tags must be 0, but got ${disabledTagsBefore}`);
@@ -25,21 +25,22 @@ Scenario('should see disabled tags if select "es" tag', async ({ I }) => {
 });
 
 Scenario('should exclude websites that have the "es" tag', async ({ I }) => {
-  I.amOnPage(`${URL}/?${SIDEBAR_OPEN}=`);
+  I.amOnPage(URL);
   I.waitForElement('table', 60);
   const numberOfAllWebsites = await I.grabTextFrom('[data-qa="counter"]').then(
-    (str) => Number(str),
+    (str) => Number(str.split('/')[0]),
   );
+  I.openDrawer('tags');
   // include
-  I.click(`.tags label[data-qa='es']`);
+  I.click('.tags label[data-qa="es"]');
   const numberOfIncludeWebsites = await I.grabTextFrom(
     '[data-qa="counter"]',
-  ).then((str) => Number(str));
+  ).then((str) => Number(str.split('/')[0]));
   // exclude
-  I.click(`.tags label[data-qa='es']`);
+  I.click('.tags label[data-qa="es"]');
   const numberOfExcludeWebsites = await I.grabTextFrom(
     '[data-qa="counter"]',
-  ).then((str) => Number(str));
+  ).then((str) => Number(str.split('/')[0]));
   console.log({
     numberOfAllWebsites,
     numberOfIncludeWebsites,

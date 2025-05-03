@@ -1,24 +1,17 @@
-const { URL, DATA_URL } = require('../misc/config');
-const {
-  NO_DATA,
-  WEBSITES_DATA,
-  SHOW_COLUMNS,
-  SIDEBAR_OPEN,
-} = require('../misc/consts');
+const { URL } = require('../misc/config');
+const { NO_DATA, SHOW_COLUMNS } = require('../misc/consts');
 const { hex2rgb } = require('../misc/color');
 const { getRandomSubset } = require('../misc/functions');
 
 Feature('color cells');
 
 Scenario('should have primary color as a background color', async ({ I }) => {
-  const response = await I.makeApiRequest(
-    'GET',
-    `${DATA_URL}/${WEBSITES_DATA}`,
-    {},
-  );
-  const { columns, websites } = await response['json']();
-  I.amOnPage(`${URL}/?${SHOW_COLUMNS}=none&${SIDEBAR_OPEN}=`);
+  const columns = await I.getColumns();
+  const websites = await I.getWebsitesData();
+
+  I.amOnPage(`${URL}/?${SHOW_COLUMNS}=none`);
   I.waitForElement('[data-qa="noColumns"]', 60);
+  I.openDrawer('columns');
 
   // prepare columns
   for (const column in columns) {

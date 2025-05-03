@@ -7,6 +7,7 @@ Scenario(
   async ({ I }) => {
     I.amOnPage(`${URL}/?website=loan`);
     I.waitForElement('table', 60);
+    I.openDrawer('filters');
     const inputClasses = await I.grabAttributeFrom(
       'input[data-qa="website"]',
       'class',
@@ -22,8 +23,9 @@ Scenario(
 Scenario(
   `empty input shouldn't have "--filled" modification css class`,
   async ({ I }) => {
-    I.amOnPage(`${URL}/`);
+    I.amOnPage(URL);
     I.waitForElement('table', 60);
+    I.openDrawer('filters');
     const inputClasses = await I.grabAttributeFrom(
       'input[data-qa="website"]',
       'class',

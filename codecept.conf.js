@@ -9,16 +9,22 @@ setHeadlessWhen(
 );
 
 exports.config = {
+  name: 'wla-tests',
   tests: './tests/*.test.js',
   output: './output',
+  bootstrap: null,
+  mocha: {},
   helpers: {
     Playwright: {
       url: 'http://localhost',
       show: true,
       browser: 'chromium',
-      windowSize: '1920x1080',
+      windowSize: '1280x720',
       waitForNavigation: 'networkidle',
       uniqueScreenshotNames: true,
+    },
+    WlaHelper: {
+      require: './helpers/wla-helper',
     },
   },
   plugins: {
@@ -29,7 +35,4 @@ exports.config = {
   include: {
     I: './steps_file.js',
   },
-  bootstrap: null,
-  mocha: {},
-  name: 'wla-tests',
 };

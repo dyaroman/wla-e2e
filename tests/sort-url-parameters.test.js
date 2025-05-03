@@ -1,20 +1,14 @@
-const { URL, DATA_URL } = require('../misc/config');
-const { WEBSITES_DATA } = require('../misc/consts');
+const { URL } = require('../misc/config');
 
 Feature('sorts url parameters');
 
 Scenario(
   'should see "column" and "direction" in url when some column sorted',
   async ({ I }) => {
-    const response = await I.makeApiRequest(
-      'GET',
-      `${DATA_URL}/${WEBSITES_DATA}`,
-      {},
-    );
-    const { websites } = await response['json']();
+    const websites = await I.getWebsitesData();
     const websiteData = websites[websites.length - 1];
 
-    I.amOnPage(`${URL}/`);
+    I.amOnPage(URL);
     I.waitForElement('table', 60);
 
     // asc direction
