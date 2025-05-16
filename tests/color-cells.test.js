@@ -7,9 +7,9 @@ Feature('color cells');
 
 Scenario('should have primary color as a background color', async ({ I }) => {
   const columns = await I.getColumns();
-  const websites = await I.getWebsitesData();
+  const websites = (await I.getWebsitesData()).slice(0, 100);
 
-  I.amOnPage(`${URL}/?${SHOW_COLUMNS}=none`);
+  I.amOnPage(`${URL}/?${SHOW_COLUMNS}=none&perPage=100`);
   I.waitForElement('[data-qa="noColumns"]', 60);
   I.openDrawer('columns');
 

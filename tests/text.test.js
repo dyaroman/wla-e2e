@@ -1,4 +1,4 @@
-const { fromCamelCaseToWords } = require('../misc/functions');
+const { fromCamelCaseToWords, getRandomNumber } = require('../misc/functions');
 const { URL } = require('../misc/config');
 
 Feature('check texts');
@@ -6,7 +6,7 @@ Feature('check texts');
 Scenario('should render correct texts', async ({ I }) => {
   const { commit, env, repoPath, timestamp } = await I.getWlaData();
   const websites = await I.getWebsitesData();
-  I.amOnPage(URL);
+  I.amOnPage(`${URL}?perPage=100`);
   I.waitForElement('table', 60);
 
   // InfoComponent
@@ -145,9 +145,8 @@ Scenario('should render correct texts', async ({ I }) => {
   }
 
   // Table Body
-  const [website, websiteIndex] = await I.getRandomWebsiteData({
-    returnIndex: true,
-  });
+  const websiteIndex = getRandomNumber(1, 100);
+  const website = websites[websiteIndex];
   I.say(`check texts for ${website['website']}`);
   for (const column in columns) {
     if (!columns[column]['renderColumn']) continue;

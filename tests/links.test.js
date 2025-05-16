@@ -1,10 +1,11 @@
 const { URL } = require('../misc/config');
+const { getRandomNumber } = require('../misc/functions');
 
 Feature('links');
 
 Scenario('should see last commit link and websites links', async ({ I }) => {
   const { commit, repoPath, websites } = await I.getWlaData();
-  I.amOnPage(`${URL}?showColumns=pages,website`);
+  I.amOnPage(`${URL}?showColumns=pages,website&perPage=100`);
   I.waitForElement('[data-qa="app"]', 60);
 
   // open sidebar
@@ -17,8 +18,9 @@ Scenario('should see last commit link and websites links', async ({ I }) => {
     });
   }
 
-  const website = await I.getRandomWebsiteData();
-  I.say(`check links for ${website['website']}`);
+  const randomIndex = getRandomNumber(1, 100);
+  const website = websites[randomIndex];
+  I.say(`check links for #${randomIndex} ${website['website']}`);
   const websiteIndex = websites.findIndex(
     (w) => w['website'] === website['website'],
   );
