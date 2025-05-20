@@ -72,8 +72,7 @@ Scenario('should render correct texts', async ({ I }) => {
       default:
         I.seeTextEquals(
           fromCamelCaseToWords(column),
-          `label:has(input[data-qa="${column}"]) > span.filter-title__text
-`,
+          `label:has(input[data-qa="${column}"]) > span.filter__title-text`,
         );
         I.seeAttributesOnElements(`input[data-qa="${column}"]`, {
           placeholder: fromCamelCaseToWords(column),
