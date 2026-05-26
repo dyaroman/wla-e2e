@@ -7,7 +7,7 @@
     "**/*": "prettier --write --ignore-unknown"
   },
   "dependencies": {
-    "@codeceptjs/configure": "^1.0.4",
+    "@codeceptjs/configure": "^1.0.6",
     "@codeceptjs/helper": "^2.0.4",
     "codeceptjs": "^3.7.3",
     "playwright": "^1.60.0"
