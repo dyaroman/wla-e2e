@@ -10,7 +10,6 @@
     "@codeceptjs/configure": "^1.0.4",
     "@codeceptjs/helper": "^2.0.4",
     "codeceptjs": "^3.7.3",
-    "cross-env": "^7.0.3",
     "playwright": "^1.52.0"
   },
   "devDependencies": {
