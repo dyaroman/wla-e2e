@@ -1,36 +1,33 @@
-const {
-  normalizeUrl,
-  getObjectPropertyCaseInsensitive,
-} = require('./functions');
+import { normalizeUrl, getObjectPropertyCaseInsensitive } from "./functions.js";
 
-let URL = getObjectPropertyCaseInsensitive('url', process.env);
-if (URL === undefined) {
-  switch (getObjectPropertyCaseInsensitive('env', process.env)) {
-    case 'local':
-      URL = 'http://localhost:3000';
+let configUrl = getObjectPropertyCaseInsensitive("url", process.env);
+if (configUrl === undefined) {
+  switch (getObjectPropertyCaseInsensitive("env", process.env)) {
+    case "local":
+      configUrl = "http://localhost:3000";
       break;
-    case 'prod':
-      URL = 'https://prod.example-app.com';
+    case "prod":
+      configUrl = "https://prod.example-app.com";
       break;
-    case 'dev':
+    case "dev":
     default:
-      URL = 'https://dev.example-app.com';
+      configUrl = "https://dev.example-app.com";
   }
 }
 
-exports.URL = normalizeUrl(URL);
+export const URL = normalizeUrl(configUrl);
 
-let DATA_URL = getObjectPropertyCaseInsensitive('data_url', process.env);
-if (DATA_URL === undefined) {
-  switch (getObjectPropertyCaseInsensitive('env', process.env)) {
-    case 'prod':
-      DATA_URL = 'https://prod.example-app.com';
+let configDataUrl = getObjectPropertyCaseInsensitive("data_url", process.env);
+if (configDataUrl === undefined) {
+  switch (getObjectPropertyCaseInsensitive("env", process.env)) {
+    case "prod":
+      configDataUrl = "https://prod.example-app.com";
       break;
-    case 'local':
-    case 'dev':
+    case "local":
+    case "dev":
     default:
-      DATA_URL = 'https://dev.example-app.com';
+      configDataUrl = "https://dev.example-app.com";
   }
 }
 
-exports.DATA_URL = normalizeUrl(DATA_URL);
+export const DATA_URL = normalizeUrl(configDataUrl);

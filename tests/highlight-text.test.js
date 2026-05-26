@@ -1,9 +1,9 @@
-const { URL } = require('../misc/config');
+import { URL } from "../misc/config.js";
 
-Feature('highlight');
+Feature("highlight");
 
-Scenario('should highlight search matched text', async ({ I }) => {
+Scenario("should highlight search matched text", async ({ I }) => {
   I.amOnPage(`${URL}/?website=loan`);
-  I.waitForElement('table', 60);
-  I.seeElement('table mark');
+  I.waitForElement("table", 60);
+  I.seeElement("table mark");
 });

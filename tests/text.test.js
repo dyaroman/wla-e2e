@@ -1,13 +1,13 @@
-const { fromCamelCaseToWords, getRandomNumber } = require('../misc/functions');
-const { URL } = require('../misc/config');
+import { fromCamelCaseToWords, getRandomNumber } from "../misc/functions.js";
+import { URL } from "../misc/config.js";
 
-Feature('check texts');
+Feature("check texts");
 
-Scenario('should render correct texts', async ({ I }) => {
+Scenario("should render correct texts", async ({ I }) => {
   const { commit, env, repoPath, timestamp } = await I.getWlaData();
   const websites = await I.getWebsitesData();
   I.amOnPage(`${URL}?perPage=100`);
-  I.waitForElement('table', 60);
+  I.waitForElement("table", 60);
 
   // InfoComponent
   // page title
@@ -15,12 +15,12 @@ Scenario('should render correct texts', async ({ I }) => {
   if (env) {
     title += `[${env}]`;
   }
-  title += ': WLA';
+  title += ": WLA";
   I.seeTitleEquals(title);
 
   // open sidebar
-  I.openDrawer('sidebar');
-  I.seeTextEquals('copy websites', 'button[data-qa="copyWebsites"]');
+  I.openDrawer("sidebar");
+  I.seeTextEquals("copy websites", 'button[data-qa="copyWebsites"]');
 
   // env
   if (env) {
@@ -57,17 +57,17 @@ Scenario('should render correct texts', async ({ I }) => {
   }
 
   // FiltersComponent
-  I.openDrawer('filters');
+  I.openDrawer("filters");
   // Filters
-  I.seeTextEquals('Filters', '.drawer__title');
-  I.seeTextEquals('reset filters', 'button[data-qa="resetFilters"]');
+  I.seeTextEquals("Filters", ".drawer__title");
+  I.seeTextEquals("reset filters", 'button[data-qa="resetFilters"]');
   // check filter label and placeholder
   const columns = await I.getColumns();
   for (const column of Object.keys(columns)) {
     // take only columns that render filter
-    if (!columns[column]['renderFilter']) continue;
+    if (!columns[column]["renderFilter"]) continue;
     switch (column) {
-      case 'tags':
+      case "tags":
         break;
       default:
         I.seeTextEquals(
@@ -81,8 +81,8 @@ Scenario('should render correct texts', async ({ I }) => {
   }
 
   // Tags
-  I.openDrawer('tags');
-  I.seeTextEquals('Tags', '.drawer__title');
+  I.openDrawer("tags");
+  I.seeTextEquals("Tags", ".drawer__title");
   const tags = [];
   websites.forEach((website) =>
     website.tags.forEach((tag) => tags.includes(tag) || tags.push(tag)),
@@ -93,14 +93,14 @@ Scenario('should render correct texts', async ({ I }) => {
 
   // TableControlsComponent
   // Customize columns
-  I.openDrawer('columns');
-  I.seeTextEquals('Customize columns', '.drawer__title');
+  I.openDrawer("columns");
+  I.seeTextEquals("Customize columns", ".drawer__title");
   const showedColumns = [];
   for (const column in columns) {
-    columns[column]['showColumn'] && showedColumns.push(column);
+    columns[column]["showColumn"] && showedColumns.push(column);
   }
   for (const column in columns) {
-    if (!columns[column]['renderColumn']) continue;
+    if (!columns[column]["renderColumn"]) continue;
     const label = `.customize-columns label[data-qa='${column}']`;
     I.seeTextEquals(
       fromCamelCaseToWords(column),
@@ -115,11 +115,11 @@ Scenario('should render correct texts', async ({ I }) => {
 
   // Controls
   I.seeTextEquals(
-    'hide all',
+    "hide all",
     '.table-controls button[data-qa="hideAllColumns"]',
   );
   I.seeTextEquals(
-    'restore default',
+    "restore default",
     '.table-controls button[data-qa="restoreDefaultColumns"]',
   );
 
@@ -127,14 +127,14 @@ Scenario('should render correct texts', async ({ I }) => {
   // Table Head
   I.click('[data-qa="showAllColumns"]');
   for (const column in columns) {
-    if (!columns[column]['renderColumn']) continue;
+    if (!columns[column]["renderColumn"]) continue;
     let title;
     switch (column) {
-      case 'index':
-        title = '#';
+      case "index":
+        title = "#";
         break;
-      case 'checkbox':
-        title = '';
+      case "checkbox":
+        title = "";
         break;
       default:
         title = fromCamelCaseToWords(column);
@@ -146,14 +146,14 @@ Scenario('should render correct texts', async ({ I }) => {
   // Table Body
   const websiteIndex = getRandomNumber(1, 100);
   const website = websites[websiteIndex];
-  I.say(`check texts for ${website['website']}`);
+  I.say(`check texts for ${website["website"]}`);
   for (const column in columns) {
-    if (!columns[column]['renderColumn']) continue;
+    if (!columns[column]["renderColumn"]) continue;
     const row = `.table tbody tr:nth-child(${websiteIndex + 1})`;
     switch (column) {
-      case 'tags':
+      case "tags":
         I.seeAttributesOnElements(`${row} [data-qa='${column}']`, {
-          'data-title': fromCamelCaseToWords(column),
+          "data-title": fromCamelCaseToWords(column),
         });
         Array.isArray(website[column]) &&
           website[column].forEach((tag) =>
@@ -161,38 +161,38 @@ Scenario('should render correct texts', async ({ I }) => {
           );
         break;
 
-      case 'ogImage':
-      case 'favicon':
+      case "ogImage":
+      case "favicon":
         I.seeAttributesOnElements(`${row} [data-qa='${column}']`, {
-          'data-title': fromCamelCaseToWords(column),
+          "data-title": fromCamelCaseToWords(column),
         });
         Array.isArray(website[column]) &&
           website[column].forEach((path) =>
-            I.seeElementInDOM(`img[src="https://${website['host']}/${path}"]`),
+            I.seeElementInDOM(`img[src="https://${website["host"]}/${path}"]`),
           );
         break;
 
-      case 'pages':
+      case "pages":
         for (const page of website[column]) {
           I.see(page, `${row} [data-qa='${column}']`);
         }
         break;
 
-      case 'forms':
+      case "forms":
         for (const form of Object.keys(website[column])) {
           I.see(form, `${row} [data-qa='${column}']`);
         }
         break;
 
-      case 'checkbox':
+      case "checkbox":
         I.seeAttributesOnElements(`${row} [data-qa='${column}']`, {
-          'data-title': fromCamelCaseToWords(column),
+          "data-title": fromCamelCaseToWords(column),
         });
         break;
 
-      case 'index':
+      case "index":
         I.seeAttributesOnElements(`${row} [data-qa='${column}']`, {
-          'data-title': fromCamelCaseToWords(column),
+          "data-title": fromCamelCaseToWords(column),
         });
         I.seeTextEquals(
           String(websiteIndex + 1),
@@ -200,21 +200,21 @@ Scenario('should render correct texts', async ({ I }) => {
         );
         break;
 
-      case 'ocsDefaultRedirect':
+      case "ocsDefaultRedirect":
         I.seeAttributesOnElements(`${row} [data-qa='${column}']`, {
-          'data-title': fromCamelCaseToWords(column),
+          "data-title": fromCamelCaseToWords(column),
         });
         I.seeTextEquals(
           String(website[column])
-            .replace(/https?:\/\//, '')
-            .replace('/', ''),
+            .replace(/https?:\/\//, "")
+            .replace("/", ""),
           `${row} [data-qa='${column}']`,
         );
         break;
 
       default:
         I.seeAttributesOnElements(`${row} [data-qa='${column}']`, {
-          'data-title': fromCamelCaseToWords(column),
+          "data-title": fromCamelCaseToWords(column),
         });
         I.seeTextEquals(
           String(website[column]),

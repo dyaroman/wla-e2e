@@ -1,5 +1,6 @@
 {
   "private": true,
+  "type": "module",
   "scripts": {
     "prepare": "husky"
   },
@@ -7,7 +8,6 @@
     "**/*": "prettier --write --ignore-unknown"
   },
   "dependencies": {
-    "@codeceptjs/configure": "^1.0.6",
     "@codeceptjs/helper": "^2.0.4",
     "codeceptjs": "^4.0.2",
     "playwright": "^1.60.0"

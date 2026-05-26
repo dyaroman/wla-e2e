@@ -1,7 +1,7 @@
-const { URL } = require('../misc/config');
-const { SHOW_COLUMNS } = require('../misc/consts');
+import { URL } from "../misc/config.js";
+import { SHOW_COLUMNS } from "../misc/consts.js";
 
-Feature('customize columns');
+Feature("customize columns");
 
 Scenario(
   `default columns should be checked, showed and url don't have ${SHOW_COLUMNS} parameter`,
@@ -10,14 +10,14 @@ Scenario(
     const { website } = await I.getRandomWebsiteData();
 
     I.amOnPage(`${URL}?website=${website}`);
-    I.openDrawer('columns');
+    I.openDrawer("columns");
 
     for (const column in columns) {
       // skip columns that can't be rendered
-      if (!columns[column]['renderColumn']) continue;
+      if (!columns[column]["renderColumn"]) continue;
 
       const checkbox = `.customize-columns .checkbox__input[name='${column}']`;
-      if (columns[column]['showColumn']) {
+      if (columns[column]["showColumn"]) {
         I.seeCheckboxIsChecked(checkbox);
         // table column
         I.seeElement(`thead [data-qa="${column}"]`);
@@ -39,11 +39,11 @@ Scenario(
     const columns = await I.getColumns();
 
     I.amOnPage(`${URL}/?${SHOW_COLUMNS}=all&website=${website}`);
-    I.openDrawer('columns');
+    I.openDrawer("columns");
 
     for (const column in columns) {
       // skip columns that can't be rendered
-      if (!columns[column]['renderColumn']) continue;
+      if (!columns[column]["renderColumn"]) continue;
 
       I.seeCheckboxIsChecked(
         `.customize-columns .checkbox__input[name='${column}']`,
@@ -60,11 +60,11 @@ Scenario(
     const columns = await I.getColumns();
 
     I.amOnPage(`${URL}/?${SHOW_COLUMNS}=none`);
-    I.openDrawer('columns');
+    I.openDrawer("columns");
 
     for (const column in columns) {
       // skip columns that can't be rendered
-      if (!columns[column]['renderColumn']) continue;
+      if (!columns[column]["renderColumn"]) continue;
 
       I.dontSeeCheckboxIsChecked(
         `.customize-columns .checkbox__input[name='${column}']`,
@@ -74,7 +74,7 @@ Scenario(
     }
 
     I.seeTextEquals(
-      'No columns to show, please check customize columns.',
+      "No columns to show, please check customize columns.",
       '[data-qa="noColumns"]',
     );
   },
@@ -87,12 +87,12 @@ Scenario(
     const { website } = await I.getRandomWebsiteData();
 
     I.amOnPage(`${URL}?website=${website}`);
-    I.openDrawer('columns');
+    I.openDrawer("columns");
     I.click('[data-qa="showAllColumns"]');
 
     for (const column in columns) {
       // skip columns that can't be rendered
-      if (!columns[column]['renderColumn']) continue;
+      if (!columns[column]["renderColumn"]) continue;
 
       I.seeCheckboxIsChecked(
         `.customize-columns .checkbox__input[name='${column}']`,
@@ -110,12 +110,12 @@ Scenario(
     const { website } = await I.getRandomWebsiteData();
 
     I.amOnPage(`${URL}?website=${website}`);
-    I.openDrawer('columns');
+    I.openDrawer("columns");
     I.click('[data-qa="hideAllColumns"]');
 
     for (const column in columns) {
       // skip columns that can't be rendered
-      if (!columns[column]['renderColumn']) continue;
+      if (!columns[column]["renderColumn"]) continue;
 
       I.dontSeeCheckboxIsChecked(
         `.customize-columns .checkbox__input[name='${column}']`,
@@ -132,11 +132,11 @@ Scenario(
     const columns = await I.getColumns();
 
     I.amOnPage(`${URL}/?${SHOW_COLUMNS}=none`);
-    I.openDrawer('columns');
+    I.openDrawer("columns");
 
     for (const column in columns) {
       // skip columns that can't be rendered
-      if (!columns[column]['renderColumn']) continue;
+      if (!columns[column]["renderColumn"]) continue;
 
       I.dontSeeCheckboxIsChecked(
         `.customize-columns .checkbox__input[name='${column}']`,
@@ -149,10 +149,10 @@ Scenario(
 
     for (const column in columns) {
       // skip columns that can't be rendered
-      if (!columns[column]['renderColumn']) continue;
+      if (!columns[column]["renderColumn"]) continue;
 
       const checkbox = `.customize-columns .checkbox__input[name='${column}']`;
-      if (columns[column]['showColumn']) {
+      if (columns[column]["showColumn"]) {
         I.seeCheckboxIsChecked(checkbox);
         // table column
         I.seeElement(`thead [data-qa="${column}"]`);

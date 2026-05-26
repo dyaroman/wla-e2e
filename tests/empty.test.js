@@ -1,6 +1,6 @@
-const { URL } = require('../misc/config');
+import { URL } from "../misc/config.js";
 
-Feature('no data');
+Feature("no data");
 
 Scenario(
   'should see "no data to show" for non existing website search',
@@ -9,12 +9,12 @@ Scenario(
 
     I.amOnPage(`${URL}/?website=google.com`);
     I.seeTextEquals(`0/${websites.length}`, '[data-qa="counter"]');
-    I.seeInTitle('[0]');
+    I.seeInTitle("[0]");
     I.seeTextEquals(
-      'No data to show, please check your filters.',
+      "No data to show, please check your filters.",
       '[data-qa="noResults"]',
     );
-    I.openDrawer('sidebar');
-    I.seeTextEquals('Websites: 0', '[data-qa="websitesNumber"]');
+    I.openDrawer("sidebar");
+    I.seeTextEquals("Websites: 0", '[data-qa="websitesNumber"]');
   },
 );

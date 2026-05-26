@@ -1,38 +1,36 @@
-const { setHeadlessWhen } = require('@codeceptjs/configure');
-
-const { getObjectPropertyCaseInsensitive } = require('./misc/functions');
+import { getObjectPropertyCaseInsensitive } from "./misc/functions.js";
 
 // turn on headless mode when running with HEADLESS=true environment variable
 // export HEADLESS=true && npx codeceptjs run
-setHeadlessWhen(
-  getObjectPropertyCaseInsensitive('headless', process.env) === 'true',
-);
+const headless =
+  getObjectPropertyCaseInsensitive("headless", process.env) === "true";
 
-exports.config = {
-  name: 'wla-tests',
-  tests: './tests/*.test.js',
-  output: './output',
+export const config = {
+  name: "wla-tests",
+  noGlobals: true,
+  tests: "./tests/*.test.js",
+  output: "./output",
   bootstrap: null,
   mocha: {},
   helpers: {
     Playwright: {
-      url: 'http://localhost',
-      show: true,
-      browser: 'chromium',
-      windowSize: '1280x720',
-      waitForNavigation: 'networkidle',
+      url: "http://localhost",
+      show: !headless,
+      browser: "chromium",
+      windowSize: "1280x720",
+      waitForNavigation: "networkidle",
       uniqueScreenshotNames: true,
     },
     WlaHelper: {
-      require: './helpers/wla-helper',
+      require: "./helpers/wla-helper.js",
     },
   },
   plugins: {
-    screenshotOnFail: {
+    screenshot: {
       enabled: true,
     },
   },
   include: {
-    I: './steps_file.js',
+    I: "./steps_file.js",
   },
 };

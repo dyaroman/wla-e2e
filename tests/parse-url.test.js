@@ -1,8 +1,8 @@
-const { URL } = require('../misc/config');
-const { getRandomNumber, toRandomCase } = require('../misc/functions');
-const { SHOW_COLUMNS } = require('../misc/consts');
+import { URL } from "../misc/config.js";
+import { getRandomNumber, toRandomCase } from "../misc/functions.js";
+import { SHOW_COLUMNS } from "../misc/consts.js";
 
-Feature('parse url');
+Feature("parse url");
 
 Scenario(
   'should sort "website" column by "desc" direction from url parameters',
@@ -10,8 +10,8 @@ Scenario(
     const websites = await I.getWebsitesData();
     const websiteData = websites[websites.length - 1];
     const sorts = {
-      column: 'website',
-      direction: 'desc',
+      column: "website",
+      direction: "desc",
     };
 
     const search = new URLSearchParams();
@@ -20,20 +20,20 @@ Scenario(
     }
 
     I.amOnPage(`${URL}/?${search}`);
-    I.waitForElement('table', 60);
+    I.waitForElement("table", 60);
     I.seeTextEquals(
-      websiteData['website'],
+      websiteData["website"],
       'tbody tr:first-child [data-qa="website"]',
     );
   },
 );
 
-Scenario('should read filters from url case insensitive', async ({ I }) => {
+Scenario("should read filters from url case insensitive", async ({ I }) => {
   const columns = await I.getColumns();
   const websiteData = await I.getRandomWebsiteData();
   const filters = [];
   for (const column in columns) {
-    if (!columns[column]['renderFilter']) continue;
+    if (!columns[column]["renderFilter"]) continue;
     filters.push([column, toRandomCase(column), websiteData[column]]);
   }
   I.amOnPage(
@@ -42,13 +42,13 @@ Scenario('should read filters from url case insensitive', async ({ I }) => {
         filter
           .slice(1)
           .map((e) => {
-            if (typeof e === 'string' && e.includes('#'))
-              return e.replace('#', encodeURIComponent('#'));
+            if (typeof e === "string" && e.includes("#"))
+              return e.replace("#", encodeURIComponent("#"));
             return e;
           })
-          .join('='),
+          .join("="),
       )
-      .join('&')}`,
+      .join("&")}`,
   );
   I.waitForElement('[data-qa="app"]', 60);
 
@@ -61,13 +61,13 @@ Scenario('should read filters from url case insensitive', async ({ I }) => {
 });
 
 Scenario(
-  'should read sort parameters from url case insensitive',
+  "should read sort parameters from url case insensitive",
   async ({ I }) => {
     const websites = await I.getWebsitesData();
     const websiteData = websites[websites.length - 1];
     const sorts = {
-      [toRandomCase('column')]: toRandomCase('website'),
-      [toRandomCase('direction')]: toRandomCase('desc'),
+      [toRandomCase("column")]: toRandomCase("website"),
+      [toRandomCase("direction")]: toRandomCase("desc"),
     };
 
     const search = new URLSearchParams();
@@ -76,9 +76,9 @@ Scenario(
     }
 
     I.amOnPage(`${URL}/?${search}`);
-    I.waitForElement('table', 60);
+    I.waitForElement("table", 60);
     I.seeTextEquals(
-      websiteData['website'],
+      websiteData["website"],
       'tbody tr:first-child [data-qa="website"]',
     );
   },
@@ -90,28 +90,28 @@ Scenario(
     const columns = await I.getColumns();
     const websiteData = await I.getRandomWebsiteData();
     const randomPage =
-      websiteData['pages'][getRandomNumber(0, websiteData['pages'].length - 1)];
-    const randomForm = Object.keys(websiteData['forms'])[
-      getRandomNumber(0, Object.keys(websiteData['forms']).length - 1)
+      websiteData["pages"][getRandomNumber(0, websiteData["pages"].length - 1)];
+    const randomForm = Object.keys(websiteData["forms"])[
+      getRandomNumber(0, Object.keys(websiteData["forms"]).length - 1)
     ];
-    await I.say(`Run test for website ${websiteData['website']}`);
+    await I.say(`Run test for website ${websiteData["website"]}`);
 
     // prepare searchParams
     const search = new URLSearchParams();
     for (const key in websiteData) {
-      if (!columns[key]['renderFilter']) continue;
+      if (!columns[key]["renderFilter"]) continue;
       switch (key) {
-        case 'tags':
+        case "tags":
           if (websiteData[key].length > 0) {
             search.set(key, websiteData[key].join());
           }
           break;
 
-        case 'pages':
+        case "pages":
           search.set(key, randomPage);
           break;
 
-        case 'forms':
+        case "forms":
           if (randomForm) {
             search.set(key, randomForm);
           }
@@ -123,32 +123,32 @@ Scenario(
     }
 
     I.amOnPage(`${URL}/?${search}`);
-    I.waitForElement('table', 60);
+    I.waitForElement("table", 60);
     // open sidebar
-    I.pressKey(['CommandOrControl', '/']);
-    I.seeTextEquals('Website: 1', '[data-qa="websitesNumber"]');
-    I.seeInTitle('[1]');
-    I.seeNumberOfVisibleElements('tbody tr', 1);
+    I.pressKey(["CommandOrControl", "/"]);
+    I.seeTextEquals("Website: 1", '[data-qa="websitesNumber"]');
+    I.seeInTitle("[1]");
+    I.seeNumberOfVisibleElements("tbody tr", 1);
     // close sidebar
-    I.pressKey(['CommandOrControl', '/']);
+    I.pressKey(["CommandOrControl", "/"]);
 
     // check that data from URL searchParams equal to data from file
-    I.openDrawer('filters');
+    I.openDrawer("filters");
     for (const key in websiteData) {
-      if (!columns[key]['renderFilter']) continue;
+      if (!columns[key]["renderFilter"]) continue;
       switch (key) {
-        case 'tags':
+        case "tags":
           I.seeNumberOfVisibleElements(
-            '.table .tags-list li',
-            websiteData['tags'].length,
+            ".table .tags-list li",
+            websiteData["tags"].length,
           );
           break;
 
-        case 'pages':
+        case "pages":
           I.seeInField(`input[data-qa="${key}"]`, randomPage);
           break;
 
-        case 'forms':
+        case "forms":
           if (randomForm) {
             I.seeInField(`input[data-qa="${key}"]`, randomForm);
           }
@@ -161,19 +161,19 @@ Scenario(
 
     // clear all filters and sorts
     I.click('[data-qa="resetFilters"]');
-    I.openDrawer('tags');
+    I.openDrawer("tags");
     I.click('[data-qa="resetTags"]');
     I.seeInCurrentUrl(URL);
 
     // check that field are empty
     for (const key in websiteData) {
-      if (!columns[key]['renderFilter']) continue;
+      if (!columns[key]["renderFilter"]) continue;
       switch (key) {
-        case 'tags':
-          I.dontSeeElement('[data-tag-active]');
+        case "tags":
+          I.dontSeeElement("[data-tag-active]");
           break;
         default:
-          I.seeInField(`[data-qa="${key}"]`, '');
+          I.seeInField(`[data-qa="${key}"]`, "");
       }
     }
   },
@@ -185,9 +185,9 @@ Scenario(
     const columns = await I.getColumns();
     I.amOnPage(`${URL}/?${toRandomCase(SHOW_COLUMNS)}=none`);
     I.waitForElement('[data-qa="noColumns"]', 60);
-    I.openDrawer('columns');
+    I.openDrawer("columns");
     for (const column in columns) {
-      if (!columns[column]['renderFilter']) continue;
+      if (!columns[column]["renderFilter"]) continue;
       I.dontSeeCheckboxIsChecked(`.checkbox__input[name="${column}"]`);
       // table column
       I.dontSeeElement(`thead [data-qa="${column}"]`);

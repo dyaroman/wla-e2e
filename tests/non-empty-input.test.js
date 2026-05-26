@@ -1,18 +1,18 @@
-const { URL } = require('../misc/config');
+import { URL } from "../misc/config.js";
 
-Feature('input modification css class');
+Feature("input modification css class");
 
 Scenario(
   'non-empty input should have "--filled" modification css class',
   async ({ I }) => {
     I.amOnPage(`${URL}/?website=loan`);
-    I.waitForElement('table', 60);
-    I.openDrawer('filters');
+    I.waitForElement("table", 60);
+    I.openDrawer("filters");
     const inputClasses = await I.grabAttributeFrom(
       'input[data-qa="website"]',
-      'class',
+      "class",
     );
-    if (!inputClasses.includes('--filled')) {
+    if (!inputClasses.includes("--filled")) {
       throw new Error(
         `Non-empty input element should have '--filled' css modification class! But it haven't: "${inputClasses}"`,
       );
@@ -24,13 +24,13 @@ Scenario(
   `empty input shouldn't have "--filled" modification css class`,
   async ({ I }) => {
     I.amOnPage(URL);
-    I.waitForElement('table', 60);
-    I.openDrawer('filters');
+    I.waitForElement("table", 60);
+    I.openDrawer("filters");
     const inputClasses = await I.grabAttributeFrom(
       'input[data-qa="website"]',
-      'class',
+      "class",
     );
-    if (inputClasses.includes('--filled')) {
+    if (inputClasses.includes("--filled")) {
       throw new Error(
         `Empty input element shouldn't have '--filled' css modification class! But it has: "${inputClasses}"`,
       );

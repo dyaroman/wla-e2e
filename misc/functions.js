@@ -1,11 +1,11 @@
-exports.getRandomNumber = (min, max) => {
+export const getRandomNumber = (min, max) => {
   // return random number from min (including) to max (including)
   min = Math.ceil(min);
   max = Math.floor(max);
   return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 
-exports.getRandomSubset = (arr = [], size = arr.length) => {
+export const getRandomSubset = (arr = [], size = arr.length) => {
   const subsetSize = Math.min(size, arr.length);
   const shuffledArray = [...arr];
 
@@ -19,20 +19,20 @@ exports.getRandomSubset = (arr = [], size = arr.length) => {
   return shuffledArray.slice(0, subsetSize);
 };
 
-exports.fromCamelCaseToWords = (str) =>
+export const fromCamelCaseToWords = (str) =>
   str
     .split(/(?=[A-Z0-9])/)
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(' ')
-    .replace(/([A-Z]+) /g, '$1');
+    .join(" ")
+    .replace(/([A-Z]+) /g, "$1");
 
-exports.toRandomCase = (str) =>
+export const toRandomCase = (str) =>
   str
-    .split('')
+    .split("")
     .map((c) => (Math.random() > 0.5 ? c.toLowerCase() : c.toUpperCase()))
-    .join('');
+    .join("");
 
-exports.normalizeUrl = (url) => {
+export const normalizeUrl = (url) => {
   // add protocol if it wasn't passed
   if (/^https?:\/\//.test(url) === false) {
     url = `https://${url}`;
@@ -44,7 +44,7 @@ exports.normalizeUrl = (url) => {
   return url;
 };
 
-exports.getObjectPropertyCaseInsensitive = (key, obj) => {
+export const getObjectPropertyCaseInsensitive = (key, obj) => {
   for (const objKey in obj) {
     if (
       obj.hasOwnProperty(objKey) &&

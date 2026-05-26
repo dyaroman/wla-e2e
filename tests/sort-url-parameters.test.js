@@ -1,6 +1,6 @@
-const { URL } = require('../misc/config');
+import { URL } from "../misc/config.js";
 
-Feature('sorts url parameters');
+Feature("sorts url parameters");
 
 Scenario(
   'should see "column" and "direction" in url when some column sorted',
@@ -9,17 +9,17 @@ Scenario(
     const websiteData = websites[websites.length - 1];
 
     I.amOnPage(URL);
-    I.waitForElement('table', 60);
+    I.waitForElement("table", 60);
 
     // asc direction
     I.click('.table thead th[data-qa="website"]');
-    I.seeInCurrentUrl('column=website&direction=asc');
+    I.seeInCurrentUrl("column=website&direction=asc");
 
     // switch to desc direction
     I.click('.table thead th[data-qa="website"]');
-    I.seeInCurrentUrl('column=website&direction=desc');
+    I.seeInCurrentUrl("column=website&direction=desc");
     I.seeTextEquals(
-      websiteData['website'],
+      websiteData["website"],
       'tbody tr:first-child [data-qa="website"]',
     );
   },

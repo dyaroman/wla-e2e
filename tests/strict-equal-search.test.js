@@ -1,18 +1,18 @@
-const { URL } = require('../misc/config');
+import { URL } from "../misc/config.js";
 
-Feature('strict == search');
+Feature("strict == search");
 
-Scenario('campaignId == 1', async ({ I }) => {
+Scenario("campaignId == 1", async ({ I }) => {
   I.amOnPage(`${URL}/?campaignId=1`);
-  I.waitForElement('table', 60);
+  I.waitForElement("table", 60);
   const numberOfInclude = await I.grabTextFrom('[data-qa="counter"]').then(
-    (str) => Number(str.split('/')[0]),
+    (str) => Number(str.split("/")[0]),
   );
 
   I.amOnPage(`${URL}/?campaignId===1`);
-  I.waitForElement('table', 60);
+  I.waitForElement("table", 60);
   const numberOfEqual = await I.grabTextFrom('[data-qa="counter"]').then(
-    (str) => Number(str.split('/')[0]),
+    (str) => Number(str.split("/")[0]),
   );
 
   console.log({

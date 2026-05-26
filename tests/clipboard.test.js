@@ -1,29 +1,29 @@
-const os = require('os');
+import os from "os";
 
-const { URL } = require('../misc/config');
-const { NO_DATA, SHOW_COLUMNS } = require('../misc/consts');
+import { URL } from "../misc/config.js";
+import { NO_DATA, SHOW_COLUMNS } from "../misc/consts.js";
 
-Feature('clipboard');
+Feature("clipboard");
 
 Scenario(
-  'should contains hex from table color cell after click on it with Meta key pressed',
+  "should contains hex from table color cell after click on it with Meta key pressed",
   async ({ I }) => {
     const websites = await I.getWebsitesData();
     const websiteWithHex = websites.find(
-      (website) => website['mainFormPrimaryColor'] !== NO_DATA,
+      (website) => website["mainFormPrimaryColor"] !== NO_DATA,
     );
-    I.restartBrowser({ permissions: ['clipboard-read', 'clipboard-write'] });
+    I.restartBrowser({ permissions: ["clipboard-read", "clipboard-write"] });
     I.amOnPage(
-      `${URL}/?website=${websiteWithHex['website']}&${SHOW_COLUMNS}=website,mainFormTheme`,
+      `${URL}/?website=${websiteWithHex["website"]}&${SHOW_COLUMNS}=website,mainFormTheme`,
     );
-    I.waitForElement('table', 60);
+    I.waitForElement("table", 60);
     I.click('tbody [data-qa="mainFormTheme"]', null, {
-      modifiers: ['Meta'],
+      modifiers: ["Meta"],
     });
     const hexFromClipboard = await I.executeScript(() =>
       navigator.clipboard.readText(),
     );
-    const hexFromWebsiteData = websiteWithHex['mainFormPrimaryColor'];
+    const hexFromWebsiteData = websiteWithHex["mainFormPrimaryColor"];
     if (hexFromClipboard !== hexFromWebsiteData) {
       throw new Error(
         `HEX from website data (${hexFromWebsiteData}) and clipboard (${hexFromClipboard}) should match, but it does not!`,
@@ -33,14 +33,14 @@ Scenario(
 );
 
 Scenario(
-  'should contains text content from table cell after click on it with Meta key pressed',
+  "should contains text content from table cell after click on it with Meta key pressed",
   async ({ I }) => {
     const websiteNameFromData = (await I.getRandomWebsiteData()).website;
-    I.restartBrowser({ permissions: ['clipboard-read', 'clipboard-write'] });
+    I.restartBrowser({ permissions: ["clipboard-read", "clipboard-write"] });
     I.amOnPage(`${URL}/?website===${websiteNameFromData}`);
-    I.waitForElement('table', 60);
+    I.waitForElement("table", 60);
     I.click('tbody [data-qa="website"]', null, {
-      modifiers: ['Meta'],
+      modifiers: ["Meta"],
     });
     const websiteNameFromClipboard = await I.executeScript(() =>
       navigator.clipboard.readText(),
@@ -58,13 +58,13 @@ Scenario(
   async ({ I }) => {
     const websites = await I.getWebsitesData();
     const websitesFromData = websites
-      .filter((website) => website['website'].toLowerCase().includes('coffee'))
-      .map((website) => website['website'])
+      .filter((website) => website["website"].toLowerCase().includes("coffee"))
+      .map((website) => website["website"])
       .join(os.EOL);
-    I.restartBrowser({ permissions: ['clipboard-read', 'clipboard-write'] });
+    I.restartBrowser({ permissions: ["clipboard-read", "clipboard-write"] });
     I.amOnPage(`${URL}/?website=coffee&${SHOW_COLUMNS}=none`);
-    I.waitForElement('table', 60);
-    I.openDrawer('sidebar');
+    I.waitForElement("table", 60);
+    I.openDrawer("sidebar");
     I.click('[data-qa="copyWebsites"]');
     const websitesFromClipboard = await I.executeScript(() =>
       navigator.clipboard.readText(),
@@ -82,13 +82,13 @@ Scenario(
   async ({ I }) => {
     const websites = await I.getWebsitesData();
     const websitesUrlsFromData = websites
-      .filter((website) => website['website'].toLowerCase().includes('coffee'))
-      .map((website) => `https://${website['host']}/`)
+      .filter((website) => website["website"].toLowerCase().includes("coffee"))
+      .map((website) => `https://${website["host"]}/`)
       .join(os.EOL);
-    I.restartBrowser({ permissions: ['clipboard-read', 'clipboard-write'] });
+    I.restartBrowser({ permissions: ["clipboard-read", "clipboard-write"] });
     I.amOnPage(`${URL}/?website=coffee&${SHOW_COLUMNS}=none`);
-    I.waitForElement('table', 60);
-    I.openDrawer('sidebar');
+    I.waitForElement("table", 60);
+    I.openDrawer("sidebar");
     I.click('[data-qa="copyWebsitesUrls"]');
     const websitesUrlsFromClipboard = await I.executeScript(() =>
       navigator.clipboard.readText(),

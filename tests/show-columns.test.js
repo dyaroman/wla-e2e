@@ -1,17 +1,17 @@
-const { URL } = require('../misc/config');
-const { SHOW_COLUMNS } = require('../misc/consts');
+import { URL } from "../misc/config.js";
+import { SHOW_COLUMNS } from "../misc/consts.js";
 
-Feature('show columns');
+Feature("show columns");
 
-Scenario('should show filtered column if it present in url', async ({ I }) => {
+Scenario("should show filtered column if it present in url", async ({ I }) => {
   I.amOnPage(`${URL}/?${SHOW_COLUMNS}=none&website=loan`);
-  I.waitForElement('table', 60);
+  I.waitForElement("table", 60);
   const columns = await I.grabAttributeFromAll(
-    '.customize-columns .checkbox__input',
-    'name',
+    ".customize-columns .checkbox__input",
+    "name",
   );
   for (const column of columns) {
-    if (column === 'website') {
+    if (column === "website") {
       I.seeCheckboxIsChecked(`.checkbox__input[name="${column}"]`);
       // table column
       I.seeElement(`thead [data-qa="${column}"]`);
@@ -23,15 +23,15 @@ Scenario('should show filtered column if it present in url', async ({ I }) => {
   }
 });
 
-Scenario('should show sorted column if it present in url', async ({ I }) => {
+Scenario("should show sorted column if it present in url", async ({ I }) => {
   I.amOnPage(`${URL}/?${SHOW_COLUMNS}=none&column=website`);
-  I.waitForElement('table', 60);
+  I.waitForElement("table", 60);
   const columns = await I.grabAttributeFromAll(
-    '.customize-columns .checkbox__input',
-    'name',
+    ".customize-columns .checkbox__input",
+    "name",
   );
   for (const column of columns) {
-    if (column === 'website') {
+    if (column === "website") {
       I.seeCheckboxIsChecked(`.checkbox__input[name="${column}"]`);
       // table column
       I.seeElement(`thead [data-qa="${column}"]`);
