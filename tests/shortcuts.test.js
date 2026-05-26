@@ -40,7 +40,15 @@ Scenario(
       .filter((website) => website["website"].toLowerCase().includes("loan"))
       .map((website) => website["website"])
       .join(",");
-    I.restartBrowser({ permissions: ["clipboard-read", "clipboard-write"] });
+    I.usePlaywrightTo(
+      "grant clipboard permissions",
+      async ({ browserContext }) => {
+        await browserContext.grantPermissions([
+          "clipboard-read",
+          "clipboard-write",
+        ]);
+      },
+    );
     I.amOnPage(`${URL}/?website=loan&${SHOW_COLUMNS}=none`);
     I.waitForElement("table", 60);
     I.pressKey(["CommandOrControl", "Shift", "C"]);

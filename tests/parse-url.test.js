@@ -32,9 +32,13 @@ Scenario("should read filters from url case insensitive", async ({ I }) => {
   const columns = await I.getColumns();
   const websiteData = await I.getRandomWebsiteData();
   const filters = [];
-  for (const column in columns) {
-    if (!columns[column]["renderFilter"]) continue;
-    filters.push([column, toRandomCase(column), websiteData[column]]);
+  for (const column of columns) {
+    if (!column.renderFilter) continue;
+    filters.push([
+      column.name,
+      toRandomCase(column.name),
+      websiteData[column.name],
+    ]);
   }
   I.amOnPage(
     `${URL}/?${filters
@@ -88,6 +92,7 @@ Scenario(
   'should show one website for url with filters by this website data and erase url when "clear all" clicked',
   async ({ I }) => {
     const columns = await I.getColumns();
+    const columnMap = Object.fromEntries(columns.map((c) => [c.name, c]));
     const websiteData = await I.getRandomWebsiteData();
     const randomPage =
       websiteData["pages"][getRandomNumber(0, websiteData["pages"].length - 1)];
@@ -99,7 +104,7 @@ Scenario(
     // prepare searchParams
     const search = new URLSearchParams();
     for (const key in websiteData) {
-      if (!columns[key]["renderFilter"]) continue;
+      if (!columnMap[key]?.renderFilter) continue;
       switch (key) {
         case "tags":
           if (websiteData[key].length > 0) {
@@ -135,7 +140,7 @@ Scenario(
     // check that data from URL searchParams equal to data from file
     I.openDrawer("filters");
     for (const key in websiteData) {
-      if (!columns[key]["renderFilter"]) continue;
+      if (!columnMap[key]?.renderFilter) continue;
       switch (key) {
         case "tags":
           I.seeNumberOfVisibleElements(
@@ -167,7 +172,7 @@ Scenario(
 
     // check that field are empty
     for (const key in websiteData) {
-      if (!columns[key]["renderFilter"]) continue;
+      if (!columnMap[key]?.renderFilter) continue;
       switch (key) {
         case "tags":
           I.dontSeeElement("[data-tag-active]");
@@ -186,11 +191,11 @@ Scenario(
     I.amOnPage(`${URL}/?${toRandomCase(SHOW_COLUMNS)}=none`);
     I.waitForElement('[data-qa="noColumns"]', 60);
     I.openDrawer("columns");
-    for (const column in columns) {
-      if (!columns[column]["renderFilter"]) continue;
-      I.dontSeeCheckboxIsChecked(`.checkbox__input[name="${column}"]`);
+    for (const column of columns) {
+      if (!column.renderFilter) continue;
+      I.dontSeeCheckboxIsChecked(`.checkbox__input[name="${column.name}"]`);
       // table column
-      I.dontSeeElement(`thead [data-qa="${column}"]`);
+      I.dontSeeElement(`thead [data-qa="${column.name}"]`);
     }
   },
 );

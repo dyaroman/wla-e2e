@@ -1,6 +1,6 @@
 /// <reference types='codeceptjs' />
-type steps_file = typeof import('./steps_file.js');
-type WlaHelper = import('./helpers/wla-helper');
+type steps_file = typeof import("./steps_file.js").default;
+type WlaHelper = InstanceType<typeof import("./helpers/wla-helper").default>;
 
 declare namespace CodeceptJS {
   interface SupportObject {

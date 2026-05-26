@@ -12,19 +12,19 @@ Scenario(
     I.amOnPage(`${URL}?website=${website}`);
     I.openDrawer("columns");
 
-    for (const column in columns) {
+    for (const column of columns) {
       // skip columns that can't be rendered
-      if (!columns[column]["renderColumn"]) continue;
+      if (!column.renderColumn) continue;
 
-      const checkbox = `.customize-columns .checkbox__input[name='${column}']`;
-      if (columns[column]["showColumn"]) {
+      const checkbox = `.customize-columns .checkbox__input[name='${column.name}']`;
+      if (column.showColumn) {
         I.seeCheckboxIsChecked(checkbox);
         // table column
-        I.seeElement(`thead [data-qa="${column}"]`);
+        I.seeElement(`thead [data-qa="${column.name}"]`);
       } else {
         I.dontSeeCheckboxIsChecked(checkbox);
         // table column
-        I.dontSeeElement(`thead [data-qa="${column}"]`);
+        I.dontSeeElement(`thead [data-qa="${column.name}"]`);
       }
     }
 
@@ -41,15 +41,15 @@ Scenario(
     I.amOnPage(`${URL}/?${SHOW_COLUMNS}=all&website=${website}`);
     I.openDrawer("columns");
 
-    for (const column in columns) {
+    for (const column of columns) {
       // skip columns that can't be rendered
-      if (!columns[column]["renderColumn"]) continue;
+      if (!column.renderColumn) continue;
 
       I.seeCheckboxIsChecked(
-        `.customize-columns .checkbox__input[name='${column}']`,
+        `.customize-columns .checkbox__input[name='${column.name}']`,
       );
       // table column
-      I.seeElement(`thead [data-qa="${column}"]`);
+      I.seeElement(`thead [data-qa="${column.name}"]`);
     }
   },
 );
@@ -62,15 +62,15 @@ Scenario(
     I.amOnPage(`${URL}/?${SHOW_COLUMNS}=none`);
     I.openDrawer("columns");
 
-    for (const column in columns) {
+    for (const column of columns) {
       // skip columns that can't be rendered
-      if (!columns[column]["renderColumn"]) continue;
+      if (!column.renderColumn) continue;
 
       I.dontSeeCheckboxIsChecked(
-        `.customize-columns .checkbox__input[name='${column}']`,
+        `.customize-columns .checkbox__input[name='${column.name}']`,
       );
       // table column
-      I.dontSeeElement(`thead [data-qa="${column}"]`);
+      I.dontSeeElement(`thead [data-qa="${column.name}"]`);
     }
 
     I.seeTextEquals(
@@ -90,15 +90,15 @@ Scenario(
     I.openDrawer("columns");
     I.click('[data-qa="showAllColumns"]');
 
-    for (const column in columns) {
+    for (const column of columns) {
       // skip columns that can't be rendered
-      if (!columns[column]["renderColumn"]) continue;
+      if (!column.renderColumn) continue;
 
       I.seeCheckboxIsChecked(
-        `.customize-columns .checkbox__input[name='${column}']`,
+        `.customize-columns .checkbox__input[name='${column.name}']`,
       );
       // table column
-      I.seeElement(`thead [data-qa="${column}"]`);
+      I.seeElement(`thead [data-qa="${column.name}"]`);
     }
   },
 );
@@ -113,15 +113,15 @@ Scenario(
     I.openDrawer("columns");
     I.click('[data-qa="hideAllColumns"]');
 
-    for (const column in columns) {
+    for (const column of columns) {
       // skip columns that can't be rendered
-      if (!columns[column]["renderColumn"]) continue;
+      if (!column.renderColumn) continue;
 
       I.dontSeeCheckboxIsChecked(
-        `.customize-columns .checkbox__input[name='${column}']`,
+        `.customize-columns .checkbox__input[name='${column.name}']`,
       );
       // table column
-      I.dontSeeElement(`thead [data-qa="${column}"]`);
+      I.dontSeeElement(`thead [data-qa="${column.name}"]`);
     }
   },
 );
@@ -134,32 +134,32 @@ Scenario(
     I.amOnPage(`${URL}/?${SHOW_COLUMNS}=none`);
     I.openDrawer("columns");
 
-    for (const column in columns) {
+    for (const column of columns) {
       // skip columns that can't be rendered
-      if (!columns[column]["renderColumn"]) continue;
+      if (!column.renderColumn) continue;
 
       I.dontSeeCheckboxIsChecked(
-        `.customize-columns .checkbox__input[name='${column}']`,
+        `.customize-columns .checkbox__input[name='${column.name}']`,
       );
       // table column
-      I.dontSeeElement(`thead [data-qa="${column}"]`);
+      I.dontSeeElement(`thead [data-qa="${column.name}"]`);
     }
 
     I.click('[data-qa="restoreDefaultColumns"]');
 
-    for (const column in columns) {
+    for (const column of columns) {
       // skip columns that can't be rendered
-      if (!columns[column]["renderColumn"]) continue;
+      if (!column.renderColumn) continue;
 
-      const checkbox = `.customize-columns .checkbox__input[name='${column}']`;
-      if (columns[column]["showColumn"]) {
+      const checkbox = `.customize-columns .checkbox__input[name='${column.name}']`;
+      if (column.showColumn) {
         I.seeCheckboxIsChecked(checkbox);
         // table column
-        I.seeElement(`thead [data-qa="${column}"]`);
+        I.seeElement(`thead [data-qa="${column.name}"]`);
       } else {
         I.dontSeeCheckboxIsChecked(checkbox);
         // table column
-        I.dontSeeElement(`thead [data-qa="${column}"]`);
+        I.dontSeeElement(`thead [data-qa="${column.name}"]`);
       }
     }
   },

@@ -17,7 +17,9 @@ Scenario("should toggle from light theme to dark theme", async ({ I }) => {
   }
 
   // toggle to dark theme
-  I.restartBrowser({ colorScheme: "dark" });
+  I.usePlaywrightTo("emulate dark color scheme", async ({ page }) => {
+    await page.emulateMedia({ colorScheme: "dark" });
+  });
   I.amOnPage(URL);
 
   // check dark theme

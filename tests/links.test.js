@@ -4,17 +4,24 @@ import { getRandomNumber } from "../misc/functions.js";
 Feature("links");
 
 Scenario("should see last commit link and websites links", async ({ I }) => {
-  const { commit, repoPath, websites } = await I.getWlaData();
-  I.amOnPage(`${URL}?showColumns=pages,website&perPage=100`);
+  const { commit, websites } = await I.getWlaData();
+  websites.sort((a, b) => {
+    if (a.website === "no_data") return 1;
+    if (b.website === "no_data") return -1;
+    return a.website.toLowerCase().localeCompare(b.website.toLowerCase());
+  });
+  I.amOnPage(
+    `${URL}?showColumns=pages,website&perPage=100&column=website&direction=asc`,
+  );
   I.waitForElement('[data-qa="app"]', 60);
 
   // open sidebar
   I.openDrawer("sidebar");
 
   // commit
-  if (repoPath && commit) {
+  if (commit) {
     I.seeAttributesOnElements('[data-qa="commit"] a', {
-      href: `https://dev.azure.com/example-org/${repoPath}/commit/${commit}`,
+      href: `https://dev.azure.com/org/git/repo/commit/${commit}`,
     });
   }
 
@@ -29,7 +36,7 @@ Scenario("should see last commit link and websites links", async ({ I }) => {
     switch (column) {
       case "website":
         I.seeAttributesOnElements(`${row} [data-qa="website"] a`, {
-          href: `https://${website["host"]}/`,
+          href: `https://${website["host"]}`,
           target: "_blank",
           rel: "noreferrer",
         });

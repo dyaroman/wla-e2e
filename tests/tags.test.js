@@ -2,7 +2,7 @@ import { URL } from "../misc/config.js";
 
 Feature("tags");
 
-Scenario('should see disabled tags if select "es" tag', async ({ I }) => {
+Scenario('should see disabled tags if select "sign up" tag', async ({ I }) => {
   I.amOnPage(URL);
   I.waitForElement("table", 60);
   I.openDrawer("tags");
@@ -12,7 +12,7 @@ Scenario('should see disabled tags if select "es" tag', async ({ I }) => {
   if (disabledTagsBefore > 0) {
     throw new Error(`Disabled tags must be 0, but got ${disabledTagsBefore}`);
   }
-  I.click(`.tags label[data-qa='es']`);
+  I.click('.tags label[data-qa="sign up"]');
   const disabledTagsAfter = await I.grabNumberOfVisibleElements(
     ".tags label.disabled",
   );

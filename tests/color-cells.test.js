@@ -14,10 +14,13 @@ Scenario("should have primary color as a background color", async ({ I }) => {
   I.openDrawer("columns");
 
   // prepare columns
-  for (const column in columns) {
-    if (column !== "website" && !column.toLowerCase().includes("theme"))
+  for (const column of columns) {
+    if (
+      column.name !== "website" &&
+      !column.name.toLowerCase().includes("theme")
+    )
       continue;
-    I.click(`.customize-columns label[data-qa="${column}"]`);
+    I.click(`.customize-columns label[data-qa="${column.name}"]`);
   }
 
   const randomWebsites = getRandomSubset(websites, 10);

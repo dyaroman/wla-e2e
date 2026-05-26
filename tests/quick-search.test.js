@@ -20,6 +20,7 @@ Scenario(
         modifiers: ["Alt"],
       },
     );
+    I.wait(0.3);
     I.seeInField('input[data-qa="website"]', websiteData["website"]);
     I.seeInCurrentUrl(`website=${websiteData["website"]}`);
   },

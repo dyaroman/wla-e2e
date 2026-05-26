@@ -63,19 +63,19 @@ Scenario("should render correct texts", async ({ I }) => {
   I.seeTextEquals("reset filters", 'button[data-qa="resetFilters"]');
   // check filter label and placeholder
   const columns = await I.getColumns();
-  for (const column of Object.keys(columns)) {
+  for (const column of columns) {
     // take only columns that render filter
-    if (!columns[column]["renderFilter"]) continue;
-    switch (column) {
+    if (!column.renderFilter) continue;
+    switch (column.name) {
       case "tags":
         break;
       default:
         I.seeTextEquals(
-          fromCamelCaseToWords(column),
-          `label:has(input[data-qa="${column}"]) > span.filter__title-text`,
+          fromCamelCaseToWords(column.name),
+          `label:has(input[data-qa="${column.name}"]) > span.filter__title-text`,
         );
-        I.seeAttributesOnElements(`input[data-qa="${column}"]`, {
-          placeholder: fromCamelCaseToWords(column),
+        I.seeAttributesOnElements(`input[data-qa="${column.name}"]`, {
+          placeholder: fromCamelCaseToWords(column.name),
         });
     }
   }
@@ -96,17 +96,17 @@ Scenario("should render correct texts", async ({ I }) => {
   I.openDrawer("columns");
   I.seeTextEquals("Customize columns", ".drawer__title");
   const showedColumns = [];
-  for (const column in columns) {
-    columns[column]["showColumn"] && showedColumns.push(column);
+  for (const column of columns) {
+    column.showColumn && showedColumns.push(column.name);
   }
-  for (const column in columns) {
-    if (!columns[column]["renderColumn"]) continue;
-    const label = `.customize-columns label[data-qa='${column}']`;
+  for (const column of columns) {
+    if (!column.renderColumn) continue;
+    const label = `.customize-columns label[data-qa='${column.name}']`;
     I.seeTextEquals(
-      fromCamelCaseToWords(column),
+      fromCamelCaseToWords(column.name),
       `${label} span.checkbox__label`,
     );
-    if (showedColumns.includes(column)) {
+    if (showedColumns.includes(column.name)) {
       I.seeCheckboxIsChecked(`${label} input.checkbox__input`);
     } else {
       I.dontSeeCheckboxIsChecked(`${label} input.checkbox__input`);
@@ -126,10 +126,10 @@ Scenario("should render correct texts", async ({ I }) => {
   // TableComponent
   // Table Head
   I.click('[data-qa="showAllColumns"]');
-  for (const column in columns) {
-    if (!columns[column]["renderColumn"]) continue;
+  for (const column of columns) {
+    if (!column.renderColumn) continue;
     let title;
-    switch (column) {
+    switch (column.name) {
       case "index":
         title = "#";
         break;
@@ -137,88 +137,88 @@ Scenario("should render correct texts", async ({ I }) => {
         title = "";
         break;
       default:
-        title = fromCamelCaseToWords(column);
+        title = fromCamelCaseToWords(column.name);
         break;
     }
-    I.seeTextEquals(title, `.table thead th[data-qa="${column}"]`);
+    I.seeTextEquals(title, `.table thead th[data-qa="${column.name}"]`);
   }
 
   // Table Body
   const websiteIndex = getRandomNumber(1, 100);
   const website = websites[websiteIndex];
   I.say(`check texts for ${website["website"]}`);
-  for (const column in columns) {
-    if (!columns[column]["renderColumn"]) continue;
+  for (const column of columns) {
+    if (!column.renderColumn) continue;
     const row = `.table tbody tr:nth-child(${websiteIndex + 1})`;
-    switch (column) {
+    switch (column.name) {
       case "tags":
-        I.seeAttributesOnElements(`${row} [data-qa='${column}']`, {
-          "data-title": fromCamelCaseToWords(column),
+        I.seeAttributesOnElements(`${row} [data-qa='${column.name}']`, {
+          "data-title": fromCamelCaseToWords(column.name),
         });
-        Array.isArray(website[column]) &&
-          website[column].forEach((tag) =>
+        Array.isArray(website[column.name]) &&
+          website[column.name].forEach((tag) =>
             I.seeTextEquals(tag, `${row} [data-qa='${tag}']`),
           );
         break;
 
       case "ogImage":
       case "favicon":
-        I.seeAttributesOnElements(`${row} [data-qa='${column}']`, {
-          "data-title": fromCamelCaseToWords(column),
+        I.seeAttributesOnElements(`${row} [data-qa='${column.name}']`, {
+          "data-title": fromCamelCaseToWords(column.name),
         });
-        Array.isArray(website[column]) &&
-          website[column].forEach((path) =>
+        Array.isArray(website[column.name]) &&
+          website[column.name].forEach((path) =>
             I.seeElementInDOM(`img[src="https://${website["host"]}/${path}"]`),
           );
         break;
 
       case "pages":
-        for (const page of website[column]) {
-          I.see(page, `${row} [data-qa='${column}']`);
+        for (const page of website[column.name]) {
+          I.see(page, `${row} [data-qa='${column.name}']`);
         }
         break;
 
       case "forms":
-        for (const form of Object.keys(website[column])) {
-          I.see(form, `${row} [data-qa='${column}']`);
+        for (const form of Object.keys(website[column.name])) {
+          I.see(form, `${row} [data-qa='${column.name}']`);
         }
         break;
 
       case "checkbox":
-        I.seeAttributesOnElements(`${row} [data-qa='${column}']`, {
-          "data-title": fromCamelCaseToWords(column),
+        I.seeAttributesOnElements(`${row} [data-qa='${column.name}']`, {
+          "data-title": fromCamelCaseToWords(column.name),
         });
         break;
 
       case "index":
-        I.seeAttributesOnElements(`${row} [data-qa='${column}']`, {
-          "data-title": fromCamelCaseToWords(column),
+        I.seeAttributesOnElements(`${row} [data-qa='${column.name}']`, {
+          "data-title": fromCamelCaseToWords(column.name),
         });
         I.seeTextEquals(
           String(websiteIndex + 1),
-          `${row} [data-qa='${column}']`,
+          `${row} [data-qa='${column.name}']`,
         );
         break;
 
       case "ocsDefaultRedirect":
-        I.seeAttributesOnElements(`${row} [data-qa='${column}']`, {
-          "data-title": fromCamelCaseToWords(column),
+        I.seeAttributesOnElements(`${row} [data-qa='${column.name}']`, {
+          "data-title": fromCamelCaseToWords(column.name),
         });
         I.seeTextEquals(
-          String(website[column])
+          String(website[column.name])
             .replace(/https?:\/\//, "")
             .replace("/", ""),
-          `${row} [data-qa='${column}']`,
+          `${row} [data-qa='${column.name}']`,
         );
         break;
 
       default:
-        I.seeAttributesOnElements(`${row} [data-qa='${column}']`, {
-          "data-title": fromCamelCaseToWords(column),
+        I.seeAttributesOnElements(`${row} [data-qa='${column.name}']`, {
+          "data-title": fromCamelCaseToWords(column.name),
         });
         I.seeTextEquals(
-          String(website[column]),
-          `${row} [data-qa='${column}']`,
+          String(website[column.name]),
+          `${row} [data-qa='${column.name}']`,
         );
         break;
     }

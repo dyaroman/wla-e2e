@@ -9,7 +9,7 @@ Scenario("campaignId == 1", async ({ I }) => {
     (str) => Number(str.split("/")[0]),
   );
 
-  I.amOnPage(`${URL}/?campaignId===1`);
+  I.amOnPage(`${URL}/?campaignId===260001`);
   I.waitForElement("table", 60);
   const numberOfEqual = await I.grabTextFrom('[data-qa="counter"]').then(
     (str) => Number(str.split("/")[0]),
@@ -26,6 +26,6 @@ Scenario("campaignId == 1", async ({ I }) => {
     throw new Error(`should be number, but got: ${numberOfEqual}`);
   }
   if (numberOfEqual === numberOfInclude) {
-    throw new Error('Error due to filter websites by "campaignId": "==1"');
+    throw new Error('Error due to filter websites by "campaignId": "==260001"');
   }
 });
