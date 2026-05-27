@@ -62,6 +62,17 @@ exec("git reset --hard HEAD");
 exec("git fetch origin data");
 exec("git checkout data");
 
+// Ensure .gitignore exists so git add -A never picks up node_modules or output/
+const gitignorePath = ".gitignore";
+const gitignoreContent = "node_modules/\noutput/\n";
+if (
+  !fs.existsSync(gitignorePath) ||
+  !fs.readFileSync(gitignorePath, "utf8").includes("node_modules")
+) {
+  fs.writeFileSync(gitignorePath, gitignoreContent);
+  console.log("Created .gitignore on data branch");
+}
+
 // ── 5. Archive current root results (if any) ────────────────────────────────
 let archivedNumber = null;
 let archivedTimestamp = null;
