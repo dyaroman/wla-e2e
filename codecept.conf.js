@@ -29,6 +29,10 @@ export const config = {
     screenshot: {
       enabled: true,
     },
+    aqaReporter: {
+      require: "./helpers/aqa-reporter.mjs",
+      enabled: true,
+    },
   },
   include: {
     I: "./steps_file.js",

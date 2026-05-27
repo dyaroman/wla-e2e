@@ -1,0 +1,44 @@
+name: E2E Tests
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # needed to push to data branch
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # needed to checkout data branch later
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Remove prepare script
+        run: npm pkg delete scripts.prepare
+
+      - run: npm ci
+
+      - run: npx playwright install chromium-headless-shell
+
+      - name: Run tests
+        run: HEADLESS=true URL=https://dyaroman.github.io/wla-react DATA_URL=https://dyaroman.github.io/wla-react npx codeceptjs run
+        continue-on-error: true
+
+      - name: Generate build-info.json
+        run: node scripts/generate-build-info.mjs
+        env:
+          BUILD_NUMBER: ${{ github.run_number }}
+          RUN_ID: ${{ github.run_id }}
+          BRANCH: ${{ github.ref_name }}
+          TEST_ENV: prod
+
+      - name: Update data branch
+        run: node scripts/update-data-branch.mjs
