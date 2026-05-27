@@ -1,0 +1,427 @@
+[
+  {
+    "title": "should toggle from light theme to dark theme",
+    "pass": true,
+    "fail": false,
+    "skipped": false,
+    "err": null,
+    "img": null,
+    "uuid": "8c17fcbf-3167-46f2-aebb-0e9645348e85"
+  },
+  {
+    "title": "should render correct texts",
+    "pass": true,
+    "fail": false,
+    "skipped": false,
+    "err": null,
+    "img": null,
+    "uuid": "884c40f4-0ed1-492a-86ed-45561e475863"
+  },
+  {
+    "title": "should see disabled tags if select \"sign up\" tag",
+    "pass": true,
+    "fail": false,
+    "skipped": false,
+    "err": null,
+    "img": null,
+    "uuid": "976f2007-95de-46ad-90f7-195ceba5f73d"
+  },
+  {
+    "title": "should exclude websites that have the \"es\" tag",
+    "pass": true,
+    "fail": false,
+    "skipped": false,
+    "err": null,
+    "img": null,
+    "uuid": "36f3f633-11c9-46bd-80f0-d8d2ad209807"
+  },
+  {
+    "title": "campaignId != 1",
+    "pass": true,
+    "fail": false,
+    "skipped": false,
+    "err": null,
+    "img": null,
+    "uuid": "4b74be90-4b09-44ea-b5f7-15abaf1dc778"
+  },
+  {
+    "title": "campaignId == 1",
+    "pass": true,
+    "fail": false,
+    "skipped": false,
+    "err": null,
+    "img": null,
+    "uuid": "9b11134e-c1c2-4f27-84a4-e931b1a27107"
+  },
+  {
+    "title": "should see \"column\" and \"direction\" in url when some column sorted",
+    "pass": true,
+    "fail": false,
+    "skipped": false,
+    "err": null,
+    "img": null,
+    "uuid": "880a4254-900a-4383-9001-16486e30d293"
+  },
+  {
+    "title": "should show filtered column if it present in url",
+    "pass": true,
+    "fail": false,
+    "skipped": false,
+    "err": null,
+    "img": null,
+    "uuid": "679c0231-9ae9-43aa-9fdc-3dabc3c7903b"
+  },
+  {
+    "title": "should show sorted column if it present in url",
+    "pass": true,
+    "fail": false,
+    "skipped": false,
+    "err": null,
+    "img": null,
+    "uuid": "812b67c0-eebc-406b-96b4-c5c9e395a8af"
+  },
+  {
+    "title": "should open info modal on \"open info modal\" shortcut",
+    "pass": true,
+    "fail": false,
+    "skipped": false,
+    "err": null,
+    "img": null,
+    "uuid": "a2dc720a-99b3-4901-a7ec-26ca6712c9a7"
+  },
+  {
+    "title": "should move focus to first search input on \"search\" shortcut",
+    "pass": true,
+    "fail": false,
+    "skipped": false,
+    "err": null,
+    "img": null,
+    "uuid": "828c3f19-130f-4c1e-83d3-61b5eb15f6b5"
+  },
+  {
+    "title": "should contains websites list on \"copy websites\" shortcut",
+    "pass": true,
+    "fail": false,
+    "skipped": false,
+    "err": null,
+    "img": null,
+    "uuid": "fa915ee9-f1b2-43c2-b414-77fc89db877b"
+  },
+  {
+    "title": "should clear filters and sort on \"clear all\" shortcut",
+    "pass": true,
+    "fail": false,
+    "skipped": false,
+    "err": null,
+    "img": null,
+    "uuid": "fcfaa5f7-1f93-49e2-a4c5-57d12ae340eb"
+  },
+  {
+    "title": "should insert value from cell clicked with ALT modifier in appropriate search input",
+    "pass": true,
+    "fail": false,
+    "skipped": false,
+    "err": null,
+    "img": null,
+    "uuid": "edd9e854-7335-4450-80ee-95260e0d94eb"
+  },
+  {
+    "title": "should sort \"website\" column by \"desc\" direction from url parameters",
+    "pass": true,
+    "fail": false,
+    "skipped": false,
+    "err": null,
+    "img": null,
+    "uuid": "f785a281-c0af-48a8-9514-cff6a37b78bf"
+  },
+  {
+    "title": "should read filters from url case insensitive",
+    "pass": true,
+    "fail": false,
+    "skipped": false,
+    "err": null,
+    "img": null,
+    "uuid": "4a8a3fc4-d0c2-4cb5-9620-e0d5d58ad65a"
+  },
+  {
+    "title": "should read sort parameters from url case insensitive",
+    "pass": true,
+    "fail": false,
+    "skipped": false,
+    "err": null,
+    "img": null,
+    "uuid": "253bfe16-7182-497c-933a-665f474eb1da"
+  },
+  {
+    "title": "should show one website for url with filters by this website data and erase url when \"clear all\" clicked",
+    "pass": true,
+    "fail": false,
+    "skipped": false,
+    "err": null,
+    "img": null,
+    "uuid": "f7e501a5-8d12-468d-a964-8ac528ad5185"
+  },
+  {
+    "title": "should read showColumns parameter from url case insensitive",
+    "pass": true,
+    "fail": false,
+    "skipped": false,
+    "err": null,
+    "img": null,
+    "uuid": "e35430df-bf89-47b3-a601-e70c4132b4aa"
+  },
+  {
+    "title": "should disable prev button and first page button on first page",
+    "pass": true,
+    "fail": false,
+    "skipped": false,
+    "err": null,
+    "img": null,
+    "uuid": "a804c62b-1f37-4568-85f6-3464dccc0ff9"
+  },
+  {
+    "title": "should disable next button and last page button on last page",
+    "pass": true,
+    "fail": false,
+    "skipped": false,
+    "err": null,
+    "img": null,
+    "uuid": "b76f09d8-4972-4475-be4a-36ff39df8ae2"
+  },
+  {
+    "title": "should match per page value with table rows",
+    "pass": true,
+    "fail": false,
+    "skipped": false,
+    "err": null,
+    "img": null,
+    "uuid": "48183145-5013-4614-955b-92bc15ae7a91"
+  },
+  {
+    "title": "should read valid per page value from url",
+    "pass": true,
+    "fail": false,
+    "skipped": false,
+    "err": null,
+    "img": null,
+    "uuid": "d84a3b45-1e16-48d1-a792-ebc8bb594edc"
+  },
+  {
+    "title": "should ignore invalid per page value from url",
+    "pass": true,
+    "fail": false,
+    "skipped": false,
+    "err": null,
+    "img": null,
+    "uuid": "225634ab-c282-4766-9e13-a2aa86b72aa9"
+  },
+  {
+    "title": "should show 100 websites on page",
+    "pass": true,
+    "fail": false,
+    "skipped": false,
+    "err": null,
+    "img": null,
+    "uuid": "a62a5d9e-07e5-4409-a57f-a8fa54c20958"
+  },
+  {
+    "title": "should show proper current page",
+    "pass": true,
+    "fail": false,
+    "skipped": false,
+    "err": null,
+    "img": null,
+    "uuid": "aafac04b-fe00-423f-97e0-c67d8ca183c6"
+  },
+  {
+    "title": "should read valid current page value from url",
+    "pass": true,
+    "fail": false,
+    "skipped": false,
+    "err": null,
+    "img": null,
+    "uuid": "a1f63cfb-b80a-4ba3-97f3-d5e201f99b1a"
+  },
+  {
+    "title": "should ignore invalid current page value from url",
+    "pass": true,
+    "fail": false,
+    "skipped": false,
+    "err": null,
+    "img": null,
+    "uuid": "69f0e520-3ac8-4188-a1e6-572959e07aca"
+  },
+  {
+    "title": "should filter websites by \"==sc\" page",
+    "pass": true,
+    "fail": false,
+    "skipped": false,
+    "err": null,
+    "img": null,
+    "uuid": "f1dcaf56-e2bc-48e8-a4d8-14862df52287"
+  },
+  {
+    "title": "should show none websites by \"!=index\" page",
+    "pass": true,
+    "fail": false,
+    "skipped": false,
+    "err": null,
+    "img": null,
+    "uuid": "659f1e0c-f187-4d47-b4de-d45ea54b1404"
+  },
+  {
+    "title": "non-empty input should have \"--filled\" modification css class",
+    "pass": true,
+    "fail": false,
+    "skipped": false,
+    "err": null,
+    "img": null,
+    "uuid": "16d68e44-f624-4d79-a44d-79c534a5d774"
+  },
+  {
+    "title": "empty input shouldn't have \"--filled\" modification css class",
+    "pass": true,
+    "fail": false,
+    "skipped": false,
+    "err": null,
+    "img": null,
+    "uuid": "8d32c39e-1f32-4628-9ea6-d2abe2e19cb6"
+  },
+  {
+    "title": "should see last commit link and websites links",
+    "pass": true,
+    "fail": false,
+    "skipped": false,
+    "err": null,
+    "img": null,
+    "uuid": "fd4a4af4-edf3-46a8-b7d8-aead135e8c01"
+  },
+  {
+    "title": "should open and close by click \"i\" button",
+    "pass": true,
+    "fail": false,
+    "skipped": false,
+    "err": null,
+    "img": null,
+    "uuid": "cfb0075f-6c7a-490f-a40f-c8c06f5d1231"
+  },
+  {
+    "title": "should highlight search matched text",
+    "pass": true,
+    "fail": false,
+    "skipped": false,
+    "err": null,
+    "img": null,
+    "uuid": "0a03d9c3-be70-40f5-8a49-afa8817235ce"
+  },
+  {
+    "title": "should see \"no data to show\" for non existing website search",
+    "pass": true,
+    "fail": false,
+    "skipped": false,
+    "err": null,
+    "img": null,
+    "uuid": "a9521b1a-cea1-41f4-bbd0-26a66004038b"
+  },
+  {
+    "title": "default columns should be checked, showed and url don't have showColumns parameter",
+    "pass": true,
+    "fail": false,
+    "skipped": false,
+    "err": null,
+    "img": null,
+    "uuid": "33ef7b3b-bb3c-476e-b431-ed55b02f795c"
+  },
+  {
+    "title": "should show all columns when url parameter showColumns=\"all\"",
+    "pass": true,
+    "fail": false,
+    "skipped": false,
+    "err": null,
+    "img": null,
+    "uuid": "3df17f68-497a-4300-9b6a-4b6dddec3ec5"
+  },
+  {
+    "title": "should show none columns when url parameter showColumns=\"none\"",
+    "pass": true,
+    "fail": false,
+    "skipped": false,
+    "err": null,
+    "img": null,
+    "uuid": "27afee01-ef20-425f-84f7-a421667c0b39"
+  },
+  {
+    "title": "should show all columns when \"show all columns\" button clicked",
+    "pass": true,
+    "fail": false,
+    "skipped": false,
+    "err": null,
+    "img": null,
+    "uuid": "e7914a6c-57a3-471a-9606-8b551877b42c"
+  },
+  {
+    "title": "should hide all columns when \"hide all columns\" button clicked",
+    "pass": true,
+    "fail": false,
+    "skipped": false,
+    "err": null,
+    "img": null,
+    "uuid": "5485922c-e593-4220-bd10-d0a42ff33c15"
+  },
+  {
+    "title": "should show default columns when \"restore default columns\" button clicked",
+    "pass": true,
+    "fail": false,
+    "skipped": false,
+    "err": null,
+    "img": null,
+    "uuid": "1cdfd489-3b00-4696-879a-c48250375358"
+  },
+  {
+    "title": "should have primary color as a background color",
+    "pass": false,
+    "fail": true,
+    "skipped": false,
+    "err": {
+      "message": "\n  background color is wrong, please check"
+    },
+    "img": "should_have_primary_color_as_a_background_color.failed.png",
+    "uuid": "b450f56f-0483-43a7-91d1-58ad59d0376c"
+  },
+  {
+    "title": "should contains hex from table color cell after click on it with Meta key pressed",
+    "pass": true,
+    "fail": false,
+    "skipped": false,
+    "err": null,
+    "img": null,
+    "uuid": "8c35a402-0fe9-4e9c-b230-b78475d644fd"
+  },
+  {
+    "title": "should contains text content from table cell after click on it with Meta key pressed",
+    "pass": true,
+    "fail": false,
+    "skipped": false,
+    "err": null,
+    "img": null,
+    "uuid": "df6fee19-4027-4ef4-9c55-a0ccf0ff2994"
+  },
+  {
+    "title": "should contains websites list on \"copy websites\" button click",
+    "pass": true,
+    "fail": false,
+    "skipped": false,
+    "err": null,
+    "img": null,
+    "uuid": "577dbeca-5099-4132-9611-4d87b32328d2"
+  },
+  {
+    "title": "should contains websites urls list on \"copy websites urls\" button click",
+    "pass": true,
+    "fail": false,
+    "skipped": false,
+    "err": null,
+    "img": null,
+    "uuid": "6c7350e7-2372-4a34-81f3-49691aa483f9"
+  }
+]
