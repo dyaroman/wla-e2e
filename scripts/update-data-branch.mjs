@@ -35,9 +35,25 @@ exec('git config user.email "action@github.com"');
 exec('git config user.name "GitHub Actions"');
 
 // ── 3. Save new results to a temp location ──────────────────────────────────
+// CodeceptJS writes screenshots directly to output/ (not a subdirectory).
+// Collect them into an images/ folder so the dashboard can fetch them as
+// /{buildNumber}/images/{filename}.
 const tmpDir = "/tmp/new-results";
 if (fs.existsSync(tmpDir)) fs.rmSync(tmpDir, { recursive: true });
-fs.cpSync("./output", tmpDir, { recursive: true });
+fs.mkdirSync(tmpDir);
+fs.copyFileSync("./output/build-info.json", `${tmpDir}/build-info.json`);
+fs.copyFileSync("./output/results.json", `${tmpDir}/results.json`);
+
+const screenshots = fs
+  .readdirSync("./output")
+  .filter((f) => f.endsWith(".png"));
+if (screenshots.length > 0) {
+  fs.mkdirSync(`${tmpDir}/images`);
+  for (const file of screenshots) {
+    fs.copyFileSync(`./output/${file}`, `${tmpDir}/images/${file}`);
+  }
+  console.log(`Collected ${screenshots.length} screenshot(s)`);
+}
 
 // ── 4. Switch to data branch ────────────────────────────────────────────────
 // Discard any working-tree changes (e.g. package.json modified by npm pkg delete)
