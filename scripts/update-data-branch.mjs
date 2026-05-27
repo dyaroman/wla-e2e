@@ -40,6 +40,9 @@ if (fs.existsSync(tmpDir)) fs.rmSync(tmpDir, { recursive: true });
 fs.cpSync("./output", tmpDir, { recursive: true });
 
 // ── 4. Switch to data branch ────────────────────────────────────────────────
+// Discard any working-tree changes (e.g. package.json modified by npm pkg delete)
+// before switching branches — results are already saved in /tmp.
+exec("git reset --hard HEAD");
 exec("git fetch origin data");
 exec("git checkout data");
 
