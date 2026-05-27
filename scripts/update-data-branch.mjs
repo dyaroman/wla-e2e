@@ -63,15 +63,19 @@ exec("git fetch origin data");
 exec("git checkout data");
 
 // ── 5. Archive current root results (if any) ────────────────────────────────
+let archivedNumber = null;
+let archivedTimestamp = null;
 if (fs.existsSync("build-info.json")) {
   const prev = JSON.parse(fs.readFileSync("build-info.json", "utf8"));
-  const prevNumber = prev.buildNumber;
-  console.log(`Archiving previous build ${prevNumber}…`);
-  fs.mkdirSync(prevNumber, { recursive: true });
-  fs.renameSync("build-info.json", `${prevNumber}/build-info.json`);
+  archivedNumber = prev.buildNumber;
+  archivedTimestamp = prev.buildTimestamp;
+  console.log(`Archiving previous build ${archivedNumber}…`);
+  fs.mkdirSync(archivedNumber, { recursive: true });
+  fs.renameSync("build-info.json", `${archivedNumber}/build-info.json`);
   if (fs.existsSync("results.json"))
-    fs.renameSync("results.json", `${prevNumber}/results.json`);
-  if (fs.existsSync("images")) fs.renameSync("images", `${prevNumber}/images`);
+    fs.renameSync("results.json", `${archivedNumber}/results.json`);
+  if (fs.existsSync("images"))
+    fs.renameSync("images", `${archivedNumber}/images`);
 }
 
 // ── 6. Copy new results to root ─────────────────────────────────────────────
@@ -82,14 +86,17 @@ if (fs.existsSync(`${tmpDir}/images`)) {
 }
 
 // ── 7. Update builds.json (keep last 10 archived builds) ────────────────────
+// builds.json tracks only ARCHIVED builds; the current run lives at root
+// in build-info.json and is fetched separately by the dashboard.
+// Adding the current run here would cause it to appear twice in the selector.
 let builds = [];
 if (fs.existsSync("builds.json")) {
   builds = JSON.parse(fs.readFileSync("builds.json", "utf8"));
 }
 
-// Prepend new entry (this build will become "previous" on the next run,
-// but we add it now so the history list is always up-to-date)
-builds.unshift({ number: newNumber, timestamp: newTimestamp });
+if (archivedNumber) {
+  builds.unshift({ number: archivedNumber, timestamp: archivedTimestamp });
+}
 
 // Prune to 10: remove the oldest entry and its folder
 while (builds.length > 10) {
